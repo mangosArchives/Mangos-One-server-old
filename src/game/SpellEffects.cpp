@@ -2473,8 +2473,8 @@ void Spell::EffectHeal(SpellEffectIndex /*eff_idx*/)
             int32 tickcount = GetSpellDuration(targetAura->GetSpellProto()) / targetAura->GetSpellProto()->EffectAmplitude[idx] - 1;
 
             addhealth += tickheal * tickcount;
-
-            unitTarget->RemoveAurasByCasterSpell(targetAura->GetId(), targetAura->GetCasterGUID());
+            
+            unitTarget->RemoveAurasDueToSpell(targetAura->GetId());
         }
 
         addhealth = caster->SpellHealingBonusDone(unitTarget, m_spellInfo, addhealth, HEAL);
