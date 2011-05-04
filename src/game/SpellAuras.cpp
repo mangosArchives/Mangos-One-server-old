@@ -914,6 +914,7 @@ void Aura::TriggerSpell()
 {
     ObjectGuid casterGUID = GetCasterGuid();
     Unit* triggerTarget = GetTriggerTarget();
+    Unit* caster = GetCaster();
 
     if (casterGUID.IsEmpty() || !triggerTarget)
         return;
@@ -1149,7 +1150,6 @@ void Aura::TriggerSpell()
 //                    case 30401: break;
                     case 30427:                             // Extract Gas
                     {
-                        Unit* caster = GetCaster();
                         if (!caster)
                             return;
                         // move loot to player inventory and despawn target
@@ -1311,10 +1311,10 @@ void Aura::TriggerSpell()
                         if (target->GetTypeId() != TYPEID_UNIT)
                             return;
 
-                        if (Unit* caster = GetCaster())
-                            caster->CastSpell(caster, 38495, true, NULL, this);
-                        else
+                        if (!caster)
                             return;
+                        
+                        caster->CastSpell(caster, 38495, true, NULL, this);
 
                         Creature* creatureTarget = (Creature*)target;
 
@@ -1611,7 +1611,7 @@ void Aura::TriggerSpell()
                 return;
             case 38736:                                     // Rod of Purification - for quest 10839 (Veil Skith: Darkstone of Terokk)
             {
-                if (Unit* caster = GetCaster())
+                if (caster)
                     caster->CastSpell(triggerTarget, trigger_spell_id, true, NULL, this);
                 return;
             }
@@ -1620,10 +1620,16 @@ void Aura::TriggerSpell()
 
     // All ok cast by default case
     if (triggeredSpellInfo)
-        triggerTarget->CastSpell(triggerTarget, triggeredSpellInfo, true, NULL, this, casterGUID);
+        if (!caster)
+            // maybe caster must be triggerTarget, if caster is NULL
+            // if (!caster)
+            //     caster = triggerTarget;
+            sLog.outError("Aura::TriggerSpell: Spell %u have no caster(GetCaster returns NULL) at aura effect %u. Perhaps, caster must be same as triggerTarget.",GetId(),GetEffIndex());
+        else
+            caster->CastSpell(triggerTarget, triggeredSpellInfo, true, NULL, this, casterGUID);
     else
     {
-        if (Unit* caster = GetCaster())
+        if (caster)
         {
             if (triggerTarget->GetTypeId() != TYPEID_UNIT || !sScriptMgr.OnEffectDummy(caster, GetId(), GetEffIndex(), (Creature*)triggerTarget))
                 sLog.outError("Aura::TriggerSpell: Spell %u have 0 in EffectTriggered[%d], not handled custom case?",GetId(),GetEffIndex());
