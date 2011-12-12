@@ -4936,6 +4936,24 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
                     unitTarget->CastSpell(unitTarget, 41131, true);
                     break;
                 }
+                case 44436:                                 // Item: Tricky Treats (Hallow's End)
+                {
+                    if (!m_caster->HasAura(42966))  // check for Upset Tummy
+                    {
+                        switch (urand(0,10))
+                        {
+                            case 0:
+                                m_caster->CastSpell(m_caster, 42966, true); // Upset Tummy
+                                break;
+                            default:
+                                m_caster->CastSpell(m_caster, 42919, true); // 30s Buff, +4% speed / buff
+                                m_caster->CastSpell(m_caster, 42965, true); // 5s Buff, +20% speed
+                        }
+                    }
+                    else
+                        m_caster->CastSpell(m_caster, 42966, true); // Upset Tummy
+                    break;
+                }
                 case 44876:                                 // Force Cast - Portal Effect: Sunwell Isle
                 {
                     if (!unitTarget)
