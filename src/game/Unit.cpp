@@ -4067,7 +4067,10 @@ void Unit::RemoveAurasDueToSpellBySteal(uint32 spellId, ObjectGuid casterGuid, U
     // strange but intended behaviour: Stolen single target auras won't be treated as single targeted
     new_holder->SetIsSingleTarget(false);
 
-    stealer->AddSpellAuraHolder(new_holder);
+    if (!stealer->HasAura(spellId) ||
+        (GetSpellAuraHolder(spellId, stealer->GetObjectGuid()) &&
+         GetSpellAuraHolder(spellId, stealer->GetObjectGuid())->GetAuraDuration() < new_max_dur))
+        stealer->AddSpellAuraHolder(new_holder);
 }
 
 void Unit::RemoveAurasDueToSpellByCancel(uint32 spellId)
