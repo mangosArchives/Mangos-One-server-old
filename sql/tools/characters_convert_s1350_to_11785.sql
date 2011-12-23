@@ -1,6 +1,6 @@
 -- Query let convert characters DB from format
--- MaNGOS One characters DB `required_s1099_11299_02_characters_pet_aura` to
--- MaNGOS Master characters DB required_11391_01_characters_auction.
+-- MaNGOS One characters DB `required_s1350_11716_09_characters_mail` to
+-- MaNGOS Master characters DB required_11785_02_characters_instance.
 
 -- Expected that in case Mangos One characters DB changes it will updated for more up-to-date versions.
 -- For targeted MaNGOS Master characters DB you can after convertion apply MaNGOS SQL updates in normal
@@ -8,7 +8,7 @@
 
 -- Note: ALWAYS DO BACKUP before use it. You will CAN NOT easy restore original DB state after tool use.
 
-ALTER TABLE character_db_version CHANGE COLUMN required_s1099_11299_02_characters_pet_aura required_11391_01_characters_auction bit;
+ALTER TABLE character_db_version CHANGE COLUMN required_s1350_11716_09_characters_mail required_11785_02_characters_instance bit;
 
 -- MODIFID TABLES
 
@@ -72,7 +72,15 @@ ALTER TABLE saved_variables
   ADD COLUMN `NextMonthlyQuestResetTime` bigint(40) unsigned NOT NULL default '0' AFTER NextWeeklyQuestResetTime;
 
 ALTER TABLE `auction`
-    ADD COLUMN `moneyTime` BIGINT(40) DEFAULT '0' NOT NULL AFTER `time`;
+    ADD COLUMN `moneyTime` bigint(40) unsigned NOT NULL default '0' AFTER `time`;
+
+ALTER TABLE character_queststatus
+  ADD COLUMN itemcount5 int(11) unsigned NOT NULL default '0' AFTER itemcount4,
+  ADD COLUMN itemcount6 int(11) unsigned NOT NULL default '0' AFTER itemcount5;
+
+ALTER TABLE `instance` ADD COLUMN `encountersMask` 
+INT(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT 'Dungeon encounter bit mask'
+AFTER `difficulty`;
 
 -- FIELD VALUES CONVERT
 
@@ -468,29 +476,30 @@ CREATE TABLE `character_achievement_progress` (
 DROP TABLE IF EXISTS `character_equipmentsets`;
 CREATE TABLE `character_equipmentsets` (
   `guid` int(11) NOT NULL default '0',
-  `setguid` bigint(20) NOT NULL auto_increment,
+  `setguid` bigint(20) unsigned NOT NULL auto_increment,
   `setindex` tinyint(4) NOT NULL default '0',
   `name` varchar(100) NOT NULL,
   `iconname` varchar(100) NOT NULL,
-  `item0` int(11) NOT NULL default '0',
-  `item1` int(11) NOT NULL default '0',
-  `item2` int(11) NOT NULL default '0',
-  `item3` int(11) NOT NULL default '0',
-  `item4` int(11) NOT NULL default '0',
-  `item5` int(11) NOT NULL default '0',
-  `item6` int(11) NOT NULL default '0',
-  `item7` int(11) NOT NULL default '0',
-  `item8` int(11) NOT NULL default '0',
-  `item9` int(11) NOT NULL default '0',
-  `item10` int(11) NOT NULL default '0',
-  `item11` int(11) NOT NULL default '0',
-  `item12` int(11) NOT NULL default '0',
-  `item13` int(11) NOT NULL default '0',
-  `item14` int(11) NOT NULL default '0',
-  `item15` int(11) NOT NULL default '0',
-  `item16` int(11) NOT NULL default '0',
-  `item17` int(11) NOT NULL default '0',
-  `item18` int(11) NOT NULL default '0',
+  `ignore_mask` int(11) unsigned NOT NULL default '0',
+  `item0` int(11) unsigned NOT NULL default '0',
+  `item1` int(11) unsigned NOT NULL default '0',
+  `item2` int(11) unsigned NOT NULL default '0',
+  `item3` int(11) unsigned NOT NULL default '0',
+  `item4` int(11) unsigned NOT NULL default '0',
+  `item5` int(11) unsigned NOT NULL default '0',
+  `item6` int(11) unsigned NOT NULL default '0',
+  `item7` int(11) unsigned NOT NULL default '0',
+  `item8` int(11) unsigned NOT NULL default '0',
+  `item9` int(11) unsigned NOT NULL default '0',
+  `item10` int(11) unsigned NOT NULL default '0',
+  `item11` int(11) unsigned NOT NULL default '0',
+  `item12` int(11) unsigned NOT NULL default '0',
+  `item13` int(11) unsigned NOT NULL default '0',
+  `item14` int(11) unsigned NOT NULL default '0',
+  `item15` int(11) unsigned NOT NULL default '0',
+  `item16` int(11) unsigned NOT NULL default '0',
+  `item17` int(11) unsigned NOT NULL default '0',
+  `item18` int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (`setguid`),
   UNIQUE KEY `idx_set` (`guid`,`setguid`,`setindex`),
   INDEX `Idx_setindex` (`setindex`)
