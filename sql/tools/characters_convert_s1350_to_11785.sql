@@ -99,6 +99,12 @@ UPDATE item_instance SET data= CONCAT(
   SUBSTRING_INDEX(SUBSTRING_INDEX(data,' ',134),' ',-134+60))
 WHERE SUBSTRING_INDEX(data,' ',134) = data AND SUBSTRING_INDEX(data,' ',134-1) <> data;
 
+-- 0.15 -> 0.16
+UPDATE `item_instance` SET `data` = CONCAT(
+  SUBSTRING_INDEX(`data`, ' ', 59 + 1), ' ',
+  SUBSTRING_INDEX(`data`, ' ', -3 -1), '0 ')
+WHERE length(SUBSTRING_INDEX(data, ' ', 64)) < length(data) and length(SUBSTRING_INDEX(data, ' ', 64+1)) >= length(data);
+
 DELETE FROM `character_spell` WHERE `spell` IN (7376,3025,5419,5421,21156,7381,1178,21178,9635,21178,24905,5420,34123,33948,34764,40121,40122);
 
 DELETE FROM character_spell WHERE `spell` IN (
