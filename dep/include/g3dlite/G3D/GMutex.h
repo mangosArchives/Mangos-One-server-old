@@ -18,6 +18,16 @@
 #   include <signal.h>
 #endif
 
+#ifdef WIN32
+#include <direct.h>
+#define popen _popen
+#define pclose _pclose
+#define snprintf _snprintf
+#define putenv _putenv
+#pragma warning (disable:4996)
+#else
+#include <unistd.h>
+#endif
 
 namespace G3D {
 
