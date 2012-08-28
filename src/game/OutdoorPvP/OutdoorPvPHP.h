@@ -159,7 +159,7 @@ public:
     void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
 
     void HandleGameObjectCreate(GameObject* go) override;
-    void HandlePlayerKillInsideArea(Player* player, Unit* victim) override;
+    void HandlePlayerKillInsideArea(Player* player) override;
 
 private:
     // process capture events
