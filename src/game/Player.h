@@ -2002,14 +2002,9 @@ public:
     bool GetBGAccessByLevel(BattleGroundTypeId bgTypeId) const;
     bool CanUseBattleGroundObject();
     bool isTotalImmune();
+
+    // returns true if the player is in active state for capture point capturing
     bool CanUseCapturePoint();
-
-    /*********************************************************/
-    /***                OUTDOOR PVP SYSTEM                 ***/
-    /*********************************************************/
-
-    // returns true if the player is in active state for outdoor pvp objective capturing
-    bool CanUseOutdoorCapturePoint();
 
     /*********************************************************/
     /***                    REST SYSTEM                    ***/
