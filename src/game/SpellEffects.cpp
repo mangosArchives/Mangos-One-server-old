@@ -5014,6 +5014,14 @@ void Spell::EffectScriptEffect(SpellEffectIndex eff_idx)
 
                     break;
                 }
+                case 30835:                                 // Infernal Relay
+                {
+                    if (!unitTarget)
+                        return;
+
+                    unitTarget->CastSpell(unitTarget, 30836, true, NULL, NULL, m_caster->GetObjectGuid());
+                    break;
+                }
                 case 30918:                                 // Improved Sprint
                 {
                     if (!unitTarget)
