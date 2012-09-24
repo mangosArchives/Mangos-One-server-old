@@ -5225,8 +5225,8 @@ void ObjectMgr::LoadAreaTriggerTeleports()
 
     uint32 count = 0;
 
-    //                                                0   1               2              3               4           5            6                    7                           8                     9           10                 11                 12                 13
-    QueryResult* result = WorldDatabase.Query("SELECT id, required_level, required_item, required_item2, heroic_key, heroic_key2, required_quest_done, required_quest_done_heroic, required_failed_text, target_map, target_position_x, target_position_y, target_position_z, target_orientation FROM areatrigger_teleport");
+    //                                                0   1               2              3               4           5            6                    7                           8                     9           10                 11                 12                 13                  14      15
+    QueryResult* result = WorldDatabase.Query("SELECT id, required_level, required_item, required_item2, heroic_key, heroic_key2, required_quest_done, required_quest_done_heroic, required_failed_text, target_map, target_position_x, target_position_y, target_position_z, target_orientation, status, status_failed_text FROM areatrigger_teleport");
     if (!result)
     {
 
@@ -5266,6 +5266,8 @@ void ObjectMgr::LoadAreaTriggerTeleports()
         at.target_Y             = fields[11].GetFloat();
         at.target_Z             = fields[12].GetFloat();
         at.target_Orientation   = fields[13].GetFloat();
+        at.status               = fields[14].GetFloat();
+        at.statusFailedText     = fields[15].GetCppString();
 
         AreaTriggerEntry const* atEntry = sAreaTriggerStore.LookupEntry(Trigger_ID);
         if (!atEntry)

@@ -1616,12 +1616,22 @@ CharDelete.MinLevel = 0
 CharDelete.KeepDays = 30
 
 ###################################################################################################################
-#    Refer-A-Friend system by Mas0n
-#    RAF.MaxGrantLevel       = 60  (max level for granting level bonuses)
-#    RAF.MaxReferals         = 5   (max referals for one account)
-#    RAF.MaxReferers         = 5   (max referred accounts for one account)
-#    Rate.RAF.XP             = 3   (XP bonus for referred friends in party)
-#    Rate.RAF.LevelPerLevel  = 0.5 (bonus levels per referal level)
+# REFER-A-FRIEND SYSTEM
+#
+#    RAF.MaxGrantLevel
+#        Default: 60 - max level for granting level bonuses
+#
+#    RAF.MaxReferals
+#        Default: 5 - max referals for one account
+#
+#    RAF.MaxReferers
+#        Default: 5 - max referred accounts for one account
+#
+#    Rate.RAF.XP
+#        Default: 3 - XP bonus for referred friends in party
+#
+#    Rate.RAF.LevelPerLevel
+#        Default: 0.5 - bonus levels per referal level
 #
 ###################################################################################################################
 

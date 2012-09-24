@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `db_version`;
 CREATE TABLE `db_version` (
   `version` varchar(120) default NULL,
   `creature_ai_version` varchar(120) default NULL,
-  `required_s1699_xxxxx_02_mangos_mangos_string` bit(1) default NULL
+  `required_s1700_xxxxx_01_mangos_areatrigger_teleport` bit(1) default NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 
 --
@@ -98,6 +98,8 @@ CREATE TABLE `areatrigger_teleport` (
   `target_position_y` float NOT NULL default '0',
   `target_position_z` float NOT NULL default '0',
   `target_orientation` float NOT NULL default '0',
+  `status` tinyint(3) unsigned NOT NULL default '0',
+  `status_failed_text` text,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Trigger System';
 

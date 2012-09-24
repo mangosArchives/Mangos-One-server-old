@@ -845,7 +845,11 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recv_data)
                 missingQuest = at->requiredQuest;
         }
 
-        if (missingLevel || missingItem || missingKey || missingQuest)
+        uint32 instanceStatus = 0;
+        if (at->status, 1)
+            instanceStatus = at->status;
+
+        if (missingLevel || missingItem || missingKey || missingQuest || instanceStatus)
         {
             // TODO: all this is probably wrong
             if (missingItem)
@@ -856,6 +860,8 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recv_data)
                 SendAreaTriggerMessage("%s", at->requiredFailedText.c_str());
             else if (missingLevel)
                 SendAreaTriggerMessage(GetMangosString(LANG_LEVEL_MINREQUIRED), missingLevel);
+            else if (instanceStatus)
+                SendAreaTriggerMessage("%s", at->statusFailedText.c_str());
             return;
         }
     }

@@ -74,6 +74,8 @@ struct AreaTrigger
     float  target_Y;
     float  target_Z;
     float  target_Orientation;
+    uint32 status;
+    std::string statusFailedText;
 };
 
 typedef std::map < uint32/*player guid*/, uint32/*instance*/ > CellCorpseSet;
