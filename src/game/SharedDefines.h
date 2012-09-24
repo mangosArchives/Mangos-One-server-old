@@ -707,7 +707,7 @@ enum SpellEffects
     SPELL_EFFECT_CHARGE2                   = 149,
     SPELL_EFFECT_150                       = 150,
     SPELL_EFFECT_TRIGGER_SPELL_2           = 151,
-    SPELL_EFFECT_152                       = 152,
+    SPELL_EFFECT_FRIEND_SUMMON             = 152,
     SPELL_EFFECT_153                       = 153,
     TOTAL_SPELL_EFFECTS                    = 154
 };
@@ -2152,6 +2152,7 @@ enum UnitDynFlags
     UNIT_DYNFLAG_ROOTED                     = 0x0008,
     UNIT_DYNFLAG_SPECIALINFO                = 0x0010,
     UNIT_DYNFLAG_DEAD                       = 0x0020,
+    UNIT_DYNFLAG_REFER_A_FRIEND             = 0x0040,
 };
 
 enum CorpseDynFlags
