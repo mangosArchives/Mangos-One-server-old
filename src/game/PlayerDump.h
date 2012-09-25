@@ -67,36 +67,36 @@ enum DumpReturn
 
 class PlayerDump
 {
-    protected:
-        PlayerDump() {}
+protected:
+    PlayerDump() {}
 };
 
 class PlayerDumpWriter : public PlayerDump
 {
-    public:
-        PlayerDumpWriter() {}
+public:
+    PlayerDumpWriter() {}
 
-        std::string GetDump(uint32 guid);
-        DumpReturn WriteDump(const std::string& file, uint32 guid);
-    private:
-        typedef std::set<uint32> GUIDs;
+    std::string GetDump(uint32 guid);
+    DumpReturn WriteDump(const std::string& file, uint32 guid);
+private:
+    typedef std::set<uint32> GUIDs;
 
-        void DumpTableContent(std::string& dump, uint32 guid, char const* tableFrom, char const* tableTo, DumpTableType type);
-        std::string GenerateWhereStr(char const* field, GUIDs const& guids, GUIDs::const_iterator& itr);
-        std::string GenerateWhereStr(char const* field, uint32 guid);
+    void DumpTableContent(std::string& dump, uint32 guid, char const* tableFrom, char const* tableTo, DumpTableType type);
+    std::string GenerateWhereStr(char const* field, GUIDs const& guids, GUIDs::const_iterator& itr);
+    std::string GenerateWhereStr(char const* field, uint32 guid);
 
-        GUIDs pets;
-        GUIDs mails;
-        GUIDs items;
-        GUIDs texts;
+    GUIDs pets;
+    GUIDs mails;
+    GUIDs items;
+    GUIDs texts;
 };
 
 class PlayerDumpReader : public PlayerDump
 {
-    public:
-        PlayerDumpReader() {}
+public:
+    PlayerDumpReader() {}
 
-        DumpReturn LoadDump(const std::string& file, uint32 account, std::string name, uint32 guid);
+    DumpReturn LoadDump(const std::string& file, uint32 account, std::string name, uint32 guid);
 };
 
 #endif

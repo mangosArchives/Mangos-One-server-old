@@ -22,26 +22,26 @@
 
 class MANGOS_DLL_SPEC BarGoLink
 {
-    public:                                                 // constructors
-        explicit BarGoLink(int row_count);
-        explicit BarGoLink(uint32 row_count);               // row_count < ACE_INT32_MAX
-        explicit BarGoLink(uint64 row_count);               // row_count < ACE_INT32_MAX
-        ~BarGoLink();
+public:                                                 // constructors
+    explicit BarGoLink(int row_count);
+    explicit BarGoLink(uint32 row_count);               // row_count < ACE_INT32_MAX
+    explicit BarGoLink(uint64 row_count);               // row_count < ACE_INT32_MAX
+    ~BarGoLink();
 
-    public:                                                 // modifiers
-        void step();
+public:                                                 // modifiers
+    void step();
 
-        static void SetOutputState(bool on);
-    private:
-        void init(int row_count);
+    static void SetOutputState(bool on);
+private:
+    void init(int row_count);
 
-        static bool m_showOutput;                           // not recommended change with existed active bar
-        static char const* const empty;
-        static char const* const full;
+    static bool m_showOutput;                           // not recommended change with existed active bar
+    static char const* const empty;
+    static char const* const full;
 
-        int rec_no;
-        int rec_pos;
-        int num_rec;
-        int indic_len;
+    int rec_no;
+    int rec_pos;
+    int num_rec;
+    int indic_len;
 };
 #endif

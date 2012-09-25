@@ -22,32 +22,32 @@ class BattleGround;
 
 class BattleGroundRLScore : public BattleGroundScore
 {
-    public:
-        BattleGroundRLScore() {};
-        virtual ~BattleGroundRLScore() {};
-        // TODO fix me
+public:
+    BattleGroundRLScore() {};
+    virtual ~BattleGroundRLScore() {};
+    // TODO fix me
 };
 
 class BattleGroundRL : public BattleGround
 {
-        friend class BattleGroundMgr;
+    friend class BattleGroundMgr;
 
-    public:
-        BattleGroundRL();
-        ~BattleGroundRL();
-        void Update(uint32 diff) override;
+public:
+    BattleGroundRL();
+    ~BattleGroundRL();
+    void Update(uint32 diff) override;
 
-        /* inherited from BattlegroundClass */
-        virtual void AddPlayer(Player* plr) override;
-        virtual void Reset() override;
-        virtual void FillInitialWorldStates(WorldPacket& d, uint32& count) override;
-        virtual void StartingEventCloseDoors() override;
-        virtual void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    virtual void AddPlayer(Player* plr) override;
+    virtual void Reset() override;
+    virtual void FillInitialWorldStates(WorldPacket& d, uint32& count) override;
+    virtual void StartingEventCloseDoors() override;
+    virtual void StartingEventOpenDoors() override;
 
-        void RemovePlayer(Player* plr, ObjectGuid guid) override;
-        void HandleAreaTrigger(Player* source, uint32 trigger) override;
-        bool SetupBattleGround() override;
-        void HandleKillPlayer(Player* player, Player* killer) override;
-        bool HandlePlayerUnderMap(Player* plr) override;
+    void RemovePlayer(Player* plr, ObjectGuid guid) override;
+    void HandleAreaTrigger(Player* source, uint32 trigger) override;
+    bool SetupBattleGround() override;
+    void HandleKillPlayer(Player* player, Player* killer) override;
+    bool HandlePlayerUnderMap(Player* plr) override;
 };
 #endif

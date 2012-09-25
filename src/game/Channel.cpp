@@ -82,8 +82,8 @@ void Channel::Join(ObjectGuid p, const char* pass)
     if (plr)
     {
         if (HasFlag(CHANNEL_FLAG_LFG) &&
-                sWorld.getConfig(CONFIG_BOOL_RESTRICTED_LFG_CHANNEL) && plr->GetSession()->GetSecurity() == SEC_PLAYER &&
-                (plr->GetGroup() || plr->m_lookingForGroup.Empty()))
+            sWorld.getConfig(CONFIG_BOOL_RESTRICTED_LFG_CHANNEL) && plr->GetSession()->GetSecurity() == SEC_PLAYER &&
+            (plr->GetGroup() || plr->m_lookingForGroup.Empty()))
         {
             MakeNotInLfg(&data);
             SendToOne(&data, p);
@@ -341,7 +341,7 @@ void Channel::SetMode(ObjectGuid p, const char* p2n, bool mod, bool set)
         // allow make moderator from another team only if both is GMs
         // at this moment this only way to show channel post for GM from another team
         if ((plr->GetSession()->GetSecurity() < SEC_GAMEMASTER || newp->GetSession()->GetSecurity() < SEC_GAMEMASTER) &&
-                plr->GetTeam() != newp->GetTeam() && !sWorld.getConfig(CONFIG_BOOL_ALLOW_TWO_SIDE_INTERACTION_CHANNEL))
+            plr->GetTeam() != newp->GetTeam() && !sWorld.getConfig(CONFIG_BOOL_ALLOW_TWO_SIDE_INTERACTION_CHANNEL))
         {
             WorldPacket data;
             MakePlayerNotFound(&data, p2n);
@@ -437,7 +437,7 @@ void Channel::List(Player* player)
     }
     else
     {
-        WorldPacket data(SMSG_CHANNEL_LIST, 1 + (GetName().size() + 1) + 1 + 4 + m_players.size()*(8 + 1));
+        WorldPacket data(SMSG_CHANNEL_LIST, 1 + (GetName().size() + 1) + 1 + 4 + m_players.size() * (8 + 1));
         data << uint8(1);                                   // channel type?
         data << GetName();                                  // channel name
         data << uint8(GetFlags());                          // channel flags?
@@ -455,7 +455,7 @@ void Channel::List(Player* player)
             // PLAYER can't see MODERATOR, GAME MASTER, ADMINISTRATOR characters
             // MODERATOR, GAME MASTER, ADMINISTRATOR can see all
             if (plr && (player->GetSession()->GetSecurity() > SEC_PLAYER || plr->GetSession()->GetSecurity() <= gmLevelInWhoList) &&
-                    plr->IsVisibleGloballyFor(player))
+                plr->IsVisibleGloballyFor(player))
             {
                 data << ObjectGuid(i->first);
                 data << uint8(i->second.flags);             // flags seems to be changed...

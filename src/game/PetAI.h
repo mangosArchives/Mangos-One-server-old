@@ -28,30 +28,30 @@ class Spell;
 
 class MANGOS_DLL_DECL PetAI : public CreatureAI
 {
-    public:
+public:
 
-        explicit PetAI(Creature* c);
+    explicit PetAI(Creature* c);
 
-        void MoveInLineOfSight(Unit*) override;
-        void AttackStart(Unit*) override;
-        void EnterEvadeMode() override;
-        void AttackedBy(Unit*) override;
-        bool IsVisible(Unit*) const override;
+    void MoveInLineOfSight(Unit*) override;
+    void AttackStart(Unit*) override;
+    void EnterEvadeMode() override;
+    void AttackedBy(Unit*) override;
+    bool IsVisible(Unit*) const override;
 
-        void UpdateAI(const uint32) override;
-        static int Permissible(const Creature*);
+    void UpdateAI(const uint32) override;
+    static int Permissible(const Creature*);
 
-    private:
-        bool _isVisible(Unit*) const;
-        bool _needToStop(void) const;
-        void _stopAttack(void);
+private:
+    bool _isVisible(Unit*) const;
+    bool _needToStop(void) const;
+    void _stopAttack(void);
 
-        void UpdateAllies();
+    void UpdateAllies();
 
-        TimeTracker i_tracker;
-        bool inCombat;
+    TimeTracker i_tracker;
+    bool inCombat;
 
-        GuidSet m_AllySet;
-        uint32 m_updateAlliesTimer;
+    GuidSet m_AllySet;
+    uint32 m_updateAlliesTimer;
 };
 #endif

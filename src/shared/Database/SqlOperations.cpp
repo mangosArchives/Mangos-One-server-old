@@ -130,7 +130,7 @@ bool SqlQueryHolder::SetQuery(size_t index, const char* sql)
     if (m_queries[index].first != NULL)
     {
         sLog.outError("Attempt assign query to holder index (" SIZEFMTD ") where other query stored (Old: [%s] New: [%s])",
-                      index,m_queries[index].first,sql);
+                      index, m_queries[index].first, sql);
         return false;
     }
 
@@ -143,7 +143,7 @@ bool SqlQueryHolder::SetPQuery(size_t index, const char* format, ...)
 {
     if (!format)
     {
-        sLog.outError("Query (index: " SIZEFMTD ") is empty.",index);
+        sLog.outError("Query (index: " SIZEFMTD ") is empty.", index);
         return false;
     }
 
@@ -153,13 +153,13 @@ bool SqlQueryHolder::SetPQuery(size_t index, const char* format, ...)
     int res = vsnprintf(szQuery, MAX_QUERY_LEN, format, ap);
     va_end(ap);
 
-    if (res==-1)
+    if (res == -1)
     {
-        sLog.outError("SQL Query truncated (and not execute) for format: %s",format);
+        sLog.outError("SQL Query truncated (and not execute) for format: %s", format);
         return false;
     }
 
-    return SetQuery(index,szQuery);
+    return SetQuery(index, szQuery);
 }
 
 QueryResult* SqlQueryHolder::GetResult(size_t index)
@@ -169,7 +169,7 @@ QueryResult* SqlQueryHolder::GetResult(size_t index)
         /// the query strings are freed on the first GetResult or in the destructor
         if (m_queries[index].first != NULL)
         {
-            delete[] (const_cast<char*>(m_queries[index].first));
+            delete[](const_cast<char*>(m_queries[index].first));
             m_queries[index].first = NULL;
         }
         /// when you get a result aways remember to delete it!
@@ -194,7 +194,7 @@ SqlQueryHolder::~SqlQueryHolder()
         /// results used already (getresult called) are expected to be deleted
         if (m_queries[i].first != NULL)
         {
-            delete[] (const_cast<char*>(m_queries[i].first));
+            delete[](const_cast<char*>(m_queries[i].first));
             delete m_queries[i].second;
         }
     }

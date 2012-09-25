@@ -254,13 +254,13 @@ bool ObjectPosSelector::NextSideAngle(UsedAreaSide side, float& angle)
 bool ObjectPosSelector::NextUsedAngle(float& angle)
 {
     if (m_nextUsedAreaItr[USED_POS_PLUS] == m_UsedAreaLists[USED_POS_PLUS].end() &&
-            m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end())
+        m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end())
         return false;
 
     // ++ direction less updated
     if (m_nextUsedAreaItr[USED_POS_PLUS] != m_UsedAreaLists[USED_POS_PLUS].end() &&
-            (m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end() ||
-             m_nextUsedAreaItr[USED_POS_PLUS]->first <= m_nextUsedAreaItr[USED_POS_MINUS]->first))
+        (m_nextUsedAreaItr[USED_POS_MINUS] == m_UsedAreaLists[USED_POS_MINUS].end() ||
+         m_nextUsedAreaItr[USED_POS_PLUS]->first <= m_nextUsedAreaItr[USED_POS_MINUS]->first))
     {
         angle = m_nextUsedAreaItr[USED_POS_PLUS]->first * SignOf(USED_POS_PLUS);
         ++m_nextUsedAreaItr[USED_POS_PLUS];

@@ -29,34 +29,34 @@ enum BG_AB_WorldStates
     BG_AB_OP_RESOURCES_HORDE            = 1777,
     BG_AB_OP_RESOURCES_MAX              = 1780,
     BG_AB_OP_RESOURCES_WARNING          = 1955
-    /*
-        BG_AB_OP_STABLE_ICON                = 1842,         // Stable map icon (NONE)
-        BG_AB_OP_STABLE_STATE_ALIENCE       = 1767,         // Stable map state (ALIENCE)
-        BG_AB_OP_STABLE_STATE_HORDE         = 1768,         // Stable map state (HORDE)
-        BG_AB_OP_STABLE_STATE_CON_ALI       = 1769,         // Stable map state (CON ALIENCE)
-        BG_AB_OP_STABLE_STATE_CON_HOR       = 1770,         // Stable map state (CON HORDE)
-        BG_AB_OP_FARM_ICON                  = 1845,         // Farm map icon (NONE)
-        BG_AB_OP_FARM_STATE_ALIENCE         = 1772,         // Farm state (ALIENCE)
-        BG_AB_OP_FARM_STATE_HORDE           = 1773,         // Farm state (HORDE)
-        BG_AB_OP_FARM_STATE_CON_ALI         = 1774,         // Farm state (CON ALIENCE)
-        BG_AB_OP_FARM_STATE_CON_HOR         = 1775,         // Farm state (CON HORDE)
+            /*
+                BG_AB_OP_STABLE_ICON                = 1842,         // Stable map icon (NONE)
+                BG_AB_OP_STABLE_STATE_ALIENCE       = 1767,         // Stable map state (ALIENCE)
+                BG_AB_OP_STABLE_STATE_HORDE         = 1768,         // Stable map state (HORDE)
+                BG_AB_OP_STABLE_STATE_CON_ALI       = 1769,         // Stable map state (CON ALIENCE)
+                BG_AB_OP_STABLE_STATE_CON_HOR       = 1770,         // Stable map state (CON HORDE)
+                BG_AB_OP_FARM_ICON                  = 1845,         // Farm map icon (NONE)
+                BG_AB_OP_FARM_STATE_ALIENCE         = 1772,         // Farm state (ALIENCE)
+                BG_AB_OP_FARM_STATE_HORDE           = 1773,         // Farm state (HORDE)
+                BG_AB_OP_FARM_STATE_CON_ALI         = 1774,         // Farm state (CON ALIENCE)
+                BG_AB_OP_FARM_STATE_CON_HOR         = 1775,         // Farm state (CON HORDE)
 
-        BG_AB_OP_BLACKSMITH_ICON            = 1846,         // Blacksmith map icon (NONE)
-        BG_AB_OP_BLACKSMITH_STATE_ALIENCE   = 1782,         // Blacksmith map state (ALIENCE)
-        BG_AB_OP_BLACKSMITH_STATE_HORDE     = 1783,         // Blacksmith map state (HORDE)
-        BG_AB_OP_BLACKSMITH_STATE_CON_ALI   = 1784,         // Blacksmith map state (CON ALIENCE)
-        BG_AB_OP_BLACKSMITH_STATE_CON_HOR   = 1785,         // Blacksmith map state (CON HORDE)
-        BG_AB_OP_LUMBERMILL_ICON            = 1844,         // Lumber Mill map icon (NONE)
-        BG_AB_OP_LUMBERMILL_STATE_ALIENCE   = 1792,         // Lumber Mill map state (ALIENCE)
-        BG_AB_OP_LUMBERMILL_STATE_HORDE     = 1793,         // Lumber Mill map state (HORDE)
-        BG_AB_OP_LUMBERMILL_STATE_CON_ALI   = 1794,         // Lumber Mill map state (CON ALIENCE)
-        BG_AB_OP_LUMBERMILL_STATE_CON_HOR   = 1795,         // Lumber Mill map state (CON HORDE)
-        BG_AB_OP_GOLDMINE_ICON              = 1843,         // Gold Mine map icon (NONE)
-        BG_AB_OP_GOLDMINE_STATE_ALIENCE     = 1787,         // Gold Mine map state (ALIENCE)
-        BG_AB_OP_GOLDMINE_STATE_HORDE       = 1788,         // Gold Mine map state (HORDE)
-        BG_AB_OP_GOLDMINE_STATE_CON_ALI     = 1789,         // Gold Mine map state (CON ALIENCE
-        BG_AB_OP_GOLDMINE_STATE_CON_HOR     = 1790,         // Gold Mine map state (CON HORDE)
-    */
+                BG_AB_OP_BLACKSMITH_ICON            = 1846,         // Blacksmith map icon (NONE)
+                BG_AB_OP_BLACKSMITH_STATE_ALIENCE   = 1782,         // Blacksmith map state (ALIENCE)
+                BG_AB_OP_BLACKSMITH_STATE_HORDE     = 1783,         // Blacksmith map state (HORDE)
+                BG_AB_OP_BLACKSMITH_STATE_CON_ALI   = 1784,         // Blacksmith map state (CON ALIENCE)
+                BG_AB_OP_BLACKSMITH_STATE_CON_HOR   = 1785,         // Blacksmith map state (CON HORDE)
+                BG_AB_OP_LUMBERMILL_ICON            = 1844,         // Lumber Mill map icon (NONE)
+                BG_AB_OP_LUMBERMILL_STATE_ALIENCE   = 1792,         // Lumber Mill map state (ALIENCE)
+                BG_AB_OP_LUMBERMILL_STATE_HORDE     = 1793,         // Lumber Mill map state (HORDE)
+                BG_AB_OP_LUMBERMILL_STATE_CON_ALI   = 1794,         // Lumber Mill map state (CON ALIENCE)
+                BG_AB_OP_LUMBERMILL_STATE_CON_HOR   = 1795,         // Lumber Mill map state (CON HORDE)
+                BG_AB_OP_GOLDMINE_ICON              = 1843,         // Gold Mine map icon (NONE)
+                BG_AB_OP_GOLDMINE_STATE_ALIENCE     = 1787,         // Gold Mine map state (ALIENCE)
+                BG_AB_OP_GOLDMINE_STATE_HORDE       = 1788,         // Gold Mine map state (HORDE)
+                BG_AB_OP_GOLDMINE_STATE_CON_ALI     = 1789,         // Gold Mine map state (CON ALIENCE
+                BG_AB_OP_GOLDMINE_STATE_CON_HOR     = 1790,         // Gold Mine map state (CON HORDE)
+            */
 };
 
 const uint32 BG_AB_OP_NODESTATES[5] =    {1767, 1782, 1772, 1792, 1787};
@@ -166,67 +166,67 @@ struct BG_AB_BannerTimer
 
 class BattleGroundABScore : public BattleGroundScore
 {
-    public:
-        BattleGroundABScore(): BasesAssaulted(0), BasesDefended(0) {};
-        virtual ~BattleGroundABScore() {};
-        uint32 BasesAssaulted;
-        uint32 BasesDefended;
+public:
+    BattleGroundABScore(): BasesAssaulted(0), BasesDefended(0) {};
+    virtual ~BattleGroundABScore() {};
+    uint32 BasesAssaulted;
+    uint32 BasesDefended;
 };
 
 class BattleGroundAB : public BattleGround
 {
-        friend class BattleGroundMgr;
+    friend class BattleGroundMgr;
 
-    public:
-        BattleGroundAB();
-        ~BattleGroundAB();
+public:
+    BattleGroundAB();
+    ~BattleGroundAB();
 
-        void Update(uint32 diff) override;
-        void AddPlayer(Player* plr) override;
-        virtual void StartingEventCloseDoors() override;
-        virtual void StartingEventOpenDoors() override;
-        void RemovePlayer(Player* plr, ObjectGuid guid) override;
-        void HandleAreaTrigger(Player* source, uint32 trigger) override;
-        virtual bool SetupBattleGround() override;
-        virtual void Reset() override;
-        void EndBattleGround(Team winner) override;
-        virtual WorldSafeLocsEntry const* GetClosestGraveYard(Player* player) override;
+    void Update(uint32 diff) override;
+    void AddPlayer(Player* plr) override;
+    virtual void StartingEventCloseDoors() override;
+    virtual void StartingEventOpenDoors() override;
+    void RemovePlayer(Player* plr, ObjectGuid guid) override;
+    void HandleAreaTrigger(Player* source, uint32 trigger) override;
+    virtual bool SetupBattleGround() override;
+    virtual void Reset() override;
+    void EndBattleGround(Team winner) override;
+    virtual WorldSafeLocsEntry const* GetClosestGraveYard(Player* player) override;
 
-        /* Scorekeeping */
-        virtual void UpdatePlayerScore(Player* source, uint32 type, uint32 value) override;
+    /* Scorekeeping */
+    virtual void UpdatePlayerScore(Player* source, uint32 type, uint32 value) override;
 
-        virtual void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    virtual void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
 
-        /* Nodes occupying */
-        virtual void EventPlayerClickedOnFlag(Player* source, GameObject* target_obj) override;
+    /* Nodes occupying */
+    virtual void EventPlayerClickedOnFlag(Player* source, GameObject* target_obj) override;
 
-    private:
-        /* Gameobject spawning/despawning */
-        void _CreateBanner(uint8 node, uint8 type, uint8 teamIndex, bool delay);
-        void _DelBanner(uint8 node, uint8 type, uint8 teamIndex);
-        void _SendNodeUpdate(uint8 node);
+private:
+    /* Gameobject spawning/despawning */
+    void _CreateBanner(uint8 node, uint8 type, uint8 teamIndex, bool delay);
+    void _DelBanner(uint8 node, uint8 type, uint8 teamIndex);
+    void _SendNodeUpdate(uint8 node);
 
-        /* Creature spawning/despawning */
-        // TODO: working, scripted peons spawning
-        void _NodeOccupied(uint8 node, Team team);
+    /* Creature spawning/despawning */
+    // TODO: working, scripted peons spawning
+    void _NodeOccupied(uint8 node, Team team);
 
-        int32 _GetNodeNameId(uint8 node);
+    int32 _GetNodeNameId(uint8 node);
 
-        /* Nodes info:
-            0: neutral
-            1: ally contested
-            2: horde contested
-            3: ally occupied
-            4: horde occupied     */
-        uint8               m_Nodes[BG_AB_NODES_MAX];
-        uint8               m_prevNodes[BG_AB_NODES_MAX];   // used for performant wordlstate-updating
-        BG_AB_BannerTimer   m_BannerTimers[BG_AB_NODES_MAX];
-        uint32              m_NodeTimers[BG_AB_NODES_MAX];
-        uint32              m_lastTick[BG_TEAMS_COUNT];
-        uint32              m_HonorScoreTics[BG_TEAMS_COUNT];
-        uint32              m_ReputationScoreTics[BG_TEAMS_COUNT];
-        bool                m_IsInformedNearVictory;
-        uint32              m_HonorTics;
-        uint32              m_ReputationTics;
+    /* Nodes info:
+        0: neutral
+        1: ally contested
+        2: horde contested
+        3: ally occupied
+        4: horde occupied     */
+    uint8               m_Nodes[BG_AB_NODES_MAX];
+    uint8               m_prevNodes[BG_AB_NODES_MAX];   // used for performant wordlstate-updating
+    BG_AB_BannerTimer   m_BannerTimers[BG_AB_NODES_MAX];
+    uint32              m_NodeTimers[BG_AB_NODES_MAX];
+    uint32              m_lastTick[BG_TEAMS_COUNT];
+    uint32              m_HonorScoreTics[BG_TEAMS_COUNT];
+    uint32              m_ReputationScoreTics[BG_TEAMS_COUNT];
+    bool                m_IsInformedNearVictory;
+    uint32              m_HonorTics;
+    uint32              m_ReputationTics;
 };
 #endif

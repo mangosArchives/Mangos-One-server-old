@@ -30,17 +30,17 @@ namespace MaNGOS
     template<class T>
     class MANGOS_DLL_DECL OperatorNew
     {
-        public:
+    public:
 
-            static T* Create()
-            {
-                return (new T);
-            }
+        static T* Create()
+        {
+            return (new T);
+        }
 
-            static void Destroy(T* obj)
-            {
-                delete obj;
-            }
+        static void Destroy(T* obj)
+        {
+            delete obj;
+        }
     };
 
     /**
@@ -50,32 +50,32 @@ namespace MaNGOS
     template<class T>
     class MANGOS_DLL_DECL LocalStaticCreation
     {
-            union MaxAlign
-            {
-                char t_[sizeof(T)];
-                short int shortInt_;
-                int int_;
-                long int longInt_;
-                float float_;
-                double double_;
-                long double longDouble_;
-                struct Test;
-                int Test::* pMember_;
-                int (Test::*pMemberFn_)(int);
-            };
+        union MaxAlign
+        {
+            char t_[sizeof(T)];
+            short int shortInt_;
+            int int_;
+            long int longInt_;
+            float float_;
+            double double_;
+            long double longDouble_;
+            struct Test;
+            int Test::* pMember_;
+            int (Test::*pMemberFn_)(int);
+        };
 
-        public:
+    public:
 
-            static T* Create()
-            {
-                static MaxAlign si_localStatic;
-                return new(&si_localStatic) T;
-            }
+        static T* Create()
+        {
+            static MaxAlign si_localStatic;
+            return new(&si_localStatic) T;
+        }
 
-            static void Destroy(T* obj)
-            {
-                obj->~T();
-            }
+        static void Destroy(T* obj)
+        {
+            obj->~T();
+        }
     };
 
     /**
@@ -84,23 +84,23 @@ namespace MaNGOS
     template<class T>
     class MANGOS_DLL_DECL CreateUsingMalloc
     {
-        public:
+    public:
 
-            static T* Create()
-            {
-                void* p = malloc(sizeof(T));
+        static T* Create()
+        {
+            void* p = malloc(sizeof(T));
 
-                if (!p)
-                    return NULL;
+            if (!p)
+                return NULL;
 
-                return new(p) T;
-            }
+            return new(p) T;
+        }
 
-            static void Destroy(T* p)
-            {
-                p->~T();
-                free(p);
-            }
+        static void Destroy(T* p)
+        {
+            p->~T();
+            free(p);
+        }
     };
 
     /**
@@ -109,16 +109,16 @@ namespace MaNGOS
     template<class T, class CALL_BACK>
     class MANGOS_DLL_DECL CreateOnCallBack
     {
-        public:
-            static T* Create()
-            {
-                return CALL_BACK::createCallBack();
-            }
+    public:
+        static T* Create()
+        {
+            return CALL_BACK::createCallBack();
+        }
 
-            static void Destroy(T* p)
-            {
-                CALL_BACK::destroyCallBack(p);
-            }
+        static void Destroy(T* p)
+        {
+            CALL_BACK::destroyCallBack(p);
+        }
     };
 }
 

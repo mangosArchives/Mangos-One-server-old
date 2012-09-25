@@ -263,9 +263,9 @@ namespace VMAP
 
         // temporary use defines to simplify read/check code (close file and return at fail)
 #define READ_OR_RETURN(V,S) if(fread((V), (S), 1, rf) != 1) { \
-                                        fclose(rf); printf("readfail, op = %i\n", readOperation); return(false); } ++readOperation;
+        fclose(rf); printf("readfail, op = %i\n", readOperation); return(false); } ++readOperation;
 #define CMP_OR_RETURN(V,S)  if(strcmp((V),(S)) != 0)        { \
-                                        fclose(rf); printf("cmpfail, %s!=%s\n", V, S);return(false); }
+        fclose(rf); printf("cmpfail, %s!=%s\n", V, S);return(false); }
 
         READ_OR_RETURN(&ident, 8);
         CMP_OR_RETURN(ident, RAW_VMAP_MAGIC);
@@ -308,7 +308,7 @@ namespace VMAP
 
             if (nvectors > 0)
             {
-                vectorarray = new float[nvectors*3];
+                vectorarray = new float[nvectors * 3];
                 READ_OR_RETURN(vectorarray, nvectors * sizeof(float) * 3);
             }
             else
@@ -319,7 +319,7 @@ namespace VMAP
 
             for (uint32 i = 0, indexNo = 0; indexNo < nvectors; ++indexNo, i += 3)
             {
-                Vector3 v = Vector3(vectorarray[i+0], vectorarray[i+1], vectorarray[i+2]);
+                Vector3 v = Vector3(vectorarray[i + 0], vectorarray[i + 1], vectorarray[i + 2]);
                 v = modelPosition.transform(v);
 
                 if (boundEmpty)
@@ -369,9 +369,9 @@ namespace VMAP
 
         // temporary use defines to simplify read/check code (close file and return at fail)
 #define READ_OR_RETURN(V,S) if(fread((V), (S), 1, rf) != 1) { \
-                                        fclose(rf); printf("readfail, op = %i\n", readOperation); return(false); } ++readOperation;
+        fclose(rf); printf("readfail, op = %i\n", readOperation); return(false); } ++readOperation;
 #define CMP_OR_RETURN(V,S)  if(strcmp((V),(S)) != 0)        { \
-                                        fclose(rf); printf("cmpfail, %s!=%s\n", V, S);return(false); }
+        fclose(rf); printf("cmpfail, %s!=%s\n", V, S);return(false); }
 
         READ_OR_RETURN(&ident, 8);
         CMP_OR_RETURN(ident, RAW_VMAP_MAGIC);
@@ -432,7 +432,7 @@ namespace VMAP
                 READ_OR_RETURN(indexarray, nindexes * sizeof(uint16));
                 for (uint32 i = 0; i < nindexes; i += 3)
                 {
-                    triangles.push_back(MeshTriangle(indexarray[i], indexarray[i+1], indexarray[i+2]));
+                    triangles.push_back(MeshTriangle(indexarray[i], indexarray[i + 1], indexarray[i + 2]));
                 }
                 delete[] indexarray;
             }
@@ -446,7 +446,7 @@ namespace VMAP
 
             if (nvectors > 0)
             {
-                float* vectorarray = new float[nvectors*3];
+                float* vectorarray = new float[nvectors * 3];
                 READ_OR_RETURN(vectorarray, nvectors * sizeof(float) * 3);
                 for (uint32 i = 0; i < nvectors; ++i)
                 {

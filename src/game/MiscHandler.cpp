@@ -227,8 +227,8 @@ void WorldSession::HandleWhoOpcode(WorldPacket& recv_data)
             if (!str[i].empty())
             {
                 if (wgname.find(str[i]) != std::wstring::npos ||
-                        wpname.find(str[i]) != std::wstring::npos ||
-                        Utf8FitTo(aname, str[i]))
+                    wpname.find(str[i]) != std::wstring::npos ||
+                    Utf8FitTo(aname, str[i]))
                 {
                     s_show = true;
                     break;
@@ -269,9 +269,9 @@ void WorldSession::HandleLogoutRequestOpcode(WorldPacket & /*recv_data*/)
 
     // Can not logout if...
     if (GetPlayer()->isInCombat() ||                        //...is in combat
-            GetPlayer()->duel         ||                    //...is in Duel
-            //...is jumping ...is falling
-            GetPlayer()->m_movementInfo.HasMovementFlag(MovementFlags(MOVEFLAG_FALLING | MOVEFLAG_FALLINGFAR)))
+        GetPlayer()->duel         ||                    //...is in Duel
+        //...is jumping ...is falling
+        GetPlayer()->m_movementInfo.HasMovementFlag(MovementFlags(MOVEFLAG_FALLING | MOVEFLAG_FALLINGFAR)))
     {
         WorldPacket data(SMSG_LOGOUT_RESPONSE, (2 + 4)) ;
         data << (uint8)0xC;
@@ -284,7 +284,7 @@ void WorldSession::HandleLogoutRequestOpcode(WorldPacket & /*recv_data*/)
 
     // instant logout in taverns/cities or on taxi or for admins, gm's, mod's if its enabled in mangosd.conf
     if (GetPlayer()->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_RESTING) || GetPlayer()->IsTaxiFlying() ||
-            GetSecurity() >= (AccountTypes)sWorld.getConfig(CONFIG_UINT32_INSTANT_LOGOUT))
+        GetSecurity() >= (AccountTypes)sWorld.getConfig(CONFIG_UINT32_INSTANT_LOGOUT))
     {
         LogoutPlayer(true);
         return;
@@ -812,7 +812,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recv_data)
         if (at->requiredItem)
         {
             if (!pl->HasItemCount(at->requiredItem, 1) &&
-                    (!at->requiredItem2 || !GetPlayer()->HasItemCount(at->requiredItem2, 1)))
+                (!at->requiredItem2 || !GetPlayer()->HasItemCount(at->requiredItem2, 1)))
                 missingItem = at->requiredItem;
         }
         else if (at->requiredItem2 && !GetPlayer()->HasItemCount(at->requiredItem2, 1))
@@ -826,7 +826,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recv_data)
             if (at->heroicKey)
             {
                 if (!GetPlayer()->HasItemCount(at->heroicKey, 1) &&
-                        (!at->heroicKey2 || !GetPlayer()->HasItemCount(at->heroicKey2, 1)))
+                    (!at->heroicKey2 || !GetPlayer()->HasItemCount(at->heroicKey2, 1)))
                     missingKey = at->heroicKey;
             }
             else if (at->heroicKey2 && !GetPlayer()->HasItemCount(at->heroicKey2, 1))
@@ -1090,7 +1090,7 @@ void WorldSession::HandleInspectOpcode(WorldPacket& recv_data)
                 uint32 curtalent_maxrank = 0;
                 for (uint32 k = MAX_TALENT_RANK; k > 0; --k)
                 {
-                    if (talentInfo->RankID[k-1] && plr->HasSpell(talentInfo->RankID[k-1]))
+                    if (talentInfo->RankID[k - 1] && plr->HasSpell(talentInfo->RankID[k - 1]))
                     {
                         curtalent_maxrank = k;
                         break;

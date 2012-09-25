@@ -423,8 +423,8 @@ void AuctionHouseMgr::LoadAuctions()
 
         // overwrite by real item data
         if ((auction->itemTemplate != pItem->GetEntry()) ||
-                (auction->itemCount != pItem->GetCount()) ||
-                (auction->itemRandomPropertyId != pItem->GetItemRandomPropertyId()))
+            (auction->itemCount != pItem->GetCount()) ||
+            (auction->itemRandomPropertyId != pItem->GetItemRandomPropertyId()))
         {
             auction->itemTemplate = pItem->GetEntry();
             auction->itemCount    = pItem->GetCount();

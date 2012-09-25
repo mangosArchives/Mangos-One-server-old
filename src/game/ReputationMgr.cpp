@@ -110,7 +110,7 @@ uint32 ReputationMgr::GetDefaultStateFlags(FactionEntry const* factionEntry) con
 void ReputationMgr::SendForceReactions()
 {
     WorldPacket data;
-    data.Initialize(SMSG_SET_FORCED_REACTIONS, 4 + m_forcedReactions.size()*(4 + 4));
+    data.Initialize(SMSG_SET_FORCED_REACTIONS, 4 + m_forcedReactions.size() * (4 + 4));
     data << uint32(m_forcedReactions.size());
     for (ForcedReactions::const_iterator itr = m_forcedReactions.begin(); itr != m_forcedReactions.end(); ++itr)
     {

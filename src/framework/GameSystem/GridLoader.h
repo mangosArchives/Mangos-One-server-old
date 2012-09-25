@@ -42,31 +42,31 @@ class ACTIVE_OBJECT,
       >
 class MANGOS_DLL_DECL GridLoader
 {
-    public:
+public:
 
-        /** Loads the grid
-         */
-        template<class LOADER>
-        void Load(Grid<ACTIVE_OBJECT, WORLD_OBJECT_TYPES, GRID_OBJECT_TYPES>& grid, LOADER& loader)
-        {
-            loader.Load(grid);
-        }
+    /** Loads the grid
+     */
+    template<class LOADER>
+    void Load(Grid<ACTIVE_OBJECT, WORLD_OBJECT_TYPES, GRID_OBJECT_TYPES>& grid, LOADER& loader)
+    {
+        loader.Load(grid);
+    }
 
-        /** Stop the grid
-         */
-        template<class STOPER>
-        void Stop(Grid<ACTIVE_OBJECT, WORLD_OBJECT_TYPES, GRID_OBJECT_TYPES>& grid, STOPER& stoper)
-        {
-            stoper.Stop(grid);
-        }
+    /** Stop the grid
+     */
+    template<class STOPER>
+    void Stop(Grid<ACTIVE_OBJECT, WORLD_OBJECT_TYPES, GRID_OBJECT_TYPES>& grid, STOPER& stoper)
+    {
+        stoper.Stop(grid);
+    }
 
-        /** Unloads the grid
-         */
-        template<class UNLOADER>
-        void Unload(Grid<ACTIVE_OBJECT, WORLD_OBJECT_TYPES, GRID_OBJECT_TYPES>& grid, UNLOADER& unloader)
-        {
-            unloader.Unload(grid);
-        }
+    /** Unloads the grid
+     */
+    template<class UNLOADER>
+    void Unload(Grid<ACTIVE_OBJECT, WORLD_OBJECT_TYPES, GRID_OBJECT_TYPES>& grid, UNLOADER& unloader)
+    {
+        unloader.Unload(grid);
+    }
 };
 
 #endif

@@ -575,8 +575,8 @@ void Pet::Update(uint32 update_diff, uint32 diff)
             // unsummon pet that lost owner
             Unit* owner = GetOwner();
             if (!owner ||
-                    (!IsWithinDistInMap(owner, GetMap()->GetVisibilityDistance()) && (owner->GetCharmGuid() && (owner->GetCharmGuid() != GetObjectGuid()))) ||
-                    (isControlled() && !owner->GetPetGuid()))
+                (!IsWithinDistInMap(owner, GetMap()->GetVisibilityDistance()) && (owner->GetCharmGuid() && (owner->GetCharmGuid() != GetObjectGuid()))) ||
+                (isControlled() && !owner->GetPetGuid()))
             {
                 Unsummon(PET_SAVE_REAGENTS);
                 return;
@@ -901,7 +901,7 @@ void Pet::Unsummon(PetSaveMode mode, Unit* owner /*= NULL*/)
 
             // not save secondary permanent pet as current
             if (mode == PET_SAVE_AS_CURRENT && p_owner->GetTemporaryUnsummonedPetNumber() &&
-                    p_owner->GetTemporaryUnsummonedPetNumber() != GetCharmInfo()->GetPetNumber())
+                p_owner->GetTemporaryUnsummonedPetNumber() != GetCharmInfo()->GetPetNumber())
                 mode = PET_SAVE_NOT_IN_SLOT;
 
             if (mode == PET_SAVE_REAGENTS)
@@ -1482,8 +1482,8 @@ void Pet::_LoadAuras(uint32 timediff)
 
             for (int32 i = 0; i < MAX_EFFECT_INDEX; ++i)
             {
-                damage[i] = fields[i+5].GetInt32();
-                periodicTime[i] = fields[i+8].GetUInt32();
+                damage[i] = fields[i + 5].GetInt32();
+                periodicTime[i] = fields[i + 8].GetUInt32();
             }
 
             int32 maxduration = fields[11].GetInt32();
@@ -1573,8 +1573,8 @@ void Pet::_SaveAuras()
         {
             SpellEntry const* spellInfo = holder->GetSpellProto();
             if (spellInfo->EffectApplyAuraName[j] == SPELL_AURA_MOD_STEALTH ||
-                    spellInfo->Effect[j] == SPELL_EFFECT_APPLY_AREA_AURA_OWNER ||
-                    spellInfo->Effect[j] == SPELL_EFFECT_APPLY_AREA_AURA_PET)
+                spellInfo->Effect[j] == SPELL_EFFECT_APPLY_AREA_AURA_OWNER ||
+                spellInfo->Effect[j] == SPELL_EFFECT_APPLY_AREA_AURA_PET)
             {
                 save = false;
                 break;

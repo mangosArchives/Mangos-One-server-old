@@ -50,23 +50,23 @@ LootStore LootTemplates_Skinning("skinning_loot_template",     "creature skinnin
 
 class LootTemplate::LootGroup                               // A set of loot definitions for items (refs are not allowed)
 {
-    public:
-        void AddEntry(LootStoreItem& item);                 // Adds an entry to the group (at loading stage)
-        bool HasQuestDrop() const;                          // True if group includes at least 1 quest drop entry
-        bool HasQuestDropForPlayer(Player const* player) const;
-        // The same for active quests of the player
-        void Process(Loot& loot) const;                     // Rolls an item from the group (if any) and adds the item to the loot
-        float RawTotalChance() const;                       // Overall chance for the group (without equal chanced items)
-        float TotalChance() const;                          // Overall chance for the group
+public:
+    void AddEntry(LootStoreItem& item);                 // Adds an entry to the group (at loading stage)
+    bool HasQuestDrop() const;                          // True if group includes at least 1 quest drop entry
+    bool HasQuestDropForPlayer(Player const* player) const;
+    // The same for active quests of the player
+    void Process(Loot& loot) const;                     // Rolls an item from the group (if any) and adds the item to the loot
+    float RawTotalChance() const;                       // Overall chance for the group (without equal chanced items)
+    float TotalChance() const;                          // Overall chance for the group
 
-        void Verify(LootStore const& lootstore, uint32 id, uint32 group_id) const;
-        void CollectLootIds(LootIdSet& set) const;
-        void CheckLootRefs(LootIdSet* ref_set) const;
-    private:
-        LootStoreItemList ExplicitlyChanced;                // Entries with chances defined in DB
-        LootStoreItemList EqualChanced;                     // Zero chances - every entry takes the same chance
+    void Verify(LootStore const& lootstore, uint32 id, uint32 group_id) const;
+    void CollectLootIds(LootIdSet& set) const;
+    void CheckLootRefs(LootIdSet* ref_set) const;
+private:
+    LootStoreItemList ExplicitlyChanced;                // Entries with chances defined in DB
+    LootStoreItemList EqualChanced;                     // Zero chances - every entry takes the same chance
 
-        LootStoreItem const* Roll() const;                  // Rolls an item from the group, returns NULL if all miss their chances
+    LootStoreItem const* Roll() const;                  // Rolls an item from the group, returns NULL if all miss their chances
 };
 
 // Remove all data and free all memory
@@ -861,7 +861,7 @@ LootStoreItem const* LootTemplate::LootGroup::Roll() const
         }
     }
     if (!EqualChanced.empty())                              // If nothing selected yet - an item is taken from equal-chanced part
-        return &EqualChanced[irand(0, EqualChanced.size()-1)];
+        return &EqualChanced[irand(0, EqualChanced.size() - 1)];
 
     return NULL;                                            // Empty drop from the group
 }
@@ -971,7 +971,7 @@ void LootTemplate::AddEntry(LootStoreItem& item)
     {
         if (item.group >= Groups.size())
             Groups.resize(item.group);                      // Adds new group the the loot template if needed
-        Groups[item.group-1].AddEntry(item);                // Adds new entry to the group
+        Groups[item.group - 1].AddEntry(item);              // Adds new entry to the group
     }
     else                                                    // Non-grouped entries and references are stored together
         Entries.push_back(item);
@@ -985,7 +985,7 @@ void LootTemplate::Process(Loot& loot, LootStore const& store, bool rate, uint8 
         if (groupId > Groups.size())
             return;                                         // Error message already printed at loading stage
 
-        Groups[groupId-1].Process(loot);
+        Groups[groupId - 1].Process(loot);
         return;
     }
 
@@ -1021,7 +1021,7 @@ bool LootTemplate::HasQuestDrop(LootTemplateMap const& store, uint8 groupId) con
     {
         if (groupId > Groups.size())
             return false;                                   // Error message [should be] already printed at loading stage
-        return Groups[groupId-1].HasQuestDrop();
+        return Groups[groupId - 1].HasQuestDrop();
     }
 
     for (LootStoreItemList::const_iterator i = Entries.begin(); i != Entries.end(); ++i)
@@ -1053,7 +1053,7 @@ bool LootTemplate::HasQuestDropForPlayer(LootTemplateMap const& store, Player co
     {
         if (groupId > Groups.size())
             return false;                                   // Error message already printed at loading stage
-        return Groups[groupId-1].HasQuestDropForPlayer(player);
+        return Groups[groupId - 1].HasQuestDropForPlayer(player);
     }
 
     // Checking non-grouped entries

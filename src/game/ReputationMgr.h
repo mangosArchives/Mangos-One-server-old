@@ -56,80 +56,80 @@ class QueryResult;
 
 class ReputationMgr
 {
-    public:                                                 // constructors and global modifiers
-        explicit ReputationMgr(Player* owner) : m_player(owner) {}
-        ~ReputationMgr() {}
+public:                                                 // constructors and global modifiers
+    explicit ReputationMgr(Player* owner) : m_player(owner) {}
+    ~ReputationMgr() {}
 
-        void SaveToDB();
-        void LoadFromDB(QueryResult* result);
-    public:                                                 // statics
-        static const int32 PointsInRank[MAX_REPUTATION_RANK];
-        static const int32 Reputation_Cap    =  42999;
-        static const int32 Reputation_Bottom = -42000;
+    void SaveToDB();
+    void LoadFromDB(QueryResult* result);
+public:                                                 // statics
+    static const int32 PointsInRank[MAX_REPUTATION_RANK];
+    static const int32 Reputation_Cap    =  42999;
+    static const int32 Reputation_Bottom = -42000;
 
-        static ReputationRank ReputationToRank(int32 standing);
-    public:                                                 // accessors
-        FactionStateList const& GetStateList() const { return m_factions; }
+    static ReputationRank ReputationToRank(int32 standing);
+public:                                                 // accessors
+    FactionStateList const& GetStateList() const { return m_factions; }
 
-        FactionState const* GetState(FactionEntry const* factionEntry) const
-        {
-            return factionEntry->reputationListID >= 0 ? GetState(factionEntry->reputationListID) : NULL;
-        }
+    FactionState const* GetState(FactionEntry const* factionEntry) const
+    {
+        return factionEntry->reputationListID >= 0 ? GetState(factionEntry->reputationListID) : NULL;
+    }
 
-        FactionState const* GetState(RepListID id) const
-        {
-            FactionStateList::const_iterator repItr = m_factions.find(id);
-            return repItr != m_factions.end() ? &repItr->second : NULL;
-        }
+    FactionState const* GetState(RepListID id) const
+    {
+        FactionStateList::const_iterator repItr = m_factions.find(id);
+        return repItr != m_factions.end() ? &repItr->second : NULL;
+    }
 
-        int32 GetReputation(uint32 faction_id) const;
-        int32 GetReputation(FactionEntry const* factionEntry) const;
-        int32 GetBaseReputation(FactionEntry const* factionEntry) const;
+    int32 GetReputation(uint32 faction_id) const;
+    int32 GetReputation(FactionEntry const* factionEntry) const;
+    int32 GetBaseReputation(FactionEntry const* factionEntry) const;
 
-        ReputationRank GetRank(FactionEntry const* factionEntry) const;
-        ReputationRank GetBaseRank(FactionEntry const* factionEntry) const;
+    ReputationRank GetRank(FactionEntry const* factionEntry) const;
+    ReputationRank GetBaseRank(FactionEntry const* factionEntry) const;
 
-        ReputationRank const* GetForcedRankIfAny(FactionTemplateEntry const* factionTemplateEntry) const
-        {
-            ForcedReactions::const_iterator forceItr = m_forcedReactions.find(factionTemplateEntry->faction);
-            return forceItr != m_forcedReactions.end() ? &forceItr->second : NULL;
-        }
+    ReputationRank const* GetForcedRankIfAny(FactionTemplateEntry const* factionTemplateEntry) const
+    {
+        ForcedReactions::const_iterator forceItr = m_forcedReactions.find(factionTemplateEntry->faction);
+        return forceItr != m_forcedReactions.end() ? &forceItr->second : NULL;
+    }
 
-    public:                                                 // modifiers
-        bool SetReputation(FactionEntry const* factionEntry, int32 standing)
-        {
-            return SetReputation(factionEntry, standing, false);
-        }
-        bool ModifyReputation(FactionEntry const* factionEntry, int32 standing)
-        {
-            return SetReputation(factionEntry, standing, true);
-        }
+public:                                                 // modifiers
+    bool SetReputation(FactionEntry const* factionEntry, int32 standing)
+    {
+        return SetReputation(factionEntry, standing, false);
+    }
+    bool ModifyReputation(FactionEntry const* factionEntry, int32 standing)
+    {
+        return SetReputation(factionEntry, standing, true);
+    }
 
-        void SetVisible(FactionTemplateEntry const* factionTemplateEntry);
-        void SetVisible(FactionEntry const* factionEntry);
-        void SetAtWar(RepListID repListID, bool on);
-        void SetInactive(RepListID repListID, bool on);
+    void SetVisible(FactionTemplateEntry const* factionTemplateEntry);
+    void SetVisible(FactionEntry const* factionEntry);
+    void SetAtWar(RepListID repListID, bool on);
+    void SetInactive(RepListID repListID, bool on);
 
-        void ApplyForceReaction(uint32 faction_id, ReputationRank rank, bool apply);
+    void ApplyForceReaction(uint32 faction_id, ReputationRank rank, bool apply);
 
-    public:                                                 // senders
-        void SendInitialReputations();
-        void SendForceReactions();
-        void SendState(FactionState const* faction);
+public:                                                 // senders
+    void SendInitialReputations();
+    void SendForceReactions();
+    void SendState(FactionState const* faction);
 
-    private:                                                // internal helper functions
-        void Initialize();
-        uint32 GetDefaultStateFlags(const FactionEntry* factionEntry) const;
-        bool SetReputation(FactionEntry const* factionEntry, int32 standing, bool incremental);
-        bool SetOneFactionReputation(FactionEntry const* factionEntry, int32 standing, bool incremental);
-        void SetVisible(FactionState* faction);
-        void SetAtWar(FactionState* faction, bool atWar);
-        void SetInactive(FactionState* faction, bool inactive);
-        void SendVisible(FactionState const* faction) const;
-    private:
-        Player* m_player;
-        FactionStateList m_factions;
-        ForcedReactions m_forcedReactions;
+private:                                                // internal helper functions
+    void Initialize();
+    uint32 GetDefaultStateFlags(const FactionEntry* factionEntry) const;
+    bool SetReputation(FactionEntry const* factionEntry, int32 standing, bool incremental);
+    bool SetOneFactionReputation(FactionEntry const* factionEntry, int32 standing, bool incremental);
+    void SetVisible(FactionState* faction);
+    void SetAtWar(FactionState* faction, bool atWar);
+    void SetInactive(FactionState* faction, bool inactive);
+    void SendVisible(FactionState const* faction) const;
+private:
+    Player* m_player;
+    FactionStateList m_factions;
+    ForcedReactions m_forcedReactions;
 };
 
 #endif

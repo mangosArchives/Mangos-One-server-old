@@ -54,7 +54,7 @@ void PetAI::MoveInLineOfSight(Unit* u)
         return;
 
     if (u->isTargetableForAttack() && m_creature->IsHostileTo(u) &&
-            u->isInAccessablePlaceFor(m_creature))
+        u->isInAccessablePlaceFor(m_creature))
     {
         float attackRadius = m_creature->GetAttackDistance(u);
         if (m_creature->IsWithinDistInMap(u, attackRadius) && m_creature->GetDistanceZ(u) <= CREATURE_Z_ATTACK_RANGE)
@@ -355,6 +355,6 @@ void PetAI::AttackedBy(Unit* attacker)
 {
     // when attacked, fight back in case 1)no victim already AND 2)not set to passive AND 3)not set to stay, unless can it can reach attacker with melee attack anyway
     if (!m_creature->getVictim() && m_creature->GetCharmInfo() && !m_creature->GetCharmInfo()->HasReactState(REACT_PASSIVE) &&
-            (!m_creature->GetCharmInfo()->HasCommandState(COMMAND_STAY) || m_creature->CanReachWithMeleeAttack(attacker)))
+        (!m_creature->GetCharmInfo()->HasCommandState(COMMAND_STAY) || m_creature->CanReachWithMeleeAttack(attacker)))
         AttackStart(attacker);
 }

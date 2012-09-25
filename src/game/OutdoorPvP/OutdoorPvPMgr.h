@@ -80,39 +80,39 @@ class OutdoorPvP;
 
 class OutdoorPvPMgr
 {
-    public:
-        OutdoorPvPMgr();
-        ~OutdoorPvPMgr();
+public:
+    OutdoorPvPMgr();
+    ~OutdoorPvPMgr();
 
-        // load all outdoor pvp scripts
-        void InitOutdoorPvP();
+    // load all outdoor pvp scripts
+    void InitOutdoorPvP();
 
-        // called when a player enters an outdoor pvp area
-        void HandlePlayerEnterZone(Player* player, uint32 zoneId);
+    // called when a player enters an outdoor pvp area
+    void HandlePlayerEnterZone(Player* player, uint32 zoneId);
 
-        // called when player leaves an outdoor pvp area
-        void HandlePlayerLeaveZone(Player* player, uint32 zoneId);
+    // called when player leaves an outdoor pvp area
+    void HandlePlayerLeaveZone(Player* player, uint32 zoneId);
 
-        // return assigned outdoor pvp script
-        OutdoorPvP* GetScript(uint32 zoneId);
+    // return assigned outdoor pvp script
+    OutdoorPvP* GetScript(uint32 zoneId);
 
-        void Update(uint32 diff);
+    void Update(uint32 diff);
 
-        // Handle capture point stuff
-        int8 GetCapturePointSliderValue(uint32 entry);
-        void SetCapturePointSlider(uint32 entry, int8 value) { m_capturePointSlider[entry] = value; }
+    // Handle capture point stuff
+    int8 GetCapturePointSliderValue(uint32 entry);
+    void SetCapturePointSlider(uint32 entry, int8 value) { m_capturePointSlider[entry] = value; }
 
-    private:
-        // return assigned outdoor pvp script
-        OutdoorPvP* GetScriptOfAffectedZone(uint32 zoneId);
+private:
+    // return assigned outdoor pvp script
+    OutdoorPvP* GetScriptOfAffectedZone(uint32 zoneId);
 
-        // contains all outdoor pvp scripts
-        OutdoorPvP* m_scripts[MAX_OPVP_ID];
+    // contains all outdoor pvp scripts
+    OutdoorPvP* m_scripts[MAX_OPVP_ID];
 
-        std::map<uint32 /*capture point entry*/, int8 /*slider value*/> m_capturePointSlider;
+    std::map < uint32 /*capture point entry*/, int8 /*slider value*/ > m_capturePointSlider;
 
-        // update interval
-        ShortIntervalTimer m_updateTimer;
+    // update interval
+    ShortIntervalTimer m_updateTimer;
 };
 
 #define sOutdoorPvPMgr MaNGOS::Singleton<OutdoorPvPMgr>::Instance()

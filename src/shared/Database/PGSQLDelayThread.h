@@ -23,8 +23,8 @@
 
 class PGSQLDelayThread : public SqlDelayThread
 {
-    public:
-        PGSQLDelayThread(Database* db) : SqlDelayThread(db) {}
-        void Stop() { SqlDelayThread::Stop() override; }
+public:
+    PGSQLDelayThread(Database* db) : SqlDelayThread(db) {}
+    void Stop() { SqlDelayThread::Stop() override; }
 };
 #endif                                                      //__PGSQLDELAYTHREAD_H

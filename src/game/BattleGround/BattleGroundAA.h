@@ -22,29 +22,29 @@ class BattleGround;
 
 class BattleGroundAAScore : public BattleGroundScore
 {
-    public:
-        BattleGroundAAScore() {};
-        virtual ~BattleGroundAAScore() {};
-        // TODO fix me
+public:
+    BattleGroundAAScore() {};
+    virtual ~BattleGroundAAScore() {};
+    // TODO fix me
 };
 
 class BattleGroundAA : public BattleGround
 {
-        friend class BattleGroundMgr;
+    friend class BattleGroundMgr;
 
-    public:
-        BattleGroundAA();
-        ~BattleGroundAA();
-        void Update(uint32 diff) override;
+public:
+    BattleGroundAA();
+    ~BattleGroundAA();
+    void Update(uint32 diff) override;
 
-        /* inherited from BattlegroundClass */
-        virtual void AddPlayer(Player* plr) override;
-        virtual void StartingEventCloseDoors() override;
-        virtual void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    virtual void AddPlayer(Player* plr) override;
+    virtual void StartingEventCloseDoors() override;
+    virtual void StartingEventOpenDoors() override;
 
-        void RemovePlayer(Player* plr, ObjectGuid guid) override;
-        void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
-        bool SetupBattleGround() override;
-        void HandleKillPlayer(Player* player, Player* killer) override;
+    void RemovePlayer(Player* plr, ObjectGuid guid) override;
+    void HandleAreaTrigger(Player* Source, uint32 Trigger) override;
+    bool SetupBattleGround() override;
+    void HandleKillPlayer(Player* player, Player* killer) override;
 };
 #endif

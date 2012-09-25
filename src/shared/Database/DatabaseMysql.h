@@ -37,83 +37,83 @@
 // MySQL prepared statement class
 class MANGOS_DLL_SPEC MySqlPreparedStatement : public SqlPreparedStatement
 {
-    public:
-        MySqlPreparedStatement(const std::string& fmt, SqlConnection& conn, MYSQL* mysql);
-        ~MySqlPreparedStatement();
+public:
+    MySqlPreparedStatement(const std::string& fmt, SqlConnection& conn, MYSQL* mysql);
+    ~MySqlPreparedStatement();
 
-        // prepare statement
-        virtual bool prepare() override;
+    // prepare statement
+    virtual bool prepare() override;
 
-        // bind input parameters
-        virtual void bind(const SqlStmtParameters& holder) override;
+    // bind input parameters
+    virtual void bind(const SqlStmtParameters& holder) override;
 
-        // execute DML statement
-        virtual bool execute() override;
+    // execute DML statement
+    virtual bool execute() override;
 
-    protected:
-        // bind parameters
-        void addParam(int nIndex, const SqlStmtFieldData& data);
+protected:
+    // bind parameters
+    void addParam(int nIndex, const SqlStmtFieldData& data);
 
-        static enum_field_types ToMySQLType(const SqlStmtFieldData& data, my_bool& bUnsigned);
+    static enum_field_types ToMySQLType(const SqlStmtFieldData& data, my_bool& bUnsigned);
 
-    private:
-        void RemoveBinds();
+private:
+    void RemoveBinds();
 
-        MYSQL* m_pMySQLConn;
-        MYSQL_STMT* m_stmt;
-        MYSQL_BIND* m_pInputArgs;
-        MYSQL_BIND* m_pResult;
-        MYSQL_RES* m_pResultMetadata;
+    MYSQL* m_pMySQLConn;
+    MYSQL_STMT* m_stmt;
+    MYSQL_BIND* m_pInputArgs;
+    MYSQL_BIND* m_pResult;
+    MYSQL_RES* m_pResultMetadata;
 };
 
 class MANGOS_DLL_SPEC MySQLConnection : public SqlConnection
 {
-    public:
-        MySQLConnection(Database& db) : SqlConnection(db), mMysql(NULL) {}
-        ~MySQLConnection();
+public:
+    MySQLConnection(Database& db) : SqlConnection(db), mMysql(NULL) {}
+    ~MySQLConnection();
 
-        //! Initializes Mysql and connects to a server.
-        /*! infoString should be formated like hostname;username;password;database. */
-        bool Initialize(const char* infoString) override;
+    //! Initializes Mysql and connects to a server.
+    /*! infoString should be formated like hostname;username;password;database. */
+    bool Initialize(const char* infoString) override;
 
-        QueryResult* Query(const char* sql) override;
-        QueryNamedResult* QueryNamed(const char* sql) override;
-        bool Execute(const char* sql) override;
+    QueryResult* Query(const char* sql) override;
+    QueryNamedResult* QueryNamed(const char* sql) override;
+    bool Execute(const char* sql) override;
 
-        unsigned long escape_string(char* to, const char* from, unsigned long length);
+    unsigned long escape_string(char* to, const char* from, unsigned long length);
 
-        bool BeginTransaction() override;
-        bool CommitTransaction() override;
-        bool RollbackTransaction() override;
+    bool BeginTransaction() override;
+    bool CommitTransaction() override;
+    bool RollbackTransaction() override;
 
-    protected:
-        SqlPreparedStatement* CreateStatement(const std::string& fmt) override;
+protected:
+    SqlPreparedStatement* CreateStatement(const std::string& fmt) override;
 
-    private:
-        bool _TransactionCmd(const char* sql);
-        bool _Query(const char* sql, MYSQL_RES** pResult, MYSQL_FIELD** pFields, uint64* pRowCount, uint32* pFieldCount);
+private:
+    bool _TransactionCmd(const char* sql);
+    bool _Query(const char* sql, MYSQL_RES** pResult, MYSQL_FIELD** pFields, uint64* pRowCount, uint32* pFieldCount);
 
-        MYSQL* mMysql;
+    MYSQL* mMysql;
 };
 
 class MANGOS_DLL_SPEC DatabaseMysql : public Database
 {
-        friend class MaNGOS::OperatorNew<DatabaseMysql>;
+    friend class MaNGOS::OperatorNew<DatabaseMysql>;
 
-    public:
-        DatabaseMysql();
-        ~DatabaseMysql();
+public:
+    DatabaseMysql();
+    ~DatabaseMysql();
 
-        // must be call before first query in thread
-        void ThreadStart() override;
-        // must be call before finish thread run
-        void ThreadEnd() override;
+    // must be call before first query in thread
+    void ThreadStart() override;
+    // must be call before finish thread run
+    void ThreadEnd() override;
 
-    protected:
-        virtual SqlConnection* CreateConnection() override;
+protected:
+    virtual SqlConnection* CreateConnection() override;
 
-    private:
-        static size_t db_count;
+private:
+    static size_t db_count;
 };
 
 #endif

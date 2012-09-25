@@ -1018,9 +1018,9 @@ void WorldSession::HandleGuildBankSwapItems(WorldPacket& recv_data)
         recv_data >> SplitedAmount;
 
         if (BankTabSlotDst >= GUILD_BANK_MAX_SLOTS ||
-                (BankTabDst == BankTab && BankTabSlotDst == BankTabSlot) ||
-                BankTab >= pGuild->GetPurchasedTabs() ||
-                BankTabDst >= pGuild->GetPurchasedTabs())
+            (BankTabDst == BankTab && BankTabSlotDst == BankTabSlot) ||
+            BankTab >= pGuild->GetPurchasedTabs() ||
+            BankTabDst >= pGuild->GetPurchasedTabs())
         {
             recv_data.rpos(recv_data.wpos());               // prevent additional spam at rejected packet
             return;
@@ -1047,7 +1047,7 @@ void WorldSession::HandleGuildBankSwapItems(WorldPacket& recv_data)
         }
 
         if ((BankTabSlot >= GUILD_BANK_MAX_SLOTS && BankTabSlot != 0xFF) ||
-                BankTab >= pGuild->GetPurchasedTabs())
+            BankTab >= pGuild->GetPurchasedTabs())
         {
             recv_data.rpos(recv_data.wpos());               // prevent additional spam at rejected packet
             return;

@@ -29,20 +29,20 @@
 /// Start the server
 class Master
 {
-    public:
-        Master();
-        ~Master();
-        int Run();
-        static volatile uint32 m_masterLoopCounter;
+public:
+    Master();
+    ~Master();
+    int Run();
+    static volatile uint32 m_masterLoopCounter;
 
-    private:
-        bool _StartDB();
+private:
+    bool _StartDB();
 
-        void _HookSignals();
-        void _UnhookSignals();
-        static void _OnSignal(int s);
+    void _HookSignals();
+    void _UnhookSignals();
+    static void _OnSignal(int s);
 
-        void clearOnlineAccounts();
+    void clearOnlineAccounts();
 };
 
 #define sMaster MaNGOS::Singleton<Master>::Instance()

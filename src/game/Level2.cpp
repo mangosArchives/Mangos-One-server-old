@@ -2041,7 +2041,7 @@ bool ChatHandler::HandleNpcUnFollowCommand(char* /*args*/)
     }
 
     if (creature->GetMotionMaster()->empty() ||
-            creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != FOLLOW_MOTION_TYPE)
+        creature->GetMotionMaster()->GetCurrentMovementGeneratorType() != FOLLOW_MOTION_TYPE)
     {
         PSendSysMessage(LANG_CREATURE_NOT_FOLLOW_YOU);
         SetSentErrorMessage(true);
@@ -2049,7 +2049,7 @@ bool ChatHandler::HandleNpcUnFollowCommand(char* /*args*/)
     }
 
     FollowMovementGenerator<Creature> const* mgen
-    = static_cast<FollowMovementGenerator<Creature> const*>((creature->GetMotionMaster()->top()));
+        = static_cast<FollowMovementGenerator<Creature> const*>((creature->GetMotionMaster()->top()));
 
     if (mgen->GetTarget() != player)
     {
@@ -2843,9 +2843,9 @@ bool ChatHandler::HandleWpModifyCommand(char* args)
     // Check
     // Remember: "show" must also be the name of a column!
     if ((show != "emote") && (show != "spell") && (show != "textid1") && (show != "textid2")
-            && (show != "textid3") && (show != "textid4") && (show != "textid5")
-            && (show != "waittime") && (show != "del") && (show != "move") && (show != "add")
-            && (show != "model1") && (show != "model2") && (show != "orientation"))
+        && (show != "textid3") && (show != "textid4") && (show != "textid5")
+        && (show != "waittime") && (show != "del") && (show != "move") && (show != "add")
+        && (show != "model1") && (show != "model2") && (show != "orientation"))
     {
         return false;
     }
@@ -3172,7 +3172,7 @@ bool ChatHandler::HandleWpModifyCommand(char* args)
 
     // set in game textids not supported
     if (show == "textid1" || show == "textid2" || show == "textid3" ||
-            show == "textid4" || show == "textid5")
+        show == "textid4" || show == "textid5")
     {
         return false;
     }
@@ -3349,7 +3349,7 @@ bool ChatHandler::HandleWpShowCommand(char* args)
             uint32 spell            = fields[4].GetUInt32();
             uint32 textid[MAX_WAYPOINT_TEXT];
             for (int i = 0;  i < MAX_WAYPOINT_TEXT; ++i)
-                textid[i]           = fields[5+i].GetUInt32();
+                textid[i]           = fields[5 + i].GetUInt32();
             uint32 model1           = fields[10].GetUInt32();
             uint32 model2           = fields[11].GetUInt32();
 
@@ -4169,7 +4169,7 @@ bool ChatHandler::HandleLearnAllRecipesCommand(char* args)
             continue;
 
         if (skillInfo->categoryId != SKILL_CATEGORY_PROFESSION &&
-                skillInfo->categoryId != SKILL_CATEGORY_SECONDARY)
+            skillInfo->categoryId != SKILL_CATEGORY_SECONDARY)
             continue;
 
         int loc = GetSessionDbcLocale();

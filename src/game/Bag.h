@@ -28,43 +28,43 @@
 
 class Bag : public Item
 {
-    public:
+public:
 
-        Bag();
-        ~Bag();
+    Bag();
+    ~Bag();
 
-        void AddToWorld() override;
-        void RemoveFromWorld() override;
+    void AddToWorld() override;
+    void RemoveFromWorld() override;
 
-        bool Create(uint32 guidlow, uint32 itemid, Player const* owner) override;
+    bool Create(uint32 guidlow, uint32 itemid, Player const* owner) override;
 
-        void Clear();
-        void StoreItem(uint8 slot, Item* pItem, bool update);
-        void RemoveItem(uint8 slot, bool update);
+    void Clear();
+    void StoreItem(uint8 slot, Item* pItem, bool update);
+    void RemoveItem(uint8 slot, bool update);
 
-        Item* GetItemByPos(uint8 slot) const;
-        Item* GetItemByEntry(uint32 item) const;
-        uint32 GetItemCount(uint32 item, Item* eItem = NULL) const;
+    Item* GetItemByPos(uint8 slot) const;
+    Item* GetItemByEntry(uint32 item) const;
+    uint32 GetItemCount(uint32 item, Item* eItem = NULL) const;
 
-        uint8 GetSlotByItemGUID(ObjectGuid guid) const;
-        bool IsEmpty() const;
-        uint32 GetFreeSlots() const;
-        uint32 GetBagSize() const { return GetUInt32Value(CONTAINER_FIELD_NUM_SLOTS); }
+    uint8 GetSlotByItemGUID(ObjectGuid guid) const;
+    bool IsEmpty() const;
+    uint32 GetFreeSlots() const;
+    uint32 GetBagSize() const { return GetUInt32Value(CONTAINER_FIELD_NUM_SLOTS); }
 
-        // DB operations
-        // overwrite virtual Item::SaveToDB
-        void SaveToDB() override;
-        // overwrite virtual Item::LoadFromDB
-        bool LoadFromDB(uint32 guidLow, Field* fields, ObjectGuid ownerGuid = ObjectGuid()) override;
-        // overwrite virtual Item::DeleteFromDB
-        void DeleteFromDB() override;
+    // DB operations
+    // overwrite virtual Item::SaveToDB
+    void SaveToDB() override;
+    // overwrite virtual Item::LoadFromDB
+    bool LoadFromDB(uint32 guidLow, Field* fields, ObjectGuid ownerGuid = ObjectGuid()) override;
+    // overwrite virtual Item::DeleteFromDB
+    void DeleteFromDB() override;
 
-        void BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) const override;
+    void BuildCreateUpdateBlockForPlayer(UpdateData* data, Player* target) const override;
 
-    protected:
+protected:
 
-        // Bag Storage space
-        Item* m_bagslot[MAX_BAG_SIZE];
+    // Bag Storage space
+    Item* m_bagslot[MAX_BAG_SIZE];
 };
 
 inline Item* NewItemOrBag(ItemPrototype const* proto)

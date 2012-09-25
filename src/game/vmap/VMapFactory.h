@@ -31,12 +31,12 @@ namespace VMAP
 
     class VMapFactory
     {
-        public:
-            static IVMapManager* createOrGetVMapManager();
-            static void clear();
+    public:
+        static IVMapManager* createOrGetVMapManager();
+        static void clear();
 
-            static void preventSpellsFromBeingTestedForLoS(const char* pSpellIdString);
-            static bool checkSpellForLoS(unsigned int pSpellId);
+        static void preventSpellsFromBeingTestedForLoS(const char* pSpellIdString);
+        static bool checkSpellForLoS(unsigned int pSpellId);
     };
 
 }

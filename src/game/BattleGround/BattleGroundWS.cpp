@@ -324,7 +324,7 @@ void BattleGroundWS::EventPlayerClickedOnFlag(Player* source, GameObject* target
 
     // alliance flag picked up from base
     if (source->GetTeam() == HORDE && GetFlagState(ALLIANCE) == BG_WS_FLAG_STATE_ON_BASE
-            && event == WS_EVENT_FLAG_A)
+        && event == WS_EVENT_FLAG_A)
     {
         message_id = LANG_BG_WS_PICKEDUP_AF;
         type = CHAT_MSG_BG_SYSTEM_HORDE;
@@ -340,7 +340,7 @@ void BattleGroundWS::EventPlayerClickedOnFlag(Player* source, GameObject* target
 
     // horde flag picked up from base
     if (source->GetTeam() == ALLIANCE && GetFlagState(HORDE) == BG_WS_FLAG_STATE_ON_BASE
-            && event == WS_EVENT_FLAG_H)
+        && event == WS_EVENT_FLAG_H)
     {
         message_id = LANG_BG_WS_PICKEDUP_HF;
         type = CHAT_MSG_BG_SYSTEM_ALLIANCE;

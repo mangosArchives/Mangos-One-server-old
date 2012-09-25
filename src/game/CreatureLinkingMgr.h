@@ -95,41 +95,41 @@ struct CreatureLinkingInfo
 
 class CreatureLinkingMgr
 {
-    public:                                                 // Constructors
-        CreatureLinkingMgr() {}
+public:                                                 // Constructors
+    CreatureLinkingMgr() {}
 
-    public:                                                 // Initialisation
-        void LoadFromDB();
+public:                                                 // Initialisation
+    void LoadFromDB();
 
-    public:                                                 // Accessors
-        // This functions checks if the NPC triggers actions for other NPCs
-        bool IsLinkedEventTrigger(Creature* pCreature);
+public:                                                 // Accessors
+    // This functions checks if the NPC triggers actions for other NPCs
+    bool IsLinkedEventTrigger(Creature* pCreature);
 
-        // This function checks if the NPC is a master NPC.
-        bool IsLinkedMaster(Creature* pCreature);
+    // This function checks if the NPC is a master NPC.
+    bool IsLinkedMaster(Creature* pCreature);
 
-        // This function checks if the spawning of this NPC is dependend on other NPCs
-        bool IsSpawnedByLinkedMob(Creature* pCreature);
+    // This function checks if the spawning of this NPC is dependend on other NPCs
+    bool IsSpawnedByLinkedMob(Creature* pCreature);
 
-        // This gives the information of a linked NPC (describes action when its ActionTrigger triggers)
-        // Depends of the map
-        CreatureLinkingInfo const* GetLinkedTriggerInformation(Creature* pCreature);
+    // This gives the information of a linked NPC (describes action when its ActionTrigger triggers)
+    // Depends of the map
+    CreatureLinkingInfo const* GetLinkedTriggerInformation(Creature* pCreature);
 
-    private:
-        typedef std::multimap < uint32 /*slaveEntry*/, CreatureLinkingInfo > CreatureLinkingMap;
-        typedef std::pair<CreatureLinkingMap::const_iterator, CreatureLinkingMap::const_iterator> CreatureLinkingMapBounds;
+private:
+    typedef std::multimap < uint32 /*slaveEntry*/, CreatureLinkingInfo > CreatureLinkingMap;
+    typedef std::pair<CreatureLinkingMap::const_iterator, CreatureLinkingMap::const_iterator> CreatureLinkingMapBounds;
 
-        // Storage of Data: npc_entry_slave, (map, npc_entry_master, flag, master_db_guid[If Unique], search_range)
-        CreatureLinkingMap m_creatureLinkingMap;
-        // Storage of Data: npc_guid_slave, (map, npc_guid_master, flag, master_db_guid, search_range)
-        CreatureLinkingMap m_creatureLinkingGuidMap;
+    // Storage of Data: npc_entry_slave, (map, npc_entry_master, flag, master_db_guid[If Unique], search_range)
+    CreatureLinkingMap m_creatureLinkingMap;
+    // Storage of Data: npc_guid_slave, (map, npc_guid_master, flag, master_db_guid, search_range)
+    CreatureLinkingMap m_creatureLinkingGuidMap;
 
-        // Lookup Storage for fast access:
-        UNORDERED_SET<uint32> m_eventTriggers;              // master by entry
-        UNORDERED_SET<uint32> m_eventGuidTriggers;          // master by guid
+    // Lookup Storage for fast access:
+    UNORDERED_SET<uint32> m_eventTriggers;              // master by entry
+    UNORDERED_SET<uint32> m_eventGuidTriggers;          // master by guid
 
-        // Check-routine
-        bool IsLinkingEntryValid(uint32 slaveEntry, CreatureLinkingInfo* pInfo, bool byEntry);
+    // Check-routine
+    bool IsLinkingEntryValid(uint32 slaveEntry, CreatureLinkingInfo* pInfo, bool byEntry);
 };
 
 /**
@@ -140,60 +140,60 @@ class CreatureLinkingMgr
 
 class CreatureLinkingHolder
 {
-    public:                                                 // Constructors
-        CreatureLinkingHolder() {}
+public:                                                 // Constructors
+    CreatureLinkingHolder() {}
 
-    public:                                                 // Accessors
-        // Function to add slave-NPCs to the holder
-        void AddSlaveToHolder(Creature* pCreature);
+public:                                                 // Accessors
+    // Function to add slave-NPCs to the holder
+    void AddSlaveToHolder(Creature* pCreature);
 
-        // Function to add master-NPCs to the holder
-        void AddMasterToHolder(Creature* pCreature);
+    // Function to add master-NPCs to the holder
+    void AddMasterToHolder(Creature* pCreature);
 
-        // Function to process actions for linked NPCs
-        void DoCreatureLinkingEvent(CreatureLinkingEvent eventType, Creature* pSource, Unit* pEnemy = NULL);
+    // Function to process actions for linked NPCs
+    void DoCreatureLinkingEvent(CreatureLinkingEvent eventType, Creature* pSource, Unit* pEnemy = NULL);
 
-        // Function to check if a passive spawning condition is met
-        bool CanSpawn(Creature* pCreature);
+    // Function to check if a passive spawning condition is met
+    bool CanSpawn(Creature* pCreature);
 
-        // This function lets a slave refollow his master
-        bool TryFollowMaster(Creature* pCreature);
+    // This function lets a slave refollow his master
+    bool TryFollowMaster(Creature* pCreature);
 
-    private:
-        // Structure associated to a master (entry case)
-        struct InfoAndGuids
-        {
-            uint16 linkingFlag: 16;
-            uint16 searchRange: 16;
-            GuidList linkedGuids;
-        };
-        // Structure associated to a master (guid case)
-        struct InfoAndGuid
-        {
-            uint16 linkingFlag;
-            ObjectGuid linkedGuid;
-        };
+private:
+    // Structure associated to a master (entry case)
+    struct InfoAndGuids
+    {
+        uint16 linkingFlag: 16;
+        uint16 searchRange: 16;
+        GuidList linkedGuids;
+    };
+    // Structure associated to a master (guid case)
+    struct InfoAndGuid
+    {
+        uint16 linkingFlag;
+        ObjectGuid linkedGuid;
+    };
 
-        typedef std::multimap < uint32 /*masterEntryOrGuid*/, InfoAndGuids > HolderMap;
-        typedef std::pair<HolderMap::iterator, HolderMap::iterator> HolderMapBounds;
-        typedef std::multimap < uint32 /*Entry*/, ObjectGuid > BossGuidMap;
-        typedef std::pair<BossGuidMap::iterator, BossGuidMap::iterator> BossGuidMapBounds;
+    typedef std::multimap < uint32 /*masterEntryOrGuid*/, InfoAndGuids > HolderMap;
+    typedef std::pair<HolderMap::iterator, HolderMap::iterator> HolderMapBounds;
+    typedef std::multimap < uint32 /*Entry*/, ObjectGuid > BossGuidMap;
+    typedef std::pair<BossGuidMap::iterator, BossGuidMap::iterator> BossGuidMapBounds;
 
-        // Helper function, to process a slave list
-        void ProcessSlaveGuidList(CreatureLinkingEvent eventType, Creature* pSource, uint32 flag, uint16 searchRange, GuidList& slaveGuidList, Unit* pEnemy);
-        // Helper function, to process a single slave
-        void ProcessSlave(CreatureLinkingEvent eventType, Creature* pSource, uint32 flag, Creature* pSlave, Unit* pEnemy);
-        // Helper function to set following
-        void SetFollowing(Creature* pWho, Creature* pWhom);
-        // Helper function to return if a slave is in range of a boss
-        bool IsSlaveInRangeOfBoss(Creature* pSlave, Creature* pBoss, uint16 searchRange);
+    // Helper function, to process a slave list
+    void ProcessSlaveGuidList(CreatureLinkingEvent eventType, Creature* pSource, uint32 flag, uint16 searchRange, GuidList& slaveGuidList, Unit* pEnemy);
+    // Helper function, to process a single slave
+    void ProcessSlave(CreatureLinkingEvent eventType, Creature* pSource, uint32 flag, Creature* pSlave, Unit* pEnemy);
+    // Helper function to set following
+    void SetFollowing(Creature* pWho, Creature* pWhom);
+    // Helper function to return if a slave is in range of a boss
+    bool IsSlaveInRangeOfBoss(Creature* pSlave, Creature* pBoss, uint16 searchRange);
 
-        // Storage of Data (boss, flag, searchRange, GuidList) for action triggering
-        HolderMap m_holderMap;
-        // Storage of Data (boss, flag, slave-guid)
-        HolderMap m_holderGuidMap;
-        // boss_entry, guid for reverse action triggering and check alive
-        BossGuidMap m_masterGuid;
+    // Storage of Data (boss, flag, searchRange, GuidList) for action triggering
+    HolderMap m_holderMap;
+    // Storage of Data (boss, flag, slave-guid)
+    HolderMap m_holderGuidMap;
+    // boss_entry, guid for reverse action triggering and check alive
+    BossGuidMap m_masterGuid;
 };
 
 #define sCreatureLinkingMgr MaNGOS::Singleton<CreatureLinkingMgr>::Instance()

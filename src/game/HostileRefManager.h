@@ -32,55 +32,55 @@ struct SpellEntry;
 
 class HostileRefManager : public RefManager<Unit, ThreatManager>
 {
-    public:
-        explicit HostileRefManager(Unit* pOwner);
-        ~HostileRefManager();
+public:
+    explicit HostileRefManager(Unit* pOwner);
+    ~HostileRefManager();
 
-        Unit* getOwner() { return iOwner; }
+    Unit* getOwner() { return iOwner; }
 
-        // send threat to all my hateres for the pVictim
-        // The pVictim is hated than by them as well
-        // use for buffs and healing threat functionality
-        void threatAssist(Unit* pVictim, float threat, SpellEntry const* threatSpell = 0, bool pSingleTarget = false);
+    // send threat to all my hateres for the pVictim
+    // The pVictim is hated than by them as well
+    // use for buffs and healing threat functionality
+    void threatAssist(Unit* pVictim, float threat, SpellEntry const* threatSpell = 0, bool pSingleTarget = false);
 
-        void addThreatPercent(int32 pValue);
+    void addThreatPercent(int32 pValue);
 
-        // The references are not needed anymore
-        // tell the source to remove them from the list and free the mem
-        void deleteReferences();
+    // The references are not needed anymore
+    // tell the source to remove them from the list and free the mem
+    void deleteReferences();
 
-        // Remove specific faction references
-        void deleteReferencesForFaction(uint32 faction);
+    // Remove specific faction references
+    void deleteReferencesForFaction(uint32 faction);
 
-        HostileReference* getFirst() { return ((HostileReference*) RefManager<Unit, ThreatManager>::getFirst()); }
+    HostileReference* getFirst() { return ((HostileReference*) RefManager<Unit, ThreatManager>::getFirst()); }
 
-        void updateThreatTables();
+    void updateThreatTables();
 
-        void setOnlineOfflineState(bool pIsOnline);
+    void setOnlineOfflineState(bool pIsOnline);
 
-        // set state for one reference, defined by Unit
-        void setOnlineOfflineState(Unit* pCreature, bool pIsOnline);
+    // set state for one reference, defined by Unit
+    void setOnlineOfflineState(Unit* pCreature, bool pIsOnline);
 
-        // delete one reference, defined by Unit
-        void deleteReference(Unit* pCreature);
+    // delete one reference, defined by Unit
+    void deleteReference(Unit* pCreature);
 
-        // redirection threat data
-        void SetThreatRedirection(ObjectGuid guid)
-        {
-            m_redirectionTargetGuid = guid;
-        }
+    // redirection threat data
+    void SetThreatRedirection(ObjectGuid guid)
+    {
+        m_redirectionTargetGuid = guid;
+    }
 
-        void ResetThreatRedirection()
-        {
-            m_redirectionTargetGuid.Clear();
-        }
+    void ResetThreatRedirection()
+    {
+        m_redirectionTargetGuid.Clear();
+    }
 
-        Unit*  GetThreatRedirectionTarget() const;
+    Unit*  GetThreatRedirectionTarget() const;
 
-    private:
-        Unit* iOwner;                                       // owner of manager variable, back ref. to it, always exist
+private:
+    Unit* iOwner;                                       // owner of manager variable, back ref. to it, always exist
 
-        ObjectGuid m_redirectionTargetGuid;                 // in 2.x redirected only full threat
+    ObjectGuid m_redirectionTargetGuid;                 // in 2.x redirected only full threat
 };
 //=================================================
 #endif

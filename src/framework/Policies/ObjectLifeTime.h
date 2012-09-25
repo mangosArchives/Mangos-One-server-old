@@ -31,14 +31,14 @@ namespace MaNGOS
     template<class T>
     class MANGOS_DLL_DECL ObjectLifeTime
     {
-        public:
+    public:
 
-            static void ScheduleCall(void (*destroyer)())
-            {
-                at_exit(destroyer);
-            }
+        static void ScheduleCall(void (*destroyer)())
+        {
+            at_exit(destroyer);
+        }
 
-            DECLSPEC_NORETURN static void OnDeadReference() ATTR_NORETURN;
+        DECLSPEC_NORETURN static void OnDeadReference() ATTR_NORETURN;
     };
 
     template <class T>

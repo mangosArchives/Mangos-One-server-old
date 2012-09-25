@@ -45,7 +45,7 @@ bool WorldSession::processChatmessageFurtherAfterSecurityChecks(std::string& msg
             stripLineInvisibleChars(msg);
 
         if (sWorld.getConfig(CONFIG_UINT32_CHAT_STRICT_LINK_CHECKING_SEVERITY) && GetSecurity() < SEC_MODERATOR
-                && !ChatHandler(this).isValidChatMessage(msg.c_str()))
+            && !ChatHandler(this).isValidChatMessage(msg.c_str()))
         {
             sLog.outError("Player %s (GUID: %u) sent a chatmessage with an invalid link: %s", GetPlayer()->GetName(),
                           GetPlayer()->GetGUIDLow(), msg.c_str());
@@ -378,7 +378,7 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recv_data)
 
             Group* group = GetPlayer()->GetGroup();
             if (!group || !group->isRaidGroup() ||
-                    !(group->IsLeader(GetPlayer()->GetObjectGuid()) || group->IsAssistant(GetPlayer()->GetObjectGuid())))
+                !(group->IsLeader(GetPlayer()->GetObjectGuid()) || group->IsAssistant(GetPlayer()->GetObjectGuid())))
                 return;
 
             WorldPacket data;
@@ -516,31 +516,31 @@ namespace MaNGOS
 {
     class EmoteChatBuilder
     {
-        public:
-            EmoteChatBuilder(Player const& pl, uint32 text_emote, uint32 emote_num, Unit const* target)
-                : i_player(pl), i_text_emote(text_emote), i_emote_num(emote_num), i_target(target) {}
+    public:
+        EmoteChatBuilder(Player const& pl, uint32 text_emote, uint32 emote_num, Unit const* target)
+            : i_player(pl), i_text_emote(text_emote), i_emote_num(emote_num), i_target(target) {}
 
-            void operator()(WorldPacket& data, int32 loc_idx)
-            {
-                char const* nam = i_target ? i_target->GetNameForLocaleIdx(loc_idx) : NULL;
-                uint32 namlen = (nam ? strlen(nam) : 0) + 1;
+        void operator()(WorldPacket& data, int32 loc_idx)
+        {
+            char const* nam = i_target ? i_target->GetNameForLocaleIdx(loc_idx) : NULL;
+            uint32 namlen = (nam ? strlen(nam) : 0) + 1;
 
-                data.Initialize(SMSG_TEXT_EMOTE, (20 + namlen));
-                data << ObjectGuid(i_player.GetObjectGuid());
-                data << uint32(i_text_emote);
-                data << uint32(i_emote_num);
-                data << uint32(namlen);
-                if (namlen > 1)
-                    data.append(nam, namlen);
-                else
-                    data << uint8(0x00);
-            }
+            data.Initialize(SMSG_TEXT_EMOTE, (20 + namlen));
+            data << ObjectGuid(i_player.GetObjectGuid());
+            data << uint32(i_text_emote);
+            data << uint32(i_emote_num);
+            data << uint32(namlen);
+            if (namlen > 1)
+                data.append(nam, namlen);
+            else
+                data << uint8(0x00);
+        }
 
-        private:
-            Player const& i_player;
-            uint32        i_text_emote;
-            uint32        i_emote_num;
-            Unit const*   i_target;
+    private:
+        Player const& i_player;
+        uint32        i_text_emote;
+        uint32        i_emote_num;
+        Unit const*   i_target;
     };
 }                                                           // namespace MaNGOS
 

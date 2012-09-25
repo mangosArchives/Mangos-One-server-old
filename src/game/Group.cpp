@@ -167,7 +167,7 @@ bool Group::LoadGroupFromDB(Field* fields)
     m_lootThreshold = ItemQualities(fields[4].GetUInt16());
 
     for (int i = 0; i < TARGET_ICON_COUNT; ++i)
-        m_targetIcons[i] = ObjectGuid(fields[5+i].GetUInt64());
+        m_targetIcons[i] = ObjectGuid(fields[5 + i].GetUInt64());
 
     return true;
 }
@@ -1694,7 +1694,7 @@ static void RewardGroupAtKill_helper(Player* pGroupGuy, Unit* pVictim, uint32 co
 
         // XP updated only for alive group member
         if (pGroupGuy->isAlive() && not_gray_member_with_max_level &&
-                pGroupGuy->getLevel() <= not_gray_member_with_max_level->getLevel())
+            pGroupGuy->getLevel() <= not_gray_member_with_max_level->getLevel())
         {
             uint32 itr_xp = (member_with_max_level == not_gray_member_with_max_level) ? uint32(xp * rate) : uint32((xp * rate / 2) + 1);
 

@@ -68,63 +68,63 @@ typedef std::pair<uint32, GameEventCreatureData> GameEventCreatureDataPair;
 
 class GameEventMgr
 {
-    public:
-        GameEventMgr();
-        ~GameEventMgr() {};
-        typedef std::set<uint16> ActiveEvents;
-        typedef std::vector<GameEventData> GameEventDataMap;
-        ActiveEvents const& GetActiveEventList() const { return m_ActiveEvents; }
-        GameEventDataMap const& GetEventMap() const { return mGameEvent; }
-        bool CheckOneGameEvent(uint16 entry, time_t currenttime) const;
-        uint32 NextCheck(uint16 entry) const;
-        void LoadFromDB();
-        void Initialize(MapPersistentState* state);         // called at new MapPersistentState object create
-        uint32 Update(ActiveEvents const* activeAtShutdown = NULL);
-        bool IsValidEvent(uint16 event_id) const { return event_id < mGameEvent.size() && mGameEvent[event_id].isValid(); }
-        bool IsActiveEvent(uint16 event_id) const { return (m_ActiveEvents.find(event_id) != m_ActiveEvents.end()); }
-        bool IsActiveHoliday(HolidayIds id);
-        uint32 Initialize();
-        void StartEvent(uint16 event_id, bool overwrite = false, bool resume = false);
-        void StopEvent(uint16 event_id, bool overwrite = false);
-        template<typename T>
-        int16 GetGameEventId(uint32 guid_or_poolid);
+public:
+    GameEventMgr();
+    ~GameEventMgr() {};
+    typedef std::set<uint16> ActiveEvents;
+    typedef std::vector<GameEventData> GameEventDataMap;
+    ActiveEvents const& GetActiveEventList() const { return m_ActiveEvents; }
+    GameEventDataMap const& GetEventMap() const { return mGameEvent; }
+    bool CheckOneGameEvent(uint16 entry, time_t currenttime) const;
+    uint32 NextCheck(uint16 entry) const;
+    void LoadFromDB();
+    void Initialize(MapPersistentState* state);         // called at new MapPersistentState object create
+    uint32 Update(ActiveEvents const* activeAtShutdown = NULL);
+    bool IsValidEvent(uint16 event_id) const { return event_id < mGameEvent.size() && mGameEvent[event_id].isValid(); }
+    bool IsActiveEvent(uint16 event_id) const { return (m_ActiveEvents.find(event_id) != m_ActiveEvents.end()); }
+    bool IsActiveHoliday(HolidayIds id);
+    uint32 Initialize();
+    void StartEvent(uint16 event_id, bool overwrite = false, bool resume = false);
+    void StopEvent(uint16 event_id, bool overwrite = false);
+    template<typename T>
+    int16 GetGameEventId(uint32 guid_or_poolid);
 
-        GameEventCreatureData const* GetCreatureUpdateDataForActiveEvent(uint32 lowguid) const;
-    private:
-        void ApplyNewEvent(uint16 event_id, bool resume);
-        void UnApplyEvent(uint16 event_id);
-        void GameEventSpawn(int16 event_id);
-        void GameEventUnspawn(int16 event_id);
-        void UpdateCreatureData(int16 event_id, bool activate);
-        void UpdateEventQuests(uint16 event_id, bool activate);
-        void SendEventMails(int16 event_id);
-    protected:
-        typedef std::list<uint32> GuidList;
-        typedef std::list<uint16> IdList;
-        typedef std::vector<GuidList> GameEventGuidMap;
-        typedef std::vector<IdList> GameEventIdMap;
-        typedef std::list<GameEventCreatureDataPair> GameEventCreatureDataList;
-        typedef std::vector<GameEventCreatureDataList> GameEventCreatureDataMap;
-        typedef std::multimap<uint32, uint32> GameEventCreatureDataPerGuidMap;
-        typedef std::pair<GameEventCreatureDataPerGuidMap::const_iterator, GameEventCreatureDataPerGuidMap::const_iterator> GameEventCreatureDataPerGuidBounds;
+    GameEventCreatureData const* GetCreatureUpdateDataForActiveEvent(uint32 lowguid) const;
+private:
+    void ApplyNewEvent(uint16 event_id, bool resume);
+    void UnApplyEvent(uint16 event_id);
+    void GameEventSpawn(int16 event_id);
+    void GameEventUnspawn(int16 event_id);
+    void UpdateCreatureData(int16 event_id, bool activate);
+    void UpdateEventQuests(uint16 event_id, bool activate);
+    void SendEventMails(int16 event_id);
+protected:
+    typedef std::list<uint32> GuidList;
+    typedef std::list<uint16> IdList;
+    typedef std::vector<GuidList> GameEventGuidMap;
+    typedef std::vector<IdList> GameEventIdMap;
+    typedef std::list<GameEventCreatureDataPair> GameEventCreatureDataList;
+    typedef std::vector<GameEventCreatureDataList> GameEventCreatureDataMap;
+    typedef std::multimap<uint32, uint32> GameEventCreatureDataPerGuidMap;
+    typedef std::pair<GameEventCreatureDataPerGuidMap::const_iterator, GameEventCreatureDataPerGuidMap::const_iterator> GameEventCreatureDataPerGuidBounds;
 
-        typedef std::list<uint32> QuestList;
-        typedef std::vector<QuestList> GameEventQuestMap;
-        GameEventQuestMap mGameEventQuests;                 // events size, only positive event case
+    typedef std::list<uint32> QuestList;
+    typedef std::vector<QuestList> GameEventQuestMap;
+    GameEventQuestMap mGameEventQuests;                 // events size, only positive event case
 
-        GameEventCreatureDataMap mGameEventCreatureData;    // events size, only positive event case
-        GameEventCreatureDataPerGuidMap mGameEventCreatureDataPerGuid;
+    GameEventCreatureDataMap mGameEventCreatureData;    // events size, only positive event case
+    GameEventCreatureDataPerGuidMap mGameEventCreatureDataPerGuid;
 
-        typedef std::list<GameEventMail> MailList;
-        typedef std::vector<MailList> GameEventMailMap;
-        GameEventMailMap  mGameEventMails;                  // events*2-1
+    typedef std::list<GameEventMail> MailList;
+    typedef std::vector<MailList> GameEventMailMap;
+    GameEventMailMap  mGameEventMails;                  // events*2-1
 
-        GameEventGuidMap  mGameEventCreatureGuids;          // events*2-1
-        GameEventGuidMap  mGameEventGameobjectGuids;        // events*2-1
-        GameEventIdMap    mGameEventSpawnPoolIds;           // events size, only positive event case
-        GameEventDataMap  mGameEvent;
-        ActiveEvents m_ActiveEvents;
-        bool m_IsGameEventsInit;
+    GameEventGuidMap  mGameEventCreatureGuids;          // events*2-1
+    GameEventGuidMap  mGameEventGameobjectGuids;        // events*2-1
+    GameEventIdMap    mGameEventSpawnPoolIds;           // events size, only positive event case
+    GameEventDataMap  mGameEvent;
+    ActiveEvents m_ActiveEvents;
+    bool m_IsGameEventsInit;
 };
 
 #define sGameEventMgr MaNGOS::Singleton<GameEventMgr>::Instance()

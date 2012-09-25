@@ -156,64 +156,64 @@ static const uint32 nagrandRoostStatesHordeNeutral[MAX_NA_ROOSTS]       = {WORLD
 
 class OutdoorPvPNA : public OutdoorPvP
 {
-    public:
-        OutdoorPvPNA();
+public:
+    OutdoorPvPNA();
 
-        void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
-        void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
-        void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
-        void SendRemoveWorldStates(Player* player) override;
+    void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
+    void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
+    void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        bool HandleEvent(uint32 eventId, GameObject* go) override;
-        void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
+    bool HandleEvent(uint32 eventId, GameObject* go) override;
+    void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
 
-        void HandleCreatureCreate(Creature* creature) override;
-        void HandleGameObjectCreate(GameObject* go) override;
-        void HandleCreatureDeath(Creature* creature) override;
+    void HandleCreatureCreate(Creature* creature) override;
+    void HandleGameObjectCreate(GameObject* go) override;
+    void HandleCreatureDeath(Creature* creature) override;
 
-        void HandlePlayerKillInsideArea(Player* player, Unit* victim) override;
-        bool HandleGameObjectUse(Player* player, GameObject* go) override;
-        void Update(uint32 diff) override;
+    void HandlePlayerKillInsideArea(Player* player, Unit* victim) override;
+    bool HandleGameObjectUse(Player* player, GameObject* go) override;
+    void Update(uint32 diff) override;
 
-    private:
-        // world states handling
-        void UpdateWorldState(uint32 value);
-        void UpdateWyvernsWorldState(uint32 value);
+private:
+    // world states handling
+    void UpdateWorldState(uint32 value);
+    void UpdateWyvernsWorldState(uint32 value);
 
-        // process capture events
-        void ProcessCaptureEvent(GameObject* go, Team team);
+    // process capture events
+    void ProcessCaptureEvent(GameObject* go, Team team);
 
-        // set specific team vendors and objects after capture
-        void DespawnVendors(const WorldObject* objRef);
-        void HandleFactionObjects(const WorldObject* objRef);
+    // set specific team vendors and objects after capture
+    void DespawnVendors(const WorldObject* objRef);
+    void HandleFactionObjects(const WorldObject* objRef);
 
-        // handle a specific game objects
-        void LockHalaa(const WorldObject* objRef);
-        void UnlockHalaa(const WorldObject* objRef);
+    // handle a specific game objects
+    void LockHalaa(const WorldObject* objRef);
+    void UnlockHalaa(const WorldObject* objRef);
 
-        // handle soldier respawn on timer
-        void RespawnSoldier();
+    // handle soldier respawn on timer
+    void RespawnSoldier();
 
-        Team m_zoneOwner;
-        uint32 m_soldiersRespawnTimer;
-        uint32 m_zoneWorldState;
-        uint32 m_zoneMapState;
-        uint32 m_roostWorldState[MAX_NA_ROOSTS];
-        uint8 m_guardsLeft;
+    Team m_zoneOwner;
+    uint32 m_soldiersRespawnTimer;
+    uint32 m_zoneWorldState;
+    uint32 m_zoneMapState;
+    uint32 m_roostWorldState[MAX_NA_ROOSTS];
+    uint8 m_guardsLeft;
 
-        bool m_isUnderSiege;
+    bool m_isUnderSiege;
 
-        ObjectGuid m_capturePoint;
-        ObjectGuid m_roostsAlliance[MAX_NA_ROOSTS];
-        ObjectGuid m_roostsHorde[MAX_NA_ROOSTS];
-        ObjectGuid m_roostsBrokenAlliance[MAX_NA_ROOSTS];
-        ObjectGuid m_roostsBrokenHorde[MAX_NA_ROOSTS];
-        ObjectGuid m_wagonsAlliance[MAX_NA_ROOSTS];
-        ObjectGuid m_wagonsHorde[MAX_NA_ROOSTS];
+    ObjectGuid m_capturePoint;
+    ObjectGuid m_roostsAlliance[MAX_NA_ROOSTS];
+    ObjectGuid m_roostsHorde[MAX_NA_ROOSTS];
+    ObjectGuid m_roostsBrokenAlliance[MAX_NA_ROOSTS];
+    ObjectGuid m_roostsBrokenHorde[MAX_NA_ROOSTS];
+    ObjectGuid m_wagonsAlliance[MAX_NA_ROOSTS];
+    ObjectGuid m_wagonsHorde[MAX_NA_ROOSTS];
 
-        GuidList m_teamVendors;
+    GuidList m_teamVendors;
 
-        std::queue<HalaaSoldiersSpawns> m_deadSoldiers;
+    std::queue<HalaaSoldiersSpawns> m_deadSoldiers;
 };
 
 #endif

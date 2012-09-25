@@ -59,110 +59,110 @@ volatile uint32 Master::m_masterLoopCounter = 0;
 
 class FreezeDetectorRunnable : public ACE_Based::Runnable
 {
-    public:
-        FreezeDetectorRunnable() { _delaytime = 0; }
-        uint32 m_loops, m_lastchange;
-        uint32 w_loops, w_lastchange;
-        uint32 _delaytime;
-        void SetDelayTime(uint32 t) { _delaytime = t; }
-        void run(void)
+public:
+    FreezeDetectorRunnable() { _delaytime = 0; }
+    uint32 m_loops, m_lastchange;
+    uint32 w_loops, w_lastchange;
+    uint32 _delaytime;
+    void SetDelayTime(uint32 t) { _delaytime = t; }
+    void run(void)
+    {
+        if (!_delaytime)
+            return;
+        sLog.outString("Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime / 1000);
+        m_loops = 0;
+        w_loops = 0;
+        m_lastchange = 0;
+        w_lastchange = 0;
+        while (!World::IsStopped())
         {
-            if (!_delaytime)
-                return;
-            sLog.outString("Starting up anti-freeze thread (%u seconds max stuck time)...", _delaytime / 1000);
-            m_loops = 0;
-            w_loops = 0;
-            m_lastchange = 0;
-            w_lastchange = 0;
-            while (!World::IsStopped())
+            ACE_Based::Thread::Sleep(1000);
+
+            uint32 curtime = WorldTimer::getMSTime();
+            // DEBUG_LOG("anti-freeze: time=%u, counters=[%u; %u]",curtime,Master::m_masterLoopCounter,World::m_worldLoopCounter);
+
+            // normal work
+            if (w_loops != World::m_worldLoopCounter)
             {
-                ACE_Based::Thread::Sleep(1000);
-
-                uint32 curtime = WorldTimer::getMSTime();
-                // DEBUG_LOG("anti-freeze: time=%u, counters=[%u; %u]",curtime,Master::m_masterLoopCounter,World::m_worldLoopCounter);
-
-                // normal work
-                if (w_loops != World::m_worldLoopCounter)
-                {
-                    w_lastchange = curtime;
-                    w_loops = World::m_worldLoopCounter;
-                }
-                // possible freeze
-                else if (WorldTimer::getMSTimeDiff(w_lastchange, curtime) > _delaytime)
-                {
-                    sLog.outError("World Thread hangs, kicking out server!");
-                    *((uint32 volatile*)NULL) = 0;          // bang crash
-                }
+                w_lastchange = curtime;
+                w_loops = World::m_worldLoopCounter;
             }
-            sLog.outString("Anti-freeze thread exiting without problems.");
+            // possible freeze
+            else if (WorldTimer::getMSTimeDiff(w_lastchange, curtime) > _delaytime)
+            {
+                sLog.outError("World Thread hangs, kicking out server!");
+                *((uint32 volatile*)NULL) = 0;          // bang crash
+            }
         }
+        sLog.outString("Anti-freeze thread exiting without problems.");
+    }
 };
 
 class RARunnable : public ACE_Based::Runnable
 {
-    private:
-        ACE_Reactor* m_Reactor;
-        RASocket::Acceptor* m_Acceptor;
-    public:
-        RARunnable()
-        {
-            ACE_Reactor_Impl* imp = 0;
+private:
+    ACE_Reactor* m_Reactor;
+    RASocket::Acceptor* m_Acceptor;
+public:
+    RARunnable()
+    {
+        ACE_Reactor_Impl* imp = 0;
 
 #if defined (ACE_HAS_EVENT_POLL) || defined (ACE_HAS_DEV_POLL)
 
-            imp = new ACE_Dev_Poll_Reactor();
+        imp = new ACE_Dev_Poll_Reactor();
 
-            imp->max_notify_iterations(128);
-            imp->restart(1);
+        imp->max_notify_iterations(128);
+        imp->restart(1);
 
 #else
 
-            imp = new ACE_TP_Reactor();
-            imp->max_notify_iterations(128);
+        imp = new ACE_TP_Reactor();
+        imp->max_notify_iterations(128);
 
 #endif
 
-            m_Reactor = new ACE_Reactor(imp, 1 /* 1= delete implementation so we don't have to care */);
+        m_Reactor = new ACE_Reactor(imp, 1 /* 1= delete implementation so we don't have to care */);
 
-            m_Acceptor = new RASocket::Acceptor;
+        m_Acceptor = new RASocket::Acceptor;
 
-        }
+    }
 
-        ~RARunnable()
+    ~RARunnable()
+    {
+        delete m_Reactor;
+        delete m_Acceptor;
+    }
+
+    void run()
+    {
+        uint16 raport = sConfig.GetIntDefault("Ra.Port", 3443);
+        std::string stringip = sConfig.GetStringDefault("Ra.IP", "0.0.0.0");
+
+        ACE_INET_Addr listen_addr(raport, stringip.c_str());
+
+        if (m_Acceptor->open(listen_addr, m_Reactor, ACE_NONBLOCK) == -1)
         {
-            delete m_Reactor;
-            delete m_Acceptor;
+            sLog.outError("MaNGOS RA can not bind to port %d on %s", raport, stringip.c_str());
         }
 
-        void run()
+        sLog.outString("Starting Remote access listner on port %d on %s", raport, stringip.c_str());
+
+        while (!m_Reactor->reactor_event_loop_done())
         {
-            uint16 raport = sConfig.GetIntDefault("Ra.Port", 3443);
-            std::string stringip = sConfig.GetStringDefault("Ra.IP", "0.0.0.0");
+            ACE_Time_Value interval(0, 10000);
 
-            ACE_INET_Addr listen_addr(raport, stringip.c_str());
+            if (m_Reactor->run_reactor_event_loop(interval) == -1)
+                break;
 
-            if (m_Acceptor->open(listen_addr, m_Reactor, ACE_NONBLOCK) == -1)
+            if (World::IsStopped())
             {
-                sLog.outError("MaNGOS RA can not bind to port %d on %s", raport, stringip.c_str());
+                m_Acceptor->close();
+                break;
             }
-
-            sLog.outString("Starting Remote access listner on port %d on %s", raport, stringip.c_str());
-
-            while (!m_Reactor->reactor_event_loop_done())
-            {
-                ACE_Time_Value interval(0, 10000);
-
-                if (m_Reactor->run_reactor_event_loop(interval) == -1)
-                    break;
-
-                if (World::IsStopped())
-                {
-                    m_Acceptor->close();
-                    break;
-                }
-            }
-            sLog.outString("RARunnable thread ended");
         }
+        sLog.outString("RARunnable thread ended");
+    }
 };
 
 Master::Master()

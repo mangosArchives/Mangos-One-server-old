@@ -628,7 +628,7 @@ void Object::SetUInt32Value(uint16 index, uint32 value)
 void Object::SetUInt64Value(uint16 index, const uint64& value)
 {
     MANGOS_ASSERT(index + 1 < m_valuesCount || PrintIndexError(index, true));
-    if (*((uint64*)&(m_uint32Values[ index ])) != value)
+    if (*((uint64*) & (m_uint32Values[ index ])) != value)
     {
         m_uint32Values[ index ] = *((uint32*)&value);
         m_uint32Values[ index + 1 ] = *(((uint32*)&value) + 1);
@@ -1336,22 +1336,22 @@ namespace MaNGOS
 {
     class MonsterChatBuilder
     {
-        public:
-            MonsterChatBuilder(WorldObject const& obj, ChatMsg msgtype, int32 textId, uint32 language, Unit* target)
-                : i_object(obj), i_msgtype(msgtype), i_textId(textId), i_language(language), i_target(target) {}
-            void operator()(WorldPacket& data, int32 loc_idx)
-            {
-                char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+    public:
+        MonsterChatBuilder(WorldObject const& obj, ChatMsg msgtype, int32 textId, uint32 language, Unit* target)
+            : i_object(obj), i_msgtype(msgtype), i_textId(textId), i_language(language), i_target(target) {}
+        void operator()(WorldPacket& data, int32 loc_idx)
+        {
+            char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
 
-                WorldObject::BuildMonsterChat(&data, i_object.GetObjectGuid(), i_msgtype, text, i_language, i_object.GetNameForLocaleIdx(loc_idx), i_target ? i_target->GetObjectGuid() : ObjectGuid(), i_target ? i_target->GetNameForLocaleIdx(loc_idx) : "");
-            }
+            WorldObject::BuildMonsterChat(&data, i_object.GetObjectGuid(), i_msgtype, text, i_language, i_object.GetNameForLocaleIdx(loc_idx), i_target ? i_target->GetObjectGuid() : ObjectGuid(), i_target ? i_target->GetNameForLocaleIdx(loc_idx) : "");
+        }
 
-        private:
-            WorldObject const& i_object;
-            ChatMsg i_msgtype;
-            int32 i_textId;
-            uint32 i_language;
-            Unit* i_target;
+    private:
+        WorldObject const& i_object;
+        ChatMsg i_msgtype;
+        int32 i_textId;
+        uint32 i_language;
+        Unit* i_target;
     };
 }                                                           // namespace MaNGOS
 
@@ -1533,75 +1533,75 @@ namespace MaNGOS
 {
     class NearUsedPosDo
     {
-        public:
-            NearUsedPosDo(WorldObject const& obj, WorldObject const* searcher, float absAngle, ObjectPosSelector& selector)
-                : i_object(obj), i_searcher(searcher), i_absAngle(MapManager::NormalizeOrientation(absAngle)), i_selector(selector) {}
+    public:
+        NearUsedPosDo(WorldObject const& obj, WorldObject const* searcher, float absAngle, ObjectPosSelector& selector)
+            : i_object(obj), i_searcher(searcher), i_absAngle(MapManager::NormalizeOrientation(absAngle)), i_selector(selector) {}
 
-            void operator()(Corpse*) const {}
-            void operator()(DynamicObject*) const {}
+        void operator()(Corpse*) const {}
+        void operator()(DynamicObject*) const {}
 
-            void operator()(Creature* c) const
+        void operator()(Creature* c) const
+        {
+            // skip self or target
+            if (c == i_searcher || c == &i_object)
+                return;
+
+            float x, y, z;
+
+            if (c->IsStopped() || !c->GetMotionMaster()->GetDestination(x, y, z))
             {
-                // skip self or target
-                if (c == i_searcher || c == &i_object)
-                    return;
-
-                float x, y, z;
-
-                if (c->IsStopped() || !c->GetMotionMaster()->GetDestination(x, y, z))
-                {
-                    x = c->GetPositionX();
-                    y = c->GetPositionY();
-                }
-
-                add(c, x, y);
+                x = c->GetPositionX();
+                y = c->GetPositionY();
             }
 
-            template<class T>
-            void operator()(T* u) const
-            {
-                // skip self or target
-                if (u == i_searcher || u == &i_object)
-                    return;
+            add(c, x, y);
+        }
 
-                float x, y;
+        template<class T>
+        void operator()(T* u) const
+        {
+            // skip self or target
+            if (u == i_searcher || u == &i_object)
+                return;
 
-                x = u->GetPositionX();
-                y = u->GetPositionY();
+            float x, y;
 
-                add(u, x, y);
-            }
+            x = u->GetPositionX();
+            y = u->GetPositionY();
 
-            // we must add used pos that can fill places around center
-            void add(WorldObject* u, float x, float y) const
-            {
-                // dist include size of u and i_object
-                float dx = i_object.GetPositionX() - x;
-                float dy = i_object.GetPositionY() - y;
-                float dist2d = sqrt((dx * dx) + (dy * dy));
+            add(u, x, y);
+        }
 
-                float delta = i_selector.m_searcherSize + u->GetObjectBoundingRadius();
+        // we must add used pos that can fill places around center
+        void add(WorldObject* u, float x, float y) const
+        {
+            // dist include size of u and i_object
+            float dx = i_object.GetPositionX() - x;
+            float dy = i_object.GetPositionY() - y;
+            float dist2d = sqrt((dx * dx) + (dy * dy));
 
-                // u is too nearest/far away to i_object
-                if (dist2d < i_selector.m_searcherDist - delta ||
-                        dist2d >= i_selector.m_searcherDist + delta)
-                    return;
+            float delta = i_selector.m_searcherSize + u->GetObjectBoundingRadius();
 
-                float angle = i_object.GetAngle(u) - i_absAngle;
+            // u is too nearest/far away to i_object
+            if (dist2d < i_selector.m_searcherDist - delta ||
+                dist2d >= i_selector.m_searcherDist + delta)
+                return;
 
-                // move angle to range -pi ... +pi, range before is -2Pi..2Pi
-                if (angle > M_PI_F)
-                    angle -= 2.0f * M_PI_F;
-                else if (angle < -M_PI_F)
-                    angle += 2.0f * M_PI_F;
+            float angle = i_object.GetAngle(u) - i_absAngle;
 
-                i_selector.AddUsedArea(u->GetObjectBoundingRadius(), angle, dist2d);
-            }
-        private:
-            WorldObject const& i_object;
-            WorldObject const* i_searcher;
-            float              i_absAngle;
-            ObjectPosSelector& i_selector;
+            // move angle to range -pi ... +pi, range before is -2Pi..2Pi
+            if (angle > M_PI_F)
+                angle -= 2.0f * M_PI_F;
+            else if (angle < -M_PI_F)
+                angle += 2.0f * M_PI_F;
+
+            i_selector.AddUsedArea(u->GetObjectBoundingRadius(), angle, dist2d);
+        }
+    private:
+        WorldObject const& i_object;
+        WorldObject const* i_searcher;
+        float              i_absAngle;
+        ObjectPosSelector& i_selector;
     };
 }                                                           // namespace MaNGOS
 

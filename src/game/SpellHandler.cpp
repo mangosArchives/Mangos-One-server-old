@@ -99,8 +99,8 @@ void WorldSession::HandleUseItemOpcode(WorldPacket& recvPacket)
 
     // only allow conjured consumable, bandage, poisons (all should have the 2^21 item flag set in DB)
     if (proto->Class == ITEM_CLASS_CONSUMABLE &&
-            !(proto->Flags & ITEM_FLAG_USEABLE_IN_ARENA) &&
-            pUser->InArena())
+        !(proto->Flags & ITEM_FLAG_USEABLE_IN_ARENA) &&
+        pUser->InArena())
     {
         recvPacket.rpos(recvPacket.wpos());                 // prevent spam at not read packet tail
         pUser->SendEquipError(EQUIP_ERR_NOT_DURING_ARENA_MATCH, pItem, NULL);
@@ -408,7 +408,7 @@ void WorldSession::HandleCancelAuraOpcode(WorldPacket& recvPacket)
             for (int k = 0; k < MAX_EFFECT_INDEX; ++k)
             {
                 if (spellInfo->EffectApplyAuraName[k] == SPELL_AURA_MOD_POSSESS ||
-                        spellInfo->EffectApplyAuraName[k] == SPELL_AURA_MOD_POSSESS_PET)
+                    spellInfo->EffectApplyAuraName[k] == SPELL_AURA_MOD_POSSESS_PET)
                 {
                     allow = true;
                     break;

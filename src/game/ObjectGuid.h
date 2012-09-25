@@ -83,116 +83,116 @@ struct PackedGuidReader
 
 class MANGOS_DLL_SPEC ObjectGuid
 {
-    public:                                                 // constructors
-        ObjectGuid() : m_guid(0) {}
-        explicit ObjectGuid(uint64 const& guid) : m_guid(guid) {}
-        ObjectGuid(HighGuid hi, uint32 entry, uint32 counter) : m_guid(counter ? uint64(counter) | (uint64(entry) << 24) | (uint64(hi) << 48) : 0) {}
-        ObjectGuid(HighGuid hi, uint32 counter) : m_guid(counter ? uint64(counter) | (uint64(hi) << 48) : 0) {}
+public:                                                 // constructors
+    ObjectGuid() : m_guid(0) {}
+    explicit ObjectGuid(uint64 const& guid) : m_guid(guid) {}
+    ObjectGuid(HighGuid hi, uint32 entry, uint32 counter) : m_guid(counter ? uint64(counter) | (uint64(entry) << 24) | (uint64(hi) << 48) : 0) {}
+    ObjectGuid(HighGuid hi, uint32 counter) : m_guid(counter ? uint64(counter) | (uint64(hi) << 48) : 0) {}
 
-        operator uint64() const { return m_guid; }
-    private:
-        explicit ObjectGuid(uint32 const&);                 // no implementation, used for catch wrong type assign
-        ObjectGuid(HighGuid, uint32, uint64 counter);       // no implementation, used for catch wrong type assign
-        ObjectGuid(HighGuid, uint64 counter);               // no implementation, used for catch wrong type assign
+    operator uint64() const { return m_guid; }
+private:
+    explicit ObjectGuid(uint32 const&);                 // no implementation, used for catch wrong type assign
+    ObjectGuid(HighGuid, uint32, uint64 counter);       // no implementation, used for catch wrong type assign
+    ObjectGuid(HighGuid, uint64 counter);               // no implementation, used for catch wrong type assign
 
-    public:                                                 // modifiers
-        PackedGuidReader ReadAsPacked() { return PackedGuidReader(*this); }
+public:                                                 // modifiers
+    PackedGuidReader ReadAsPacked() { return PackedGuidReader(*this); }
 
-        void Set(uint64 const& guid) { m_guid = guid; }
-        void Clear() { m_guid = 0; }
+    void Set(uint64 const& guid) { m_guid = guid; }
+    void Clear() { m_guid = 0; }
 
-        PackedGuid WriteAsPacked() const;
-    public:                                                 // accessors
-        uint64 const& GetRawValue() const { return m_guid; }
-        HighGuid GetHigh() const { return HighGuid((m_guid >> 48) & 0x0000FFFF); }
-        uint32   GetEntry() const { return HasEntry() ? uint32((m_guid >> 24) & UI64LIT(0x0000000000FFFFFF)) : 0; }
-        uint32   GetCounter()  const
+    PackedGuid WriteAsPacked() const;
+public:                                                 // accessors
+    uint64 const& GetRawValue() const { return m_guid; }
+    HighGuid GetHigh() const { return HighGuid((m_guid >> 48) & 0x0000FFFF); }
+    uint32   GetEntry() const { return HasEntry() ? uint32((m_guid >> 24) & UI64LIT(0x0000000000FFFFFF)) : 0; }
+    uint32   GetCounter()  const
+    {
+        return HasEntry()
+               ? uint32(m_guid & UI64LIT(0x0000000000FFFFFF))
+               : uint32(m_guid & UI64LIT(0x00000000FFFFFFFF));
+    }
+
+    static uint32 GetMaxCounter(HighGuid high)
+    {
+        return HasEntry(high)
+               ? uint32(0x00FFFFFF)
+               : uint32(0xFFFFFFFF);
+    }
+
+    uint32 GetMaxCounter() const { return GetMaxCounter(GetHigh()); }
+
+    bool IsEmpty()             const { return m_guid == 0;                                }
+    bool IsCreature()          const { return GetHigh() == HIGHGUID_UNIT;                 }
+    bool IsPet()               const { return GetHigh() == HIGHGUID_PET;                  }
+    bool IsCreatureOrPet()     const { return IsCreature() || IsPet();                    }
+    bool IsAnyTypeCreature()   const { return IsCreature() || IsPet();                    } // wrapper to master branch
+    bool IsPlayer()            const { return !IsEmpty() && GetHigh() == HIGHGUID_PLAYER; }
+    bool IsUnit()              const { return IsAnyTypeCreature() || IsPlayer();          }
+    bool IsItem()              const { return GetHigh() == HIGHGUID_ITEM;                 }
+    bool IsGameObject()        const { return GetHigh() == HIGHGUID_GAMEOBJECT;           }
+    bool IsDynamicObject()     const { return GetHigh() == HIGHGUID_DYNAMICOBJECT;        }
+    bool IsCorpse()            const { return GetHigh() == HIGHGUID_CORPSE;               }
+    bool IsTransport()         const { return GetHigh() == HIGHGUID_TRANSPORT;            }
+    bool IsMOTransport()       const { return GetHigh() == HIGHGUID_MO_TRANSPORT;         }
+    bool IsGroup()             const { return GetHigh() == HIGHGUID_GROUP;                }
+
+    static TypeID GetTypeId(HighGuid high)
+    {
+        switch (high)
         {
-            return HasEntry()
-                   ? uint32(m_guid & UI64LIT(0x0000000000FFFFFF))
-                   : uint32(m_guid & UI64LIT(0x00000000FFFFFFFF));
+            case HIGHGUID_ITEM:         return TYPEID_ITEM;
+                // case HIGHGUID_CONTAINER:    return TYPEID_CONTAINER; HIGHGUID_CONTAINER==HIGHGUID_ITEM currently
+            case HIGHGUID_UNIT:         return TYPEID_UNIT;
+            case HIGHGUID_PET:          return TYPEID_UNIT;
+            case HIGHGUID_PLAYER:       return TYPEID_PLAYER;
+            case HIGHGUID_GAMEOBJECT:   return TYPEID_GAMEOBJECT;
+            case HIGHGUID_DYNAMICOBJECT: return TYPEID_DYNAMICOBJECT;
+            case HIGHGUID_CORPSE:       return TYPEID_CORPSE;
+            case HIGHGUID_MO_TRANSPORT: return TYPEID_GAMEOBJECT;
+                // unknown
+            case HIGHGUID_GROUP:
+            default:                    return TYPEID_OBJECT;
         }
+    }
 
-        static uint32 GetMaxCounter(HighGuid high)
+    TypeID GetTypeId() const { return GetTypeId(GetHigh()); }
+
+    bool operator!() const { return IsEmpty(); }
+    bool operator== (ObjectGuid const& guid) const { return GetRawValue() == guid.GetRawValue(); }
+    bool operator!= (ObjectGuid const& guid) const { return GetRawValue() != guid.GetRawValue(); }
+    bool operator< (ObjectGuid const& guid) const { return GetRawValue() < guid.GetRawValue(); }
+
+public:                                                 // accessors - for debug
+    static char const* GetTypeName(HighGuid high);
+    char const* GetTypeName() const { return !IsEmpty() ? GetTypeName(GetHigh()) : "None"; }
+    std::string GetString() const;
+
+private:                                                // internal functions
+    static bool HasEntry(HighGuid high)
+    {
+        switch (high)
         {
-            return HasEntry(high)
-                   ? uint32(0x00FFFFFF)
-                   : uint32(0xFFFFFFFF);
+            case HIGHGUID_ITEM:
+            case HIGHGUID_PLAYER:
+            case HIGHGUID_DYNAMICOBJECT:
+            case HIGHGUID_CORPSE:
+            case HIGHGUID_MO_TRANSPORT:
+            case HIGHGUID_GROUP:
+                return false;
+            case HIGHGUID_GAMEOBJECT:
+            case HIGHGUID_TRANSPORT:
+            case HIGHGUID_UNIT:
+            case HIGHGUID_PET:
+            default:
+                return true;
         }
+    }
 
-        uint32 GetMaxCounter() const { return GetMaxCounter(GetHigh()); }
+    bool HasEntry() const { return HasEntry(GetHigh()); }
 
-        bool IsEmpty()             const { return m_guid == 0;                                }
-        bool IsCreature()          const { return GetHigh() == HIGHGUID_UNIT;                 }
-        bool IsPet()               const { return GetHigh() == HIGHGUID_PET;                  }
-        bool IsCreatureOrPet()     const { return IsCreature() || IsPet();                    }
-        bool IsAnyTypeCreature()   const { return IsCreature() || IsPet();                    } // wrapper to master branch
-        bool IsPlayer()            const { return !IsEmpty() && GetHigh() == HIGHGUID_PLAYER; }
-        bool IsUnit()              const { return IsAnyTypeCreature() || IsPlayer();          }
-        bool IsItem()              const { return GetHigh() == HIGHGUID_ITEM;                 }
-        bool IsGameObject()        const { return GetHigh() == HIGHGUID_GAMEOBJECT;           }
-        bool IsDynamicObject()     const { return GetHigh() == HIGHGUID_DYNAMICOBJECT;        }
-        bool IsCorpse()            const { return GetHigh() == HIGHGUID_CORPSE;               }
-        bool IsTransport()         const { return GetHigh() == HIGHGUID_TRANSPORT;            }
-        bool IsMOTransport()       const { return GetHigh() == HIGHGUID_MO_TRANSPORT;         }
-        bool IsGroup()             const { return GetHigh() == HIGHGUID_GROUP;                }
-
-        static TypeID GetTypeId(HighGuid high)
-        {
-            switch (high)
-            {
-                case HIGHGUID_ITEM:         return TYPEID_ITEM;
-                    // case HIGHGUID_CONTAINER:    return TYPEID_CONTAINER; HIGHGUID_CONTAINER==HIGHGUID_ITEM currently
-                case HIGHGUID_UNIT:         return TYPEID_UNIT;
-                case HIGHGUID_PET:          return TYPEID_UNIT;
-                case HIGHGUID_PLAYER:       return TYPEID_PLAYER;
-                case HIGHGUID_GAMEOBJECT:   return TYPEID_GAMEOBJECT;
-                case HIGHGUID_DYNAMICOBJECT:return TYPEID_DYNAMICOBJECT;
-                case HIGHGUID_CORPSE:       return TYPEID_CORPSE;
-                case HIGHGUID_MO_TRANSPORT: return TYPEID_GAMEOBJECT;
-                    // unknown
-                case HIGHGUID_GROUP:
-                default:                    return TYPEID_OBJECT;
-            }
-        }
-
-        TypeID GetTypeId() const { return GetTypeId(GetHigh()); }
-
-        bool operator!() const { return IsEmpty(); }
-        bool operator== (ObjectGuid const& guid) const { return GetRawValue() == guid.GetRawValue(); }
-        bool operator!= (ObjectGuid const& guid) const { return GetRawValue() != guid.GetRawValue(); }
-        bool operator< (ObjectGuid const& guid) const { return GetRawValue() < guid.GetRawValue(); }
-
-    public:                                                 // accessors - for debug
-        static char const* GetTypeName(HighGuid high);
-        char const* GetTypeName() const { return !IsEmpty() ? GetTypeName(GetHigh()) : "None"; }
-        std::string GetString() const;
-
-    private:                                                // internal functions
-        static bool HasEntry(HighGuid high)
-        {
-            switch (high)
-            {
-                case HIGHGUID_ITEM:
-                case HIGHGUID_PLAYER:
-                case HIGHGUID_DYNAMICOBJECT:
-                case HIGHGUID_CORPSE:
-                case HIGHGUID_MO_TRANSPORT:
-                case HIGHGUID_GROUP:
-                    return false;
-                case HIGHGUID_GAMEOBJECT:
-                case HIGHGUID_TRANSPORT:
-                case HIGHGUID_UNIT:
-                case HIGHGUID_PET:
-                default:
-                    return true;
-            }
-        }
-
-        bool HasEntry() const { return HasEntry(GetHigh()); }
-
-    private:                                                // fields
-        uint64 m_guid;
+private:                                                // fields
+    uint64 m_guid;
 };
 
 // Some Shared defines
@@ -205,39 +205,39 @@ typedef std::vector<ObjectGuid> GuidVector;
 
 class PackedGuid
 {
-        friend ByteBuffer& operator<< (ByteBuffer& buf, PackedGuid const& guid);
+    friend ByteBuffer& operator<< (ByteBuffer& buf, PackedGuid const& guid);
 
-    public:                                                 // constructors
-        explicit PackedGuid() : m_packedGuid(PACKED_GUID_MIN_BUFFER_SIZE) { m_packedGuid.appendPackGUID(0); }
-        explicit PackedGuid(uint64 const& guid) : m_packedGuid(PACKED_GUID_MIN_BUFFER_SIZE) { m_packedGuid.appendPackGUID(guid); }
-        explicit PackedGuid(ObjectGuid const& guid) : m_packedGuid(PACKED_GUID_MIN_BUFFER_SIZE) { m_packedGuid.appendPackGUID(guid.GetRawValue()); }
+public:                                                 // constructors
+    explicit PackedGuid() : m_packedGuid(PACKED_GUID_MIN_BUFFER_SIZE) { m_packedGuid.appendPackGUID(0); }
+    explicit PackedGuid(uint64 const& guid) : m_packedGuid(PACKED_GUID_MIN_BUFFER_SIZE) { m_packedGuid.appendPackGUID(guid); }
+    explicit PackedGuid(ObjectGuid const& guid) : m_packedGuid(PACKED_GUID_MIN_BUFFER_SIZE) { m_packedGuid.appendPackGUID(guid.GetRawValue()); }
 
-    public:                                                 // modifiers
-        void Set(uint64 const& guid) { m_packedGuid.wpos(0); m_packedGuid.appendPackGUID(guid); }
-        void Set(ObjectGuid const& guid) { m_packedGuid.wpos(0); m_packedGuid.appendPackGUID(guid.GetRawValue()); }
+public:                                                 // modifiers
+    void Set(uint64 const& guid) { m_packedGuid.wpos(0); m_packedGuid.appendPackGUID(guid); }
+    void Set(ObjectGuid const& guid) { m_packedGuid.wpos(0); m_packedGuid.appendPackGUID(guid.GetRawValue()); }
 
-    public:                                                 // accessors
-        size_t size() const { return m_packedGuid.size(); }
+public:                                                 // accessors
+    size_t size() const { return m_packedGuid.size(); }
 
-    private:                                                // fields
-        ByteBuffer m_packedGuid;
+private:                                                // fields
+    ByteBuffer m_packedGuid;
 };
 
 template<HighGuid high>
 class ObjectGuidGenerator
 {
-    public:                                                 // constructors
-        explicit ObjectGuidGenerator(uint32 start = 1) : m_nextGuid(start) {}
+public:                                                 // constructors
+    explicit ObjectGuidGenerator(uint32 start = 1) : m_nextGuid(start) {}
 
-    public:                                                 // modifiers
-        void Set(uint32 val) { m_nextGuid = val; }
-        uint32 Generate();
+public:                                                 // modifiers
+    void Set(uint32 val) { m_nextGuid = val; }
+    uint32 Generate();
 
-    public:                                                 // accessors
-        uint32 GetNextAfterMaxUsed() const { return m_nextGuid; }
+public:                                                 // accessors
+    uint32 GetNextAfterMaxUsed() const { return m_nextGuid; }
 
-    private:                                                // fields
-        uint32 m_nextGuid;
+private:                                                // fields
+    uint32 m_nextGuid;
 };
 
 ByteBuffer& operator<< (ByteBuffer& buf, ObjectGuid const& guid);
@@ -253,12 +253,12 @@ HASH_NAMESPACE_START
 template<>
 class hash<ObjectGuid>
 {
-    public:
+public:
 
-        size_t operator()(ObjectGuid const& key) const
-        {
-            return hash<uint64>()(key.GetRawValue());
-        }
+    size_t operator()(ObjectGuid const& key) const
+    {
+        return hash<uint64>()(key.GetRawValue());
+    }
 };
 
 HASH_NAMESPACE_END

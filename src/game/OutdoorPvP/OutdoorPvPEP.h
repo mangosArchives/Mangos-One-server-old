@@ -226,44 +226,44 @@ static const uint32 plaguelandsBanners[MAX_EP_TOWERS] = {GO_TOWER_BANNER_NORTHPA
 
 class OutdoorPvPEP : public OutdoorPvP
 {
-    public:
-        OutdoorPvPEP();
+public:
+    OutdoorPvPEP();
 
-        void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
-        void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
-        void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
-        void SendRemoveWorldStates(Player* player) override;
+    void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
+    void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
+    void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        bool HandleEvent(uint32 eventId, GameObject* go) override;
-        void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
+    bool HandleEvent(uint32 eventId, GameObject* go) override;
+    void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
 
-        void HandleCreatureCreate(Creature* creature) override;
-        void HandleGameObjectCreate(GameObject* go) override;
-        bool HandleGameObjectUse(Player* player, GameObject* go) override;
+    void HandleCreatureCreate(Creature* creature) override;
+    void HandleGameObjectCreate(GameObject* go) override;
+    bool HandleGameObjectUse(Player* player, GameObject* go) override;
 
-    private:
-        // process capture events
-        bool ProcessCaptureEvent(GameObject* go, uint32 towerId, Team team, uint32 newWorldState);
+private:
+    // process capture events
+    bool ProcessCaptureEvent(GameObject* go, uint32 towerId, Team team, uint32 newWorldState);
 
-        void InitBanner(GameObject* go, uint32 towerId);
+    void InitBanner(GameObject* go, uint32 towerId);
 
-        // Plaguewood bonus - flight master
-        void UnsummonFlightMaster(const WorldObject* objRef);
-        // Eastwall bonus - soldiers
-        void UnsummonSoldiers(const WorldObject* objRef);
+    // Plaguewood bonus - flight master
+    void UnsummonFlightMaster(const WorldObject* objRef);
+    // Eastwall bonus - soldiers
+    void UnsummonSoldiers(const WorldObject* objRef);
 
-        Team m_towerOwner[MAX_EP_TOWERS];
-        uint32 m_towerWorldState[MAX_EP_TOWERS];
-        uint8 m_towersAlliance;
-        uint8 m_towersHorde;
+    Team m_towerOwner[MAX_EP_TOWERS];
+    uint32 m_towerWorldState[MAX_EP_TOWERS];
+    uint8 m_towersAlliance;
+    uint8 m_towersHorde;
 
-        ObjectGuid m_flightMaster;
-        ObjectGuid m_lordaeronShrineAlliance;
-        ObjectGuid m_lordaeronShrineHorde;
+    ObjectGuid m_flightMaster;
+    ObjectGuid m_lordaeronShrineAlliance;
+    ObjectGuid m_lordaeronShrineHorde;
 
-        GuidList m_soldiers;
+    GuidList m_soldiers;
 
-        GuidList m_towerBanners[MAX_EP_TOWERS];
+    GuidList m_towerBanners[MAX_EP_TOWERS];
 };
 
 #endif

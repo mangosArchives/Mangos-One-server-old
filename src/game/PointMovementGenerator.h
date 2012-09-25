@@ -27,51 +27,51 @@ template<class T>
 class MANGOS_DLL_SPEC PointMovementGenerator
     : public MovementGeneratorMedium< T, PointMovementGenerator<T> >
 {
-    public:
-        PointMovementGenerator(uint32 _id, float _x, float _y, float _z, bool _generatePath) :
-            id(_id), i_x(_x), i_y(_y), i_z(_z), m_generatePath(_generatePath) {}
+public:
+    PointMovementGenerator(uint32 _id, float _x, float _y, float _z, bool _generatePath) :
+        id(_id), i_x(_x), i_y(_y), i_z(_z), m_generatePath(_generatePath) {}
 
-        void Initialize(T&);
-        void Finalize(T&);
-        void Interrupt(T&);
-        void Reset(T& unit);
-        bool Update(T&, const uint32& diff);
+    void Initialize(T&);
+    void Finalize(T&);
+    void Interrupt(T&);
+    void Reset(T& unit);
+    bool Update(T&, const uint32& diff);
 
-        void MovementInform(T&);
+    void MovementInform(T&);
 
-        MovementGeneratorType GetMovementGeneratorType() const override { return POINT_MOTION_TYPE; }
+    MovementGeneratorType GetMovementGeneratorType() const override { return POINT_MOTION_TYPE; }
 
-        bool GetDestination(float& x, float& y, float& z) const { x = i_x; y = i_y; z = i_z; return true; }
-    private:
-        uint32 id;
-        float i_x, i_y, i_z;
-        bool m_generatePath;
+    bool GetDestination(float& x, float& y, float& z) const { x = i_x; y = i_y; z = i_z; return true; }
+private:
+    uint32 id;
+    float i_x, i_y, i_z;
+    bool m_generatePath;
 };
 
 class MANGOS_DLL_SPEC AssistanceMovementGenerator
     : public PointMovementGenerator<Creature>
 {
-    public:
-        AssistanceMovementGenerator(float _x, float _y, float _z) :
-            PointMovementGenerator<Creature>(0, _x, _y, _z, true) {}
+public:
+    AssistanceMovementGenerator(float _x, float _y, float _z) :
+        PointMovementGenerator<Creature>(0, _x, _y, _z, true) {}
 
-        MovementGeneratorType GetMovementGeneratorType() const override { return ASSISTANCE_MOTION_TYPE; }
-        void Finalize(Unit&) override;
+    MovementGeneratorType GetMovementGeneratorType() const override { return ASSISTANCE_MOTION_TYPE; }
+    void Finalize(Unit&) override;
 };
 
 // Does almost nothing - just doesn't allows previous movegen interrupt current effect. Can be reused for charge effect
 class EffectMovementGenerator : public MovementGenerator
 {
-    public:
-        explicit EffectMovementGenerator(uint32 Id) : m_Id(Id) {}
-        void Initialize(Unit&) override {}
-        void Finalize(Unit& unit) override;
-        void Interrupt(Unit&) override {}
-        void Reset(Unit&) override {}
-        bool Update(Unit& u, const uint32&) override;
-        MovementGeneratorType GetMovementGeneratorType() const override { return EFFECT_MOTION_TYPE; }
-    private:
-        uint32 m_Id;
+public:
+    explicit EffectMovementGenerator(uint32 Id) : m_Id(Id) {}
+    void Initialize(Unit&) override {}
+    void Finalize(Unit& unit) override;
+    void Interrupt(Unit&) override {}
+    void Reset(Unit&) override {}
+    bool Update(Unit& u, const uint32&) override;
+    MovementGeneratorType GetMovementGeneratorType() const override { return EFFECT_MOTION_TYPE; }
+private:
+    uint32 m_Id;
 };
 
 #endif

@@ -33,7 +33,7 @@ inline void* dtCustomAlloc(int size, dtAllocHint /*hint*/)
 
 inline void dtCustomFree(void* ptr)
 {
-    delete[] (unsigned char*)ptr;
+    delete[](unsigned char*)ptr;
 }
 
 //  move map related classes
@@ -69,27 +69,27 @@ namespace MMAP
     // holds all all access to mmap loading unloading and meshes
     class MMapManager
     {
-        public:
-            MMapManager() : loadedTiles(0) {}
-            ~MMapManager();
+    public:
+        MMapManager() : loadedTiles(0) {}
+        ~MMapManager();
 
-            bool loadMap(uint32 mapId, int32 x, int32 y);
-            bool unloadMap(uint32 mapId, int32 x, int32 y);
-            bool unloadMap(uint32 mapId);
-            bool unloadMapInstance(uint32 mapId, uint32 instanceId);
+        bool loadMap(uint32 mapId, int32 x, int32 y);
+        bool unloadMap(uint32 mapId, int32 x, int32 y);
+        bool unloadMap(uint32 mapId);
+        bool unloadMapInstance(uint32 mapId, uint32 instanceId);
 
-            // the returned [dtNavMeshQuery const*] is NOT threadsafe
-            dtNavMeshQuery const* GetNavMeshQuery(uint32 mapId, uint32 instanceId);
-            dtNavMesh const* GetNavMesh(uint32 mapId);
+        // the returned [dtNavMeshQuery const*] is NOT threadsafe
+        dtNavMeshQuery const* GetNavMeshQuery(uint32 mapId, uint32 instanceId);
+        dtNavMesh const* GetNavMesh(uint32 mapId);
 
-            uint32 getLoadedTilesCount() const { return loadedTiles; }
-            uint32 getLoadedMapsCount() const { return loadedMMaps.size(); }
-        private:
-            bool loadMapData(uint32 mapId);
-            uint32 packTileID(int32 x, int32 y);
+        uint32 getLoadedTilesCount() const { return loadedTiles; }
+        uint32 getLoadedMapsCount() const { return loadedMMaps.size(); }
+    private:
+        bool loadMapData(uint32 mapId);
+        uint32 packTileID(int32 x, int32 y);
 
-            MMapDataSet loadedMMaps;
-            uint32 loadedTiles;
+        MMapDataSet loadedMMaps;
+        uint32 loadedTiles;
     };
 
     // static class
@@ -97,11 +97,11 @@ namespace MMAP
     // access point to MMapManager singelton
     class MMapFactory
     {
-        public:
-            static MMapManager* createOrGetMMapManager();
-            static void clear();
-            static void preventPathfindingOnMaps(const char* ignoreMapIds);
-            static bool IsPathfindingEnabled(uint32 mapId);
+    public:
+        static MMapManager* createOrGetMMapManager();
+        static void clear();
+        static void preventPathfindingOnMaps(const char* ignoreMapIds);
+        static bool IsPathfindingEnabled(uint32 mapId);
     };
 }
 

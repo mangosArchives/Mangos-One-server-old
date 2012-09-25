@@ -85,20 +85,20 @@ namespace VMAP
 
     class TriBoundFunc
     {
-        public:
-            TriBoundFunc(std::vector<Vector3>& vert): vertices(vert.begin()) {}
-            void operator()(const MeshTriangle& tri, G3D::AABox& out) const
-            {
-                G3D::Vector3 lo = vertices[tri.idx0];
-                G3D::Vector3 hi = lo;
+    public:
+        TriBoundFunc(std::vector<Vector3>& vert): vertices(vert.begin()) {}
+        void operator()(const MeshTriangle& tri, G3D::AABox& out) const
+        {
+            G3D::Vector3 lo = vertices[tri.idx0];
+            G3D::Vector3 hi = lo;
 
-                lo = (lo.min(vertices[tri.idx1])).min(vertices[tri.idx2]);
-                hi = (hi.max(vertices[tri.idx1])).max(vertices[tri.idx2]);
+            lo = (lo.min(vertices[tri.idx1])).min(vertices[tri.idx2]);
+            hi = (hi.max(vertices[tri.idx1])).max(vertices[tri.idx2]);
 
-                out = G3D::AABox(lo, hi);
-            }
-        protected:
-            const std::vector<Vector3>::const_iterator vertices;
+            out = G3D::AABox(lo, hi);
+        }
+    protected:
+        const std::vector<Vector3>::const_iterator vertices;
     };
 
     // ===================== WmoLiquid ==================================
@@ -106,8 +106,8 @@ namespace VMAP
     WmoLiquid::WmoLiquid(uint32 width, uint32 height, const Vector3& corner, uint32 type):
         iTilesX(width), iTilesY(height), iCorner(corner), iType(type)
     {
-        iHeight = new float[(width+1)*(height+1)];
-        iFlags = new uint8[width*height];
+        iHeight = new float[(width + 1) * (height + 1)];
+        iFlags = new uint8[width * height];
     }
 
     WmoLiquid::WmoLiquid(const WmoLiquid& other): iHeight(0), iFlags(0)
@@ -133,8 +133,8 @@ namespace VMAP
         delete iFlags;
         if (other.iHeight)
         {
-            iHeight = new float[(iTilesX+1)*(iTilesY+1)];
-            memcpy(iHeight, other.iHeight, (iTilesX + 1)*(iTilesY + 1)*sizeof(float));
+            iHeight = new float[(iTilesX + 1) * (iTilesY + 1)];
+            memcpy(iHeight, other.iHeight, (iTilesX + 1) * (iTilesY + 1)*sizeof(float));
         }
         else
             iHeight = 0;
@@ -161,7 +161,7 @@ namespace VMAP
 
         // check if tile shall be used for liquid level
         // checking for 0x08 *might* be enough, but disabled tiles always are 0x?F:
-        if ((iFlags[tx + ty*iTilesX] & 0x0F) == 0x0F)
+        if ((iFlags[tx + ty * iTilesX] & 0x0F) == 0x0F)
             return false;
 
         // (dx, dy) coordinates inside tile, in [0,1]^2
@@ -183,14 +183,14 @@ namespace VMAP
         const uint32 rowOffset = iTilesX + 1;
         if (dx > dy) // case (a)
         {
-            float sx = iHeight[tx+1 +  ty    * rowOffset] - iHeight[tx   + ty * rowOffset];
-            float sy = iHeight[tx+1 + (ty+1) * rowOffset] - iHeight[tx+1 + ty * rowOffset];
+            float sx = iHeight[tx + 1 +  ty    * rowOffset] - iHeight[tx   + ty * rowOffset];
+            float sy = iHeight[tx + 1 + (ty + 1) * rowOffset] - iHeight[tx + 1 + ty * rowOffset];
             liqHeight = iHeight[tx + ty * rowOffset] + dx * sx + dy * sy;
         }
         else // case (b)
         {
-            float sx = iHeight[tx+1 + (ty+1) * rowOffset] - iHeight[tx + (ty+1) * rowOffset];
-            float sy = iHeight[tx   + (ty+1) * rowOffset] - iHeight[tx +  ty    * rowOffset];
+            float sx = iHeight[tx + 1 + (ty + 1) * rowOffset] - iHeight[tx + (ty + 1) * rowOffset];
+            float sy = iHeight[tx   + (ty + 1) * rowOffset] - iHeight[tx +  ty    * rowOffset];
             liqHeight = iHeight[tx + ty * rowOffset] + dx * sx + dy * sy;
         }
         return true;
@@ -432,40 +432,40 @@ namespace VMAP
 
     class WModelAreaCallback
     {
-        public:
-            WModelAreaCallback(const std::vector<GroupModel>& vals, const Vector3& down):
-                prims(vals.begin()), hit(vals.end()), minVol(G3D::inf()), zDist(G3D::inf()), zVec(down) {}
-            std::vector<GroupModel>::const_iterator prims;
-            std::vector<GroupModel>::const_iterator hit;
-            float minVol;
-            float zDist;
-            Vector3 zVec;
-            void operator()(const Vector3& point, uint32 entry)
+    public:
+        WModelAreaCallback(const std::vector<GroupModel>& vals, const Vector3& down):
+            prims(vals.begin()), hit(vals.end()), minVol(G3D::inf()), zDist(G3D::inf()), zVec(down) {}
+        std::vector<GroupModel>::const_iterator prims;
+        std::vector<GroupModel>::const_iterator hit;
+        float minVol;
+        float zDist;
+        Vector3 zVec;
+        void operator()(const Vector3& point, uint32 entry)
+        {
+            float group_Z;
+            // float pVol = prims[entry].GetBound().volume();
+            // if(pVol < minVol)
+            //{
+            /* if (prims[entry].iBound.contains(point)) */
+            if (prims[entry].IsInsideObject(point, zVec, group_Z))
             {
-                float group_Z;
-                // float pVol = prims[entry].GetBound().volume();
-                // if(pVol < minVol)
-                //{
-                /* if (prims[entry].iBound.contains(point)) */
-                if (prims[entry].IsInsideObject(point, zVec, group_Z))
+                // minVol = pVol;
+                // hit = prims + entry;
+                if (group_Z < zDist)
                 {
-                    // minVol = pVol;
-                    // hit = prims + entry;
-                    if (group_Z < zDist)
-                    {
-                        zDist = group_Z;
-                        hit = prims + entry;
-                    }
-#ifdef VMAP_DEBUG
-                    const GroupModel& gm = prims[entry];
-                    printf("%10u %8X %7.3f,%7.3f,%7.3f | %7.3f,%7.3f,%7.3f | z=%f, p_z=%f\n", gm.GetWmoID(), gm.GetMogpFlags(),
-                           gm.GetBound().low().x, gm.GetBound().low().y, gm.GetBound().low().z,
-                           gm.GetBound().high().x, gm.GetBound().high().y, gm.GetBound().high().z, group_Z, point.z);
-#endif
+                    zDist = group_Z;
+                    hit = prims + entry;
                 }
-                //}
-                // std::cout << "trying to intersect '" << prims[entry].name << "'\n";
+#ifdef VMAP_DEBUG
+                const GroupModel& gm = prims[entry];
+                printf("%10u %8X %7.3f,%7.3f,%7.3f | %7.3f,%7.3f,%7.3f | z=%f, p_z=%f\n", gm.GetWmoID(), gm.GetMogpFlags(),
+                       gm.GetBound().low().x, gm.GetBound().low().y, gm.GetBound().low().z,
+                       gm.GetBound().high().x, gm.GetBound().high().y, gm.GetBound().high().z, group_Z, point.z);
+#endif
             }
+            //}
+            // std::cout << "trying to intersect '" << prims[entry].name << "'\n";
+        }
     };
 
     bool WorldModel::IntersectPoint(const G3D::Vector3& p, const G3D::Vector3& down, float& dist, AreaInfo& info) const

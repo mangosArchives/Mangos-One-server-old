@@ -47,15 +47,15 @@ namespace VMAP
 
     class ManagedModel
     {
-        public:
-            ManagedModel(): iModel(0), iRefCount(0) {}
-            void setModel(WorldModel* model) { iModel = model; }
-            WorldModel* getModel() { return iModel; }
-            void incRefCount() { ++iRefCount; }
-            int decRefCount() { return --iRefCount; }
-        protected:
-            WorldModel* iModel;
-            int iRefCount;
+    public:
+        ManagedModel(): iModel(0), iRefCount(0) {}
+        void setModel(WorldModel* model) { iModel = model; }
+        WorldModel* getModel() { return iModel; }
+        void incRefCount() { ++iRefCount; }
+        int decRefCount() { return --iRefCount; }
+    protected:
+        WorldModel* iModel;
+        int iRefCount;
     };
 
     typedef UNORDERED_MAP<uint32 , StaticMapTree*> InstanceTreeMap;
@@ -63,53 +63,53 @@ namespace VMAP
 
     class VMapManager2 : public IVMapManager
     {
-        protected:
-            // Tree to check collision
-            ModelFileMap iLoadedModelFiles;
-            InstanceTreeMap iInstanceMapTrees;
+    protected:
+        // Tree to check collision
+        ModelFileMap iLoadedModelFiles;
+        InstanceTreeMap iInstanceMapTrees;
 
-            bool _loadMap(uint32 pMapId, const std::string& basePath, uint32 tileX, uint32 tileY);
-            /* void _unloadMap(uint32 pMapId, uint32 x, uint32 y) override override; */
+        bool _loadMap(uint32 pMapId, const std::string& basePath, uint32 tileX, uint32 tileY);
+        /* void _unloadMap(uint32 pMapId, uint32 x, uint32 y) override override; */
 
-        public:
-            // public for debug
-            G3D::Vector3 convertPositionToInternalRep(float x, float y, float z) const;
-            G3D::Vector3 convertPositionToMangosRep(float x, float y, float z) const;
-            static std::string getMapFileName(unsigned int pMapId);
+    public:
+        // public for debug
+        G3D::Vector3 convertPositionToInternalRep(float x, float y, float z) const;
+        G3D::Vector3 convertPositionToMangosRep(float x, float y, float z) const;
+        static std::string getMapFileName(unsigned int pMapId);
 
-            VMapManager2();
-            ~VMapManager2(void);
+        VMapManager2();
+        ~VMapManager2(void);
 
-            VMAPLoadResult loadMap(const char* pBasePath, unsigned int pMapId, int x, int y) override;
+        VMAPLoadResult loadMap(const char* pBasePath, unsigned int pMapId, int x, int y) override;
 
-            void unloadMap(unsigned int pMapId, int x, int y) override;
-            void unloadMap(unsigned int pMapId) override;
+        void unloadMap(unsigned int pMapId, int x, int y) override;
+        void unloadMap(unsigned int pMapId) override;
 
-            bool isInLineOfSight(unsigned int pMapId, float x1, float y1, float z1, float x2, float y2, float z2) override ;
-            /**
-            fill the hit pos and return true, if an object was hit
-            */
-            bool getObjectHitPos(unsigned int pMapId, float x1, float y1, float z1, float x2, float y2, float z2, float& rx, float& ry, float& rz, float pModifyDist) override;
-            float getHeight(unsigned int pMapId, float x, float y, float z, float maxSearchDist) override;
+        bool isInLineOfSight(unsigned int pMapId, float x1, float y1, float z1, float x2, float y2, float z2) override ;
+        /**
+        fill the hit pos and return true, if an object was hit
+        */
+        bool getObjectHitPos(unsigned int pMapId, float x1, float y1, float z1, float x2, float y2, float z2, float& rx, float& ry, float& rz, float pModifyDist) override;
+        float getHeight(unsigned int pMapId, float x, float y, float z, float maxSearchDist) override;
 
-            bool processCommand(char* pCommand) override { return false; }      // for debug and extensions
+        bool processCommand(char* pCommand) override { return false; }      // for debug and extensions
 
-            bool getAreaInfo(unsigned int pMapId, float x, float y, float& z, uint32& flags, int32& adtId, int32& rootId, int32& groupId) const override;
-            bool GetLiquidLevel(uint32 pMapId, float x, float y, float z, uint8 ReqLiquidType, float& level, float& floor, uint32& type) const override;
+        bool getAreaInfo(unsigned int pMapId, float x, float y, float& z, uint32& flags, int32& adtId, int32& rootId, int32& groupId) const override;
+        bool GetLiquidLevel(uint32 pMapId, float x, float y, float z, uint8 ReqLiquidType, float& level, float& floor, uint32& type) const override;
 
-            WorldModel* acquireModelInstance(const std::string& basepath, const std::string& filename);
-            void releaseModelInstance(const std::string& filename);
+        WorldModel* acquireModelInstance(const std::string& basepath, const std::string& filename);
+        void releaseModelInstance(const std::string& filename);
 
-            // what's the use of this? o.O
-            virtual std::string getDirFileName(unsigned int pMapId, int x, int y) const override
-            {
-                return getMapFileName(pMapId);
-            }
-            virtual bool existsMap(const char* pBasePath, unsigned int pMapId, int x, int y) override;
+        // what's the use of this? o.O
+        virtual std::string getDirFileName(unsigned int pMapId, int x, int y) const override
+        {
+            return getMapFileName(pMapId);
+        }
+        virtual bool existsMap(const char* pBasePath, unsigned int pMapId, int x, int y) override;
 
 #ifdef MMAP_GENERATOR
-        public:
-            void getInstanceMapTree(InstanceTreeMap& instanceMapTree);
+    public:
+        void getInstanceMapTree(InstanceTreeMap& instanceMapTree);
 #endif
     };
 }

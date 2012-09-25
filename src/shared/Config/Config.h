@@ -27,25 +27,25 @@ class ACE_Configuration_Heap;
 
 class MANGOS_DLL_SPEC Config
 {
-    public:
+public:
 
-        Config();
-        ~Config();
+    Config();
+    ~Config();
 
-        bool SetSource(const char* file);
-        bool Reload();
+    bool SetSource(const char* file);
+    bool Reload();
 
-        std::string GetStringDefault(const char* name, const char* def);
-        bool GetBoolDefault(const char* name, const bool def = false);
-        int32 GetIntDefault(const char* name, const int32 def);
-        float GetFloatDefault(const char* name, const float def);
+    std::string GetStringDefault(const char* name, const char* def);
+    bool GetBoolDefault(const char* name, const bool def = false);
+    int32 GetIntDefault(const char* name, const int32 def);
+    float GetFloatDefault(const char* name, const float def);
 
-        std::string GetFilename() const { return mFilename; }
+    std::string GetFilename() const { return mFilename; }
 
-    private:
+private:
 
-        std::string mFilename;
-        ACE_Configuration_Heap* mConf;
+    std::string mFilename;
+    ACE_Configuration_Heap* mConf;
 };
 
 #define sConfig MaNGOS::Singleton<Config>::Instance()

@@ -357,7 +357,7 @@ void OutdoorPvPNA::ProcessCaptureEvent(GameObject* go, Team team)
     SendUpdateWorldState(WORLD_STATE_NA_GUARDS_LEFT, m_guardsLeft);
 
     BuffTeam(m_zoneOwner, SPELL_STRENGTH_HALAANI);
-    sWorld.SendDefenseMessage(ZONE_ID_NAGRAND, m_zoneOwner == ALLIANCE ? LANG_OPVP_NA_CAPTURE_A: LANG_OPVP_NA_CAPTURE_H);
+    sWorld.SendDefenseMessage(ZONE_ID_NAGRAND, m_zoneOwner == ALLIANCE ? LANG_OPVP_NA_CAPTURE_A : LANG_OPVP_NA_CAPTURE_H);
 }
 
 // Handle the gameobjects spawn/despawn depending on the controller faction
@@ -553,7 +553,7 @@ void OutdoorPvPNA::UnlockHalaa(const WorldObject* objRef)
 {
     if (GameObject* go = objRef->GetMap()->GetGameObject(m_capturePoint))
         go->SetCapturePointSlider(m_zoneOwner == ALLIANCE ? CAPTURE_SLIDER_ALLIANCE : CAPTURE_SLIDER_HORDE);
-        // no banner visual update needed because it already has the correct one
+    // no banner visual update needed because it already has the correct one
     else
         // if grid is unloaded, resetting the slider value is enough
         sOutdoorPvPMgr.SetCapturePointSlider(m_capturePoint, m_zoneOwner == ALLIANCE ? CAPTURE_SLIDER_ALLIANCE : CAPTURE_SLIDER_HORDE);

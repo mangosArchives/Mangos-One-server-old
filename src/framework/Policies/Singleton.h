@@ -38,29 +38,29 @@ namespace MaNGOS
              >
     class MANGOS_DLL_DECL Singleton
     {
-        public:
+    public:
 
-            static T& Instance();
+        static T& Instance();
 
-        protected:
+    protected:
 
-            Singleton()
-            {
-            }
+        Singleton()
+        {
+        }
 
-        private:
+    private:
 
-            // Prohibited actions...this does not prevent hijacking.
-            Singleton(const Singleton&);
-            Singleton& operator=(const Singleton&);
+        // Prohibited actions...this does not prevent hijacking.
+        Singleton(const Singleton&);
+        Singleton& operator=(const Singleton&);
 
-            // Singleton Helpers
-            static void DestroySingleton();
+        // Singleton Helpers
+        static void DestroySingleton();
 
-            // data structure
-            typedef typename ThreadingModel::Lock Guard;
-            static T* si_instance;
-            static bool si_destroyed;
+        // data structure
+        typedef typename ThreadingModel::Lock Guard;
+        static T* si_instance;
+        static bool si_destroyed;
     };
 }
 

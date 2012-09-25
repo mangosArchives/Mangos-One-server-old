@@ -29,8 +29,8 @@
 /// Heartbeat thread for the World
 class WorldRunnable : public ACE_Based::Runnable
 {
-    public:
-        void run() override;
+public:
+    void run() override;
 };
 #endif
 /// @}

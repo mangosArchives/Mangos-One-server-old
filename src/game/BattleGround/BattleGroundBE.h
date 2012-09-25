@@ -22,34 +22,34 @@ class BattleGround;
 
 class BattleGroundBEScore : public BattleGroundScore
 {
-    public:
-        BattleGroundBEScore() {};
-        virtual ~BattleGroundBEScore() {};
+public:
+    BattleGroundBEScore() {};
+    virtual ~BattleGroundBEScore() {};
 };
 
 class BattleGroundBE : public BattleGround
 {
-        friend class BattleGroundMgr;
+    friend class BattleGroundMgr;
 
-    public:
-        BattleGroundBE();
-        ~BattleGroundBE();
-        void Update(uint32 diff) override;
+public:
+    BattleGroundBE();
+    ~BattleGroundBE();
+    void Update(uint32 diff) override;
 
-        /* inherited from BattlegroundClass */
-        virtual void AddPlayer(Player* plr) override;
-        virtual void StartingEventCloseDoors() override;
-        virtual void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    virtual void AddPlayer(Player* plr) override;
+    virtual void StartingEventCloseDoors() override;
+    virtual void StartingEventOpenDoors() override;
 
-        void RemovePlayer(Player* plr, ObjectGuid guid) override;
-        void HandleAreaTrigger(Player* source, uint32 trigger) override;
-        bool SetupBattleGround() override;
-        virtual void Reset() override;
-        virtual void FillInitialWorldStates(WorldPacket& d, uint32& count) override;
-        void HandleKillPlayer(Player* player, Player* killer) override;
-        bool HandlePlayerUnderMap(Player* plr) override;
+    void RemovePlayer(Player* plr, ObjectGuid guid) override;
+    void HandleAreaTrigger(Player* source, uint32 trigger) override;
+    bool SetupBattleGround() override;
+    virtual void Reset() override;
+    virtual void FillInitialWorldStates(WorldPacket& d, uint32& count) override;
+    void HandleKillPlayer(Player* player, Player* killer) override;
+    bool HandlePlayerUnderMap(Player* plr) override;
 
-        /* Scorekeeping */
-        void UpdatePlayerScore(Player* source, uint32 type, uint32 value) override;
+    /* Scorekeeping */
+    void UpdatePlayerScore(Player* source, uint32 type, uint32 value) override;
 };
 #endif

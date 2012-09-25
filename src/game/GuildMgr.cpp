@@ -134,10 +134,10 @@ void GuildMgr::LoadGuilds()
 
         Guild* newGuild = new Guild;
         if (!newGuild->LoadGuildFromDB(result) ||
-                !newGuild->LoadRanksFromDB(guildRanksResult) ||
-                !newGuild->LoadMembersFromDB(guildMembersResult) ||
-                !newGuild->LoadBankRightsFromDB(guildBankTabRightsResult) ||
-                !newGuild->CheckGuildStructure()
+            !newGuild->LoadRanksFromDB(guildRanksResult) ||
+            !newGuild->LoadMembersFromDB(guildMembersResult) ||
+            !newGuild->LoadBankRightsFromDB(guildBankTabRightsResult) ||
+            !newGuild->CheckGuildStructure()
            )
         {
             newGuild->Disband();

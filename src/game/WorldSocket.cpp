@@ -240,7 +240,7 @@ int WorldSocket::handle_input(ACE_HANDLE)
         case -1 :
         {
             if ((errno == EWOULDBLOCK) ||
-                    (errno == EAGAIN))
+                (errno == EAGAIN))
             {
                 return Update();                            // interesting line ,isn't it ?
             }
@@ -510,7 +510,7 @@ int WorldSocket::cancel_wakeup_output(GuardType& g)
     g.release();
 
     if (reactor()->cancel_wakeup
-            (this, ACE_Event_Handler::WRITE_MASK) == -1)
+        (this, ACE_Event_Handler::WRITE_MASK) == -1)
     {
         // would be good to store errno from reactor with errno guard
         sLog.outError("WorldSocket::cancel_wakeup_output");
@@ -530,7 +530,7 @@ int WorldSocket::schedule_wakeup_output(GuardType& g)
     g.release();
 
     if (reactor()->schedule_wakeup
-            (this, ACE_Event_Handler::WRITE_MASK) == -1)
+        (this, ACE_Event_Handler::WRITE_MASK) == -1)
     {
         sLog.outError("WorldSocket::schedule_wakeup_output");
         return -1;

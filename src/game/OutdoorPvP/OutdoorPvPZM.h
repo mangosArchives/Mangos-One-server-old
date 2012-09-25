@@ -98,7 +98,7 @@ enum
     WORLD_STATE_ZM_FLAG_READY_ALLIANCE      = 2655,
     WORLD_STATE_ZM_FLAG_NOT_READY_ALLIANCE  = 2656
 
-    //WORLD_STATE_ZM_UNK                    = 2653
+            //WORLD_STATE_ZM_UNK                    = 2653
 };
 
 struct ZangarmarshTowerEvent
@@ -130,54 +130,54 @@ static const uint32 zangarmarshTowers[MAX_ZM_TOWERS] = {GO_ZANGA_BANNER_EAST, GO
 
 class OutdoorPvPZM : public OutdoorPvP
 {
-    public:
-        OutdoorPvPZM();
+public:
+    OutdoorPvPZM();
 
-        void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
-        void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
-        void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
-        void SendRemoveWorldStates(Player* player) override;
+    void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
+    void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
+    void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        bool HandleEvent(uint32 eventId, GameObject* go) override;
+    bool HandleEvent(uint32 eventId, GameObject* go) override;
 
-        void HandleCreatureCreate(Creature* creature) override;
-        void HandleGameObjectCreate(GameObject* go) override;
+    void HandleCreatureCreate(Creature* creature) override;
+    void HandleGameObjectCreate(GameObject* go) override;
 
-        void HandlePlayerKillInsideArea(Player* player, Unit* victim) override;
-        bool HandleGameObjectUse(Player* player, GameObject* go) override;
-        //bool HandleDropFlag(Player* player, uint32 spellId) override;
+    void HandlePlayerKillInsideArea(Player* player, Unit* victim) override;
+    bool HandleGameObjectUse(Player* player, GameObject* go) override;
+    //bool HandleDropFlag(Player* player, uint32 spellId) override;
 
-    private:
-        // process capture events
-        bool ProcessCaptureEvent(GameObject* go, uint32 towerId, Team team, uint32 newWorldState, uint32 newMapState);
+private:
+    // process capture events
+    bool ProcessCaptureEvent(GameObject* go, uint32 towerId, Team team, uint32 newWorldState, uint32 newMapState);
 
-        // handles scout world states
-        void UpdateScoutState(Team team, bool spawned);
+    // handles scout world states
+    void UpdateScoutState(Team team, bool spawned);
 
-        // respawn npcs which act as an artkit visual
-        void SetBeaconArtKit(const WorldObject* objRef, ObjectGuid creatureGuid, uint32 auraId);
+    // respawn npcs which act as an artkit visual
+    void SetBeaconArtKit(const WorldObject* objRef, ObjectGuid creatureGuid, uint32 auraId);
 
-        uint32 m_towerWorldState[MAX_ZM_TOWERS];
-        uint32 m_towerMapState[MAX_ZM_TOWERS];
+    uint32 m_towerWorldState[MAX_ZM_TOWERS];
+    uint32 m_towerMapState[MAX_ZM_TOWERS];
 
-        Team m_towerOwner[MAX_ZM_TOWERS];
-        Team m_graveyardOwner;
+    Team m_towerOwner[MAX_ZM_TOWERS];
+    Team m_graveyardOwner;
 
-        uint32 m_graveyardWorldState;
-        uint32 m_scoutWorldStateAlliance;
-        uint32 m_scoutWorldStateHorde;
-        uint8 m_towersAlliance;
-        uint8 m_towersHorde;
+    uint32 m_graveyardWorldState;
+    uint32 m_scoutWorldStateAlliance;
+    uint32 m_scoutWorldStateHorde;
+    uint8 m_towersAlliance;
+    uint8 m_towersHorde;
 
-        ObjectGuid m_towerBanners[MAX_ZM_TOWERS];
-        ObjectGuid m_graveyardBannerAlliance;
-        ObjectGuid m_graveyardBannerHorde;
-        ObjectGuid m_graveyardBannerNeutral;
+    ObjectGuid m_towerBanners[MAX_ZM_TOWERS];
+    ObjectGuid m_graveyardBannerAlliance;
+    ObjectGuid m_graveyardBannerHorde;
+    ObjectGuid m_graveyardBannerNeutral;
 
-        ObjectGuid m_beamTowerBlue[MAX_ZM_TOWERS];
-        ObjectGuid m_beamTowerRed[MAX_ZM_TOWERS];
-        ObjectGuid m_beamGraveyardBlue;
-        ObjectGuid m_beamGraveyardRed;
+    ObjectGuid m_beamTowerBlue[MAX_ZM_TOWERS];
+    ObjectGuid m_beamTowerRed[MAX_ZM_TOWERS];
+    ObjectGuid m_beamGraveyardBlue;
+    ObjectGuid m_beamGraveyardRed;
 };
 
 #endif

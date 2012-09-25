@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2005-2012 MaNGOS <http://getmangos.com/>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ */
+
 #include "mpq_libmpq.h"
 #include <deque>
 #include <stdio.h>
@@ -8,8 +26,10 @@ MPQArchive::MPQArchive(const char* filename)
 {
     int result = libmpq_archive_open(&mpq_a, (unsigned char*)filename);
     printf("Opening %s\n", filename);
-    if(result) {
-        switch(result) {
+    if (result)
+    {
+        switch (result)
+        {
             case LIBMPQ_EFILE :                   /* error on file operation */
                 printf("Error opening archive '%s': File operation Error\n", filename);
                 break;
@@ -61,7 +81,7 @@ MPQFile::MPQFile(const char* filename):
     pointer(0),
     size(0)
 {
-    for(ArchiveSet::iterator i=gOpenArchives.begin(); i!=gOpenArchives.end();++i)
+    for (ArchiveSet::iterator i = gOpenArchives.begin(); i != gOpenArchives.end(); ++i)
     {
         mpq_archive &mpq_a = (*i)->mpq_a;
 
@@ -80,7 +100,8 @@ MPQFile::MPQFile(const char* filename):
         // Found!
         size = libmpq_file_info(&mpq_a, LIBMPQ_FILE_UNCOMPRESSED_SIZE, fileno);
         // HACK: in patch.mpq some files don't want to open and give 1 for filesize
-        if (size<=1) {
+        if (size <= 1)
+        {
             eof = true;
             buffer = 0;
             return;
@@ -101,7 +122,8 @@ size_t MPQFile::read(void* dest, size_t bytes)
     if (eof) return 0;
 
     size_t rpos = pointer + bytes;
-    if (rpos > size) {
+    if (rpos > size)
+    {
         bytes = size - pointer;
         eof = true;
     }

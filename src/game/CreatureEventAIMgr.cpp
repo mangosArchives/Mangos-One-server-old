@@ -494,7 +494,7 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Scripts()
 
             for (uint32 j = 0; j < MAX_ACTIONS; ++j)
             {
-                uint16 action_type = fields[10+(j*4)].GetUInt16();
+                uint16 action_type = fields[10 + (j * 4)].GetUInt16();
                 if (action_type >= ACTION_T_END)
                 {
                     sLog.outErrorDb("CreatureEventAI:  Event %u Action %u has incorrect action type (%u), replace by ACTION_T_NONE.", i, j + 1, action_type);
@@ -505,9 +505,9 @@ void CreatureEventAIMgr::LoadCreatureEventAI_Scripts()
                 CreatureEventAI_Action& action = temp.action[j];
 
                 action.type = EventAI_ActionType(action_type);
-                action.raw.param1 = fields[11+(j*4)].GetUInt32();
-                action.raw.param2 = fields[12+(j*4)].GetUInt32();
-                action.raw.param3 = fields[13+(j*4)].GetUInt32();
+                action.raw.param1 = fields[11 + (j * 4)].GetUInt32();
+                action.raw.param2 = fields[12 + (j * 4)].GetUInt32();
+                action.raw.param3 = fields[13 + (j * 4)].GetUInt32();
 
                 // Report any errors in actions
                 switch (action.type)

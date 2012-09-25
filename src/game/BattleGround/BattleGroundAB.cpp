@@ -243,7 +243,7 @@ int32 BattleGroundAB::_GetNodeNameId(uint8 node)
         case BG_AB_NODE_STABLES:    return LANG_BG_AB_NODE_STABLES;
         case BG_AB_NODE_BLACKSMITH: return LANG_BG_AB_NODE_BLACKSMITH;
         case BG_AB_NODE_FARM:       return LANG_BG_AB_NODE_FARM;
-        case BG_AB_NODE_LUMBER_MILL:return LANG_BG_AB_NODE_LUMBER_MILL;
+        case BG_AB_NODE_LUMBER_MILL: return LANG_BG_AB_NODE_LUMBER_MILL;
         case BG_AB_NODE_GOLD_MINE:  return LANG_BG_AB_NODE_GOLD_MINE;
         default:
             MANGOS_ASSERT(0);
@@ -437,8 +437,8 @@ bool BattleGroundAB::SetupBattleGround()
     for (uint8 i = 0; i < BG_AB_NODES_MAX; ++i)
     {
         if (!AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i, Buff_Entries[0], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, sin(BG_AB_BuffPositions[i][3] / 2), cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY)
-                || !AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i + 1, Buff_Entries[1], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, sin(BG_AB_BuffPositions[i][3] / 2), cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY)
-                || !AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i + 2, Buff_Entries[2], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, sin(BG_AB_BuffPositions[i][3] / 2), cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY)
+            || !AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i + 1, Buff_Entries[1], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, sin(BG_AB_BuffPositions[i][3] / 2), cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY)
+            || !AddObject(BG_AB_OBJECT_SPEEDBUFF_STABLES + 3 * i + 2, Buff_Entries[2], BG_AB_BuffPositions[i][0], BG_AB_BuffPositions[i][1], BG_AB_BuffPositions[i][2], BG_AB_BuffPositions[i][3], 0, 0, sin(BG_AB_BuffPositions[i][3] / 2), cos(BG_AB_BuffPositions[i][3] / 2), RESPAWN_ONE_DAY)
            )
             sLog.outErrorDb("BatteGroundAB: Failed to spawn buff object!");
     }
@@ -525,7 +525,7 @@ WorldSafeLocsEntry const* BattleGroundAB::GetClosestGraveYard(Player* player)
     }
     // If not, place ghost on starting location
     if (!good_entry)
-        good_entry = sWorldSafeLocsStore.LookupEntry(BG_AB_GraveyardIds[teamIndex+5]);
+        good_entry = sWorldSafeLocsStore.LookupEntry(BG_AB_GraveyardIds[teamIndex + 5]);
 
     return good_entry;
 }

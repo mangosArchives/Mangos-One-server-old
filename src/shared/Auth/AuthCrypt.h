@@ -26,20 +26,20 @@ class BigNumber;
 
 class AuthCrypt
 {
-    public:
-        AuthCrypt();
-        ~AuthCrypt();
+public:
+    AuthCrypt();
+    ~AuthCrypt();
 
-        void Init(BigNumber* K);
+    void Init(BigNumber* K);
 
-        void DecryptRecv(uint8*, size_t);
-        void EncryptSend(uint8*, size_t);
+    void DecryptRecv(uint8*, size_t);
+    void EncryptSend(uint8*, size_t);
 
-        bool IsInitialized() { return _initialized; }
+    bool IsInitialized() { return _initialized; }
 
-    private:
-        std::vector<uint8> _key;
-        uint8 _send_i, _send_j, _recv_i, _recv_j;
-        bool _initialized;
+private:
+    std::vector<uint8> _key;
+    uint8 _send_i, _send_j, _recv_i, _recv_j;
+    bool _initialized;
 };
 #endif

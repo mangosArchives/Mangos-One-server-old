@@ -50,15 +50,15 @@ enum CinematicsSkipMode
 
 class LoginQueryHolder : public SqlQueryHolder
 {
-    private:
-        uint32 m_accountId;
-        ObjectGuid m_guid;
-    public:
-        LoginQueryHolder(uint32 accountId, ObjectGuid guid)
-            : m_accountId(accountId), m_guid(guid) { }
-        ObjectGuid GetGuid() const { return m_guid; }
-        uint32 GetAccountId() const { return m_accountId; }
-        bool Initialize();
+private:
+    uint32 m_accountId;
+    ObjectGuid m_guid;
+public:
+    LoginQueryHolder(uint32 accountId, ObjectGuid guid)
+        : m_accountId(accountId), m_guid(guid) { }
+    ObjectGuid GetGuid() const { return m_guid; }
+    uint32 GetAccountId() const { return m_accountId; }
+    bool Initialize();
 };
 
 bool LoginQueryHolder::Initialize()
@@ -105,28 +105,28 @@ bool LoginQueryHolder::Initialize()
 // instead pass an account id to this handler
 class CharacterHandler
 {
-    public:
-        void HandleCharEnumCallback(QueryResult* result, uint32 account)
+public:
+    void HandleCharEnumCallback(QueryResult* result, uint32 account)
+    {
+        WorldSession* session = sWorld.FindSession(account);
+        if (!session)
         {
-            WorldSession* session = sWorld.FindSession(account);
-            if (!session)
-            {
-                delete result;
-                return;
-            }
-            session->HandleCharEnum(result);
+            delete result;
+            return;
         }
-        void HandlePlayerLoginCallback(QueryResult * /*dummy*/, SqlQueryHolder* holder)
+        session->HandleCharEnum(result);
+    }
+    void HandlePlayerLoginCallback(QueryResult * /*dummy*/, SqlQueryHolder* holder)
+    {
+        if (!holder) return;
+        WorldSession* session = sWorld.FindSession(((LoginQueryHolder*)holder)->GetAccountId());
+        if (!session)
         {
-            if (!holder) return;
-            WorldSession* session = sWorld.FindSession(((LoginQueryHolder*)holder)->GetAccountId());
-            if (!session)
-            {
-                delete holder;
-                return;
-            }
-            session->HandlePlayerLogin((LoginQueryHolder*)holder);
+            delete holder;
+            return;
         }
+        session->HandlePlayerLogin((LoginQueryHolder*)holder);
+    }
 } chrHandler;
 
 void WorldSession::HandleCharEnum(QueryResult* result)

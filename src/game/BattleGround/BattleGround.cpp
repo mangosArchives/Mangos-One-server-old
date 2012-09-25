@@ -38,162 +38,162 @@ namespace MaNGOS
 {
     class BattleGroundChatBuilder
     {
-        public:
-            BattleGroundChatBuilder(ChatMsg msgtype, int32 textId, Player const* source, va_list* args = NULL)
-                : i_msgtype(msgtype), i_textId(textId), i_source(source), i_args(args) {}
-            void operator()(WorldPacket& data, int32 loc_idx)
+    public:
+        BattleGroundChatBuilder(ChatMsg msgtype, int32 textId, Player const* source, va_list* args = NULL)
+            : i_msgtype(msgtype), i_textId(textId), i_source(source), i_args(args) {}
+        void operator()(WorldPacket& data, int32 loc_idx)
+        {
+            char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+
+            if (i_args)
             {
-                char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+                // we need copy va_list before use or original va_list will corrupted
+                va_list ap;
+                va_copy(ap, *i_args);
 
-                if (i_args)
-                {
-                    // we need copy va_list before use or original va_list will corrupted
-                    va_list ap;
-                    va_copy(ap, *i_args);
+                char str [2048];
+                vsnprintf(str, 2048, text, ap);
+                va_end(ap);
 
-                    char str [2048];
-                    vsnprintf(str, 2048, text, ap);
-                    va_end(ap);
-
-                    do_helper(data, &str[0]);
-                }
-                else
-                    do_helper(data, text);
+                do_helper(data, &str[0]);
             }
-        private:
-            void do_helper(WorldPacket& data, char const* text)
-            {
-                ObjectGuid targetGuid = i_source ? i_source ->GetObjectGuid() : ObjectGuid();
+            else
+                do_helper(data, text);
+        }
+    private:
+        void do_helper(WorldPacket& data, char const* text)
+        {
+            ObjectGuid targetGuid = i_source ? i_source ->GetObjectGuid() : ObjectGuid();
 
-                data << uint8(i_msgtype);
-                data << uint32(LANG_UNIVERSAL);
-                data << ObjectGuid(targetGuid);             // there 0 for BG messages
-                data << uint32(0);                          // can be chat msg group or something
-                data << ObjectGuid(targetGuid);
-                data << uint32(strlen(text) + 1);
-                data << text;
-                data << uint8(i_source ? i_source->GetChatTag() : CHAT_TAG_NONE);
-            }
+            data << uint8(i_msgtype);
+            data << uint32(LANG_UNIVERSAL);
+            data << ObjectGuid(targetGuid);             // there 0 for BG messages
+            data << uint32(0);                          // can be chat msg group or something
+            data << ObjectGuid(targetGuid);
+            data << uint32(strlen(text) + 1);
+            data << text;
+            data << uint8(i_source ? i_source->GetChatTag() : CHAT_TAG_NONE);
+        }
 
-            ChatMsg i_msgtype;
-            int32 i_textId;
-            Player const* i_source;
-            va_list* i_args;
+        ChatMsg i_msgtype;
+        int32 i_textId;
+        Player const* i_source;
+        va_list* i_args;
     };
 
     class BattleGroundYellBuilder
     {
-        public:
-            BattleGroundYellBuilder(uint32 language, int32 textId, Creature const* source, va_list* args = NULL)
-                : i_language(language), i_textId(textId), i_source(source), i_args(args) {}
-            void operator()(WorldPacket& data, int32 loc_idx)
+    public:
+        BattleGroundYellBuilder(uint32 language, int32 textId, Creature const* source, va_list* args = NULL)
+            : i_language(language), i_textId(textId), i_source(source), i_args(args) {}
+        void operator()(WorldPacket& data, int32 loc_idx)
+        {
+            char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+
+            if (i_args)
             {
-                char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+                // we need copy va_list before use or original va_list will corrupted
+                va_list ap;
+                va_copy(ap, *i_args);
 
-                if (i_args)
-                {
-                    // we need copy va_list before use or original va_list will corrupted
-                    va_list ap;
-                    va_copy(ap, *i_args);
+                char str [2048];
+                vsnprintf(str, 2048, text, ap);
+                va_end(ap);
 
-                    char str [2048];
-                    vsnprintf(str, 2048, text, ap);
-                    va_end(ap);
-
-                    do_helper(data, &str[0]);
-                }
-                else
-                    do_helper(data, text);
+                do_helper(data, &str[0]);
             }
-        private:
-            void do_helper(WorldPacket& data, char const* text)
-            {
-                // copyied from BuildMonsterChat
-                data << uint8(CHAT_MSG_MONSTER_YELL);
-                data << uint32(i_language);
-                data << ObjectGuid(i_source->GetObjectGuid());
-                data << uint32(0);                          // 2.1.0
-                data << uint32(strlen(i_source->GetName()) + 1);
-                data << i_source->GetName();
-                data << ObjectGuid();                       // Unit Target - isn't important for bgs
-                data << uint32(strlen(text) + 1);
-                data << text;
-                data << uint8(0);                           // ChatTag - for bgs allways 0?
-            }
+            else
+                do_helper(data, text);
+        }
+    private:
+        void do_helper(WorldPacket& data, char const* text)
+        {
+            // copyied from BuildMonsterChat
+            data << uint8(CHAT_MSG_MONSTER_YELL);
+            data << uint32(i_language);
+            data << ObjectGuid(i_source->GetObjectGuid());
+            data << uint32(0);                          // 2.1.0
+            data << uint32(strlen(i_source->GetName()) + 1);
+            data << i_source->GetName();
+            data << ObjectGuid();                       // Unit Target - isn't important for bgs
+            data << uint32(strlen(text) + 1);
+            data << text;
+            data << uint8(0);                           // ChatTag - for bgs allways 0?
+        }
 
-            uint32 i_language;
-            int32 i_textId;
-            Creature const* i_source;
-            va_list* i_args;
+        uint32 i_language;
+        int32 i_textId;
+        Creature const* i_source;
+        va_list* i_args;
     };
 
 
     class BattleGround2ChatBuilder
     {
-        public:
-            BattleGround2ChatBuilder(ChatMsg msgtype, int32 textId, Player const* source, int32 arg1, int32 arg2)
-                : i_msgtype(msgtype), i_textId(textId), i_source(source), i_arg1(arg1), i_arg2(arg2) {}
-            void operator()(WorldPacket& data, int32 loc_idx)
-            {
-                char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
-                char const* arg1str = i_arg1 ? sObjectMgr.GetMangosString(i_arg1, loc_idx) : "";
-                char const* arg2str = i_arg2 ? sObjectMgr.GetMangosString(i_arg2, loc_idx) : "";
+    public:
+        BattleGround2ChatBuilder(ChatMsg msgtype, int32 textId, Player const* source, int32 arg1, int32 arg2)
+            : i_msgtype(msgtype), i_textId(textId), i_source(source), i_arg1(arg1), i_arg2(arg2) {}
+        void operator()(WorldPacket& data, int32 loc_idx)
+        {
+            char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+            char const* arg1str = i_arg1 ? sObjectMgr.GetMangosString(i_arg1, loc_idx) : "";
+            char const* arg2str = i_arg2 ? sObjectMgr.GetMangosString(i_arg2, loc_idx) : "";
 
-                char str [2048];
-                snprintf(str, 2048, text, arg1str, arg2str);
+            char str [2048];
+            snprintf(str, 2048, text, arg1str, arg2str);
 
-                ObjectGuid targetGuid = i_source  ? i_source ->GetObjectGuid() : ObjectGuid();
+            ObjectGuid targetGuid = i_source  ? i_source ->GetObjectGuid() : ObjectGuid();
 
-                data << uint8(i_msgtype);
-                data << uint32(LANG_UNIVERSAL);
-                data << ObjectGuid(targetGuid);             // there 0 for BG messages
-                data << uint32(0);                          // can be chat msg group or something
-                data << ObjectGuid(targetGuid);
-                data << uint32(strlen(str) + 1);
-                data << str;
-                data << uint8(i_source ? i_source->GetChatTag() : CHAT_TAG_NONE);
-            }
-        private:
+            data << uint8(i_msgtype);
+            data << uint32(LANG_UNIVERSAL);
+            data << ObjectGuid(targetGuid);             // there 0 for BG messages
+            data << uint32(0);                          // can be chat msg group or something
+            data << ObjectGuid(targetGuid);
+            data << uint32(strlen(str) + 1);
+            data << str;
+            data << uint8(i_source ? i_source->GetChatTag() : CHAT_TAG_NONE);
+        }
+    private:
 
-            ChatMsg i_msgtype;
-            int32 i_textId;
-            Player const* i_source;
-            int32 i_arg1;
-            int32 i_arg2;
+        ChatMsg i_msgtype;
+        int32 i_textId;
+        Player const* i_source;
+        int32 i_arg1;
+        int32 i_arg2;
     };
 
     class BattleGround2YellBuilder
     {
-        public:
-            BattleGround2YellBuilder(uint32 language, int32 textId, Creature const* source, int32 arg1, int32 arg2)
-                : i_language(language), i_textId(textId), i_source(source), i_arg1(arg1), i_arg2(arg2) {}
-            void operator()(WorldPacket& data, int32 loc_idx)
-            {
-                char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
-                char const* arg1str = i_arg1 ? sObjectMgr.GetMangosString(i_arg1, loc_idx) : "";
-                char const* arg2str = i_arg2 ? sObjectMgr.GetMangosString(i_arg2, loc_idx) : "";
+    public:
+        BattleGround2YellBuilder(uint32 language, int32 textId, Creature const* source, int32 arg1, int32 arg2)
+            : i_language(language), i_textId(textId), i_source(source), i_arg1(arg1), i_arg2(arg2) {}
+        void operator()(WorldPacket& data, int32 loc_idx)
+        {
+            char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+            char const* arg1str = i_arg1 ? sObjectMgr.GetMangosString(i_arg1, loc_idx) : "";
+            char const* arg2str = i_arg2 ? sObjectMgr.GetMangosString(i_arg2, loc_idx) : "";
 
-                char str [2048];
-                snprintf(str, 2048, text, arg1str, arg2str);
-                // copyied from BuildMonsterChat
-                data << uint8(CHAT_MSG_MONSTER_YELL);
-                data << uint32(i_language);
-                data << ObjectGuid(i_source->GetObjectGuid());
-                data << uint32(0);                          // 2.1.0
-                data << uint32(strlen(i_source->GetName()) + 1);
-                data << i_source->GetName();
-                data << ObjectGuid();                       // Unit Target - isn't important for bgs
-                data << uint32(strlen(str) + 1);
-                data << str;
-                data << uint8(0);                           // ChatTag - for bgs allways 0?
-            }
-        private:
+            char str [2048];
+            snprintf(str, 2048, text, arg1str, arg2str);
+            // copyied from BuildMonsterChat
+            data << uint8(CHAT_MSG_MONSTER_YELL);
+            data << uint32(i_language);
+            data << ObjectGuid(i_source->GetObjectGuid());
+            data << uint32(0);                          // 2.1.0
+            data << uint32(strlen(i_source->GetName()) + 1);
+            data << i_source->GetName();
+            data << ObjectGuid();                       // Unit Target - isn't important for bgs
+            data << uint32(strlen(str) + 1);
+            data << str;
+            data << uint8(0);                           // ChatTag - for bgs allways 0?
+        }
+    private:
 
-            uint32 i_language;
-            int32 i_textId;
-            Creature const* i_source;
-            int32 i_arg1;
-            int32 i_arg2;
+        uint32 i_language;
+        int32 i_textId;
+        Creature const* i_source;
+        int32 i_arg1;
+        int32 i_arg2;
     };
 }                                                           // namespace MaNGOS
 
@@ -1498,7 +1498,7 @@ void BattleGround::SpawnEvent(uint8 event1, uint8 event2, bool spawn)
     // stop if we want to spawn something which was already spawned
     // or despawn something which was already despawned
     if (event2 == BG_EVENT_NONE || (spawn && m_ActiveEvents[event1] == event2)
-            || (!spawn && m_ActiveEvents[event1] != event2))
+        || (!spawn && m_ActiveEvents[event1] != event2))
         return;
 
     if (spawn)

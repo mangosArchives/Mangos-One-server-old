@@ -631,7 +631,7 @@ uint32 Item::GetSpell()
                 case ITEM_SUBCLASS_WEAPON_DAGGER:  return 1180;
                 case ITEM_SUBCLASS_WEAPON_THROWN:  return 2567;
                 case ITEM_SUBCLASS_WEAPON_SPEAR:   return 3386;
-                case ITEM_SUBCLASS_WEAPON_CROSSBOW:return 5011;
+                case ITEM_SUBCLASS_WEAPON_CROSSBOW: return 5011;
                 case ITEM_SUBCLASS_WEAPON_WAND:    return 5009;
                 default: return 0;
             }
@@ -713,7 +713,7 @@ void Item::SetItemRandomProperties(int32 randomPropId)
         if (item_rand)
         {
             if (GetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID) != -int32(item_rand->ID) ||
-                    !GetItemSuffixFactor())
+                !GetItemSuffixFactor())
             {
                 SetInt32Value(ITEM_FIELD_RANDOM_PROPERTIES_ID, -int32(item_rand->ID));
                 UpdateItemSuffixFactor();
@@ -966,7 +966,7 @@ bool Item::GemsFitSockets() const
     bool fits = true;
     for (uint32 enchant_slot = SOCK_ENCHANTMENT_SLOT; enchant_slot < SOCK_ENCHANTMENT_SLOT + MAX_GEM_SOCKETS; ++enchant_slot)
     {
-        uint8 SocketColor = GetProto()->Socket[enchant_slot-SOCK_ENCHANTMENT_SLOT].Color;
+        uint8 SocketColor = GetProto()->Socket[enchant_slot - SOCK_ENCHANTMENT_SLOT].Color;
 
         uint32 enchant_id = GetEnchantmentId(EnchantmentSlot(enchant_slot));
         if (!enchant_id)

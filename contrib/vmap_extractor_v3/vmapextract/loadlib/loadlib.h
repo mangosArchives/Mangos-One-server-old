@@ -52,7 +52,8 @@ typedef uint8_t            uint8;
 //
 struct file_MVER
 {
-    union{
+    union
+    {
         uint32 fcc;
         char   fcc_txt[4];
     };
@@ -60,7 +61,8 @@ struct file_MVER
     uint32 ver;
 };
 
-class FileLoader{
+class FileLoader
+{
     uint8  *data;
     uint32  data_size;
 public:

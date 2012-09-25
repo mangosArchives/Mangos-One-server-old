@@ -30,65 +30,65 @@ namespace Movement
      */
     class MANGOS_DLL_SPEC MoveSplineInit
     {
-        public:
+    public:
 
-            explicit MoveSplineInit(Unit& m);
+        explicit MoveSplineInit(Unit& m);
 
-            /* Final pass of initialization that launches spline movement.
-             * @return duration - estimated travel time
-             */
-            int32 Launch();
+        /* Final pass of initialization that launches spline movement.
+         * @return duration - estimated travel time
+         */
+        int32 Launch();
 
-            /* Adds final facing animation
-             * sets unit's facing to specified point/angle after all path done
-             * you can have only one final facing: previous will be overriden
-             */
-            void SetFacing(float angle);
-            void SetFacing(Vector3 const& point);
-            void SetFacing(const Unit* target);
+        /* Adds final facing animation
+         * sets unit's facing to specified point/angle after all path done
+         * you can have only one final facing: previous will be overriden
+         */
+        void SetFacing(float angle);
+        void SetFacing(Vector3 const& point);
+        void SetFacing(const Unit* target);
 
-            /* Initializes movement by path
-             * @param path - array of points, shouldn't be empty
-             * @param pointId - Id of fisrt point of the path. Example: when third path point will be done it will notify that pointId + 3 done
-             */
-            void MovebyPath(const PointsArray& path, int32 pointId = 0);
+        /* Initializes movement by path
+         * @param path - array of points, shouldn't be empty
+         * @param pointId - Id of fisrt point of the path. Example: when third path point will be done it will notify that pointId + 3 done
+         */
+        void MovebyPath(const PointsArray& path, int32 pointId = 0);
 
-            /* Initializes simple A to B mition, A is current unit's position, B is destination
-             */
-            void MoveTo(const Vector3& destination, bool generatePath = false, bool forceDestination = false);
-            void MoveTo(float x, float y, float z, bool generatePath = false, bool forceDestination = false);
+        /* Initializes simple A to B mition, A is current unit's position, B is destination
+         */
+        void MoveTo(const Vector3& destination, bool generatePath = false, bool forceDestination = false);
+        void MoveTo(float x, float y, float z, bool generatePath = false, bool forceDestination = false);
 
-            /* Sets Id of fisrt point of the path. When N-th path point will be done ILisener will notify that pointId + N done
-             * Needed for waypoint movement where path splitten into parts
-             */
-            void SetFirstPointId(int32 pointId) { args.path_Idx_offset = pointId; }
+        /* Sets Id of fisrt point of the path. When N-th path point will be done ILisener will notify that pointId + N done
+         * Needed for waypoint movement where path splitten into parts
+         */
+        void SetFirstPointId(int32 pointId) { args.path_Idx_offset = pointId; }
 
-            /* Enables CatmullRom spline interpolation mode, enables flying animation. Disabled by default
-             */
-            void SetFly();
-            /* Enables walk mode. Disabled by default
-             */
-            void SetWalk(bool enable);
-            /* Makes movement cyclic. Disabled by default
-             */
-            void SetCyclic();
-            /* Enables falling mode. Disabled by default
-             */
-            void SetFall();
+        /* Enables CatmullRom spline interpolation mode, enables flying animation. Disabled by default
+         */
+        void SetFly();
+        /* Enables walk mode. Disabled by default
+         */
+        void SetWalk(bool enable);
+        /* Makes movement cyclic. Disabled by default
+         */
+        void SetCyclic();
+        /* Enables falling mode. Disabled by default
+         */
+        void SetFall();
 
-            /* Sets the velocity (in case you want to have custom movement velocity)
-             * if no set, speed will be selected based on unit's speeds and current movement mode
-             * Has no effect if falling mode enabled
-             * velocity shouldn't be negative
-             */
-            void SetVelocity(float velocity);
+        /* Sets the velocity (in case you want to have custom movement velocity)
+         * if no set, speed will be selected based on unit's speeds and current movement mode
+         * Has no effect if falling mode enabled
+         * velocity shouldn't be negative
+         */
+        void SetVelocity(float velocity);
 
-            PointsArray& Path() { return args.path; }
+        PointsArray& Path() { return args.path; }
 
-        protected:
+    protected:
 
-            MoveSplineInitArgs args;
-            Unit&  unit;
+        MoveSplineInitArgs args;
+        Unit&  unit;
     };
 
     inline void MoveSplineInit::SetFly() { args.flags.flying = true;}

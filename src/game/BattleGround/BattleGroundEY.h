@@ -234,90 +234,90 @@ const BattleGroundEYCapturingPointStruct CapturingPointTypes[BG_EY_NODES_MAX] =
 
 class BattleGroundEYScore : public BattleGroundScore
 {
-    public:
-        BattleGroundEYScore() : FlagCaptures(0) {};
-        virtual ~BattleGroundEYScore() {};
-        uint32 FlagCaptures;
+public:
+    BattleGroundEYScore() : FlagCaptures(0) {};
+    virtual ~BattleGroundEYScore() {};
+    uint32 FlagCaptures;
 };
 
 class BattleGroundEY : public BattleGround
 {
-        friend class BattleGroundMgr;
+    friend class BattleGroundMgr;
 
-    public:
-        BattleGroundEY();
-        ~BattleGroundEY();
-        void Update(uint32 diff) override;
+public:
+    BattleGroundEY();
+    ~BattleGroundEY();
+    void Update(uint32 diff) override;
 
-        /* inherited from BattlegroundClass */
-        virtual void AddPlayer(Player* plr) override;
-        virtual void StartingEventCloseDoors() override;
-        virtual void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    virtual void AddPlayer(Player* plr) override;
+    virtual void StartingEventCloseDoors() override;
+    virtual void StartingEventOpenDoors() override;
 
-        /* BG Flags */
-        ObjectGuid const& GetFlagPickerGuid() const { return m_FlagKeeper; }
-        void SetFlagPicker(ObjectGuid guid) { m_FlagKeeper = guid; }
-        void ClearFlagPicker()              { m_FlagKeeper.Clear(); }
-        bool IsFlagPickedup() const         { return !m_FlagKeeper.IsEmpty(); }
-        uint8 GetFlagState() const          { return m_FlagState; }
-        void RespawnFlag(bool send_message);
-        void RespawnFlagAfterDrop();
+    /* BG Flags */
+    ObjectGuid const& GetFlagPickerGuid() const { return m_FlagKeeper; }
+    void SetFlagPicker(ObjectGuid guid) { m_FlagKeeper = guid; }
+    void ClearFlagPicker()              { m_FlagKeeper.Clear(); }
+    bool IsFlagPickedup() const         { return !m_FlagKeeper.IsEmpty(); }
+    uint8 GetFlagState() const          { return m_FlagState; }
+    void RespawnFlag(bool send_message);
+    void RespawnFlagAfterDrop();
 
-        void RemovePlayer(Player* plr, ObjectGuid guid) override;
-        void HandleAreaTrigger(Player* source, uint32 trigger) override;
-        void HandleKillPlayer(Player* player, Player* killer) override;
-        virtual WorldSafeLocsEntry const* GetClosestGraveYard(Player* player) override;
-        virtual bool SetupBattleGround() override;
-        virtual void Reset() override;
-        void UpdateTeamScore(Team team);
-        void EndBattleGround(Team winner) override;
-        void UpdatePlayerScore(Player* source, uint32 type, uint32 value) override;
-        virtual void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
-        void SetDroppedFlagGuid(ObjectGuid guid)     { m_DroppedFlagGuid = guid;}
-        void ClearDroppedFlagGuid()                  { m_DroppedFlagGuid.Clear();}
-        ObjectGuid const& GetDroppedFlagGuid() const { return m_DroppedFlagGuid;}
+    void RemovePlayer(Player* plr, ObjectGuid guid) override;
+    void HandleAreaTrigger(Player* source, uint32 trigger) override;
+    void HandleKillPlayer(Player* player, Player* killer) override;
+    virtual WorldSafeLocsEntry const* GetClosestGraveYard(Player* player) override;
+    virtual bool SetupBattleGround() override;
+    virtual void Reset() override;
+    void UpdateTeamScore(Team team);
+    void EndBattleGround(Team winner) override;
+    void UpdatePlayerScore(Player* source, uint32 type, uint32 value) override;
+    virtual void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    void SetDroppedFlagGuid(ObjectGuid guid)     { m_DroppedFlagGuid = guid;}
+    void ClearDroppedFlagGuid()                  { m_DroppedFlagGuid.Clear();}
+    ObjectGuid const& GetDroppedFlagGuid() const { return m_DroppedFlagGuid;}
 
-        /* Battleground Events */
-        virtual void EventPlayerClickedOnFlag(Player* source, GameObject* target_obj) override;
-        virtual void EventPlayerDroppedFlag(Player* source) override;
+    /* Battleground Events */
+    virtual void EventPlayerClickedOnFlag(Player* source, GameObject* target_obj) override;
+    virtual void EventPlayerDroppedFlag(Player* source) override;
 
-    private:
-        void EventPlayerCapturedFlag(Player* source, BG_EY_Nodes node);     // NOTE: virtual BattleGround::EventPlayerCapturedFlag has different parameters list
-        void EventTeamCapturedPoint(Player* source, uint32 point);
-        void EventTeamLostPoint(Player* source, uint32 point);
-        void UpdatePointsCount(Team team);
-        void UpdatePointsIcons(Team team, uint32 point);
+private:
+    void EventPlayerCapturedFlag(Player* source, BG_EY_Nodes node);     // NOTE: virtual BattleGround::EventPlayerCapturedFlag has different parameters list
+    void EventTeamCapturedPoint(Player* source, uint32 point);
+    void EventTeamLostPoint(Player* source, uint32 point);
+    void UpdatePointsCount(Team team);
+    void UpdatePointsIcons(Team team, uint32 point);
 
-        /* Point status updating procedures */
-        void CheckSomeoneLeftPoint();
-        void CheckSomeoneJoinedPoint();
-        void UpdatePointStatuses();
+    /* Point status updating procedures */
+    void CheckSomeoneLeftPoint();
+    void CheckSomeoneJoinedPoint();
+    void UpdatePointStatuses();
 
-        /* Scorekeeping */
-        uint32 GetTeamScore(Team team) const { return m_TeamScores[GetTeamIndexByTeamId(team)]; }
-        void AddPoints(Team team, uint32 points);
+    /* Scorekeeping */
+    uint32 GetTeamScore(Team team) const { return m_TeamScores[GetTeamIndexByTeamId(team)]; }
+    void AddPoints(Team team, uint32 points);
 
-        void RemovePoint(Team team, uint32 points = 1) { m_TeamScores[GetTeamIndexByTeamId(team)] -= points; }
-        void SetTeamPoint(Team team, uint32 points = 0) { m_TeamScores[GetTeamIndexByTeamId(team)] = points; }
+    void RemovePoint(Team team, uint32 points = 1) { m_TeamScores[GetTeamIndexByTeamId(team)] -= points; }
+    void SetTeamPoint(Team team, uint32 points = 0) { m_TeamScores[GetTeamIndexByTeamId(team)] = points; }
 
-        uint32 m_HonorScoreTics[2];
-        uint32 m_TeamPointsCount[BG_TEAMS_COUNT];
+    uint32 m_HonorScoreTics[2];
+    uint32 m_TeamPointsCount[BG_TEAMS_COUNT];
 
-        uint32 m_Points_Trigger[BG_EY_NODES_MAX];
+    uint32 m_Points_Trigger[BG_EY_NODES_MAX];
 
-        ObjectGuid m_FlagKeeper;                            // keepers guid
-        ObjectGuid m_DroppedFlagGuid;
-        uint8 m_FlagState;                                  // for checking flag state
-        int32 m_FlagsTimer;
-        int32 m_TowerCapCheckTimer;
+    ObjectGuid m_FlagKeeper;                            // keepers guid
+    ObjectGuid m_DroppedFlagGuid;
+    uint8 m_FlagState;                                  // for checking flag state
+    int32 m_FlagsTimer;
+    int32 m_TowerCapCheckTimer;
 
-        Team m_PointOwnedByTeam[BG_EY_NODES_MAX];
-        uint8 m_PointState[BG_EY_NODES_MAX];
-        int32 m_PointBarStatus[BG_EY_NODES_MAX];
-        GuidVector m_PlayersNearPoint[BG_EY_NODES_MAX_WITH_SPECIAL];
-        uint8 m_CurrentPointPlayersCount[2 * BG_EY_NODES_MAX];
+    Team m_PointOwnedByTeam[BG_EY_NODES_MAX];
+    uint8 m_PointState[BG_EY_NODES_MAX];
+    int32 m_PointBarStatus[BG_EY_NODES_MAX];
+    GuidVector m_PlayersNearPoint[BG_EY_NODES_MAX_WITH_SPECIAL];
+    uint8 m_CurrentPointPlayersCount[2 * BG_EY_NODES_MAX];
 
-        int32 m_PointAddingTimer;
-        uint32 m_HonorTics;
+    int32 m_PointAddingTimer;
+    uint32 m_HonorTics;
 };
 #endif

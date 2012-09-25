@@ -49,48 +49,48 @@ enum CorpseFlags
 
 class Corpse : public WorldObject
 {
-    public:
-        explicit Corpse(CorpseType type = CORPSE_BONES);
-        ~Corpse();
+public:
+    explicit Corpse(CorpseType type = CORPSE_BONES);
+    ~Corpse();
 
-        void AddToWorld() override;
-        void RemoveFromWorld() override;
+    void AddToWorld() override;
+    void RemoveFromWorld() override;
 
-        bool Create(uint32 guidlow);
-        bool Create(uint32 guidlow, Player* owner);
+    bool Create(uint32 guidlow);
+    bool Create(uint32 guidlow, Player* owner);
 
-        void SaveToDB();
-        bool LoadFromDB(uint32 guid, Field* fields);
+    void SaveToDB();
+    bool LoadFromDB(uint32 guid, Field* fields);
 
-        void DeleteBonesFromWorld();
-        void DeleteFromDB();
+    void DeleteBonesFromWorld();
+    void DeleteFromDB();
 
-        ObjectGuid const& GetOwnerGuid() const { return GetGuidValue(CORPSE_FIELD_OWNER); }
+    ObjectGuid const& GetOwnerGuid() const { return GetGuidValue(CORPSE_FIELD_OWNER); }
 
-        time_t const& GetGhostTime() const { return m_time; }
-        void ResetGhostTime() { m_time = time(NULL); }
-        CorpseType GetType() const { return m_type; }
+    time_t const& GetGhostTime() const { return m_time; }
+    void ResetGhostTime() { m_time = time(NULL); }
+    CorpseType GetType() const { return m_type; }
 
-        bool IsHostileTo(Unit const* unit) const override;
-        bool IsFriendlyTo(Unit const* unit) const override;
+    bool IsHostileTo(Unit const* unit) const override;
+    bool IsFriendlyTo(Unit const* unit) const override;
 
-        GridPair const& GetGrid() const { return m_grid; }
-        void SetGrid(GridPair const& grid) { m_grid = grid; }
+    GridPair const& GetGrid() const { return m_grid; }
+    void SetGrid(GridPair const& grid) { m_grid = grid; }
 
-        bool isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const override;
+    bool isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const override;
 
-        Loot loot;                                          // remove insignia ONLY at BG
-        Player* lootRecipient;
-        bool lootForBody;
+    Loot loot;                                          // remove insignia ONLY at BG
+    Player* lootRecipient;
+    bool lootForBody;
 
-        GridReference<Corpse> &GetGridRef() { return m_gridRef; }
+    GridReference<Corpse> &GetGridRef() { return m_gridRef; }
 
-        bool IsExpired(time_t t) const;
-    private:
-        GridReference<Corpse> m_gridRef;
+    bool IsExpired(time_t t) const;
+private:
+    GridReference<Corpse> m_gridRef;
 
-        CorpseType m_type;
-        time_t m_time;
-        GridPair m_grid;                                    // gride for corpse position for fast search
+    CorpseType m_type;
+    time_t m_time;
+    GridPair m_grid;                                    // gride for corpse position for fast search
 };
 #endif

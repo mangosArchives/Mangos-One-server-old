@@ -111,168 +111,168 @@ enum MailAuctionAnswers
  */
 class MailSender
 {
-    public:                                                 // Constructors
-        MailSender() : m_messageType(MAIL_NORMAL), m_senderId(0), m_stationery(MAIL_STATIONERY_DEFAULT) {}
+public:                                                 // Constructors
+    MailSender() : m_messageType(MAIL_NORMAL), m_senderId(0), m_stationery(MAIL_STATIONERY_DEFAULT) {}
 
-        /**
-         * Creates a new MailSender object.
-         *
-         * @param messageType the type of the mail.
-         * @param sender_guidlow_or_entry The lower part of the GUID of the player sending
-         *                                                                this mail, or the Entry of the non-player object.
-         * @param stationery The stationary associated with this MailSender.
-         *
-         */
-        MailSender(MailMessageType messageType, uint32 sender_guidlow_or_entry, MailStationery stationery = MAIL_STATIONERY_DEFAULT)
-            : m_messageType(messageType), m_senderId(sender_guidlow_or_entry), m_stationery(stationery)
-        {
-        }
-        MailSender(Object* sender, MailStationery stationery = MAIL_STATIONERY_DEFAULT);
-        MailSender(AuctionEntry* sender);
-    public:                                                 // Accessors
-        /// The Messagetype of this MailSender.
-        MailMessageType GetMailMessageType() const { return m_messageType; }
-        /// The GUID of the player represented by this MailSender, or the Entry of the non-player object.
-        uint32 GetSenderId() const { return m_senderId; }
-        /// The stationary associated with this MailSender
-        MailStationery GetStationery() const { return m_stationery; }
-    private:
-        // Trap for wrong used guid as low guid, no body
-        MailSender(MailMessageType messageType, uint64 wrong_guid, MailStationery stationery = MAIL_STATIONERY_DEFAULT);
+    /**
+     * Creates a new MailSender object.
+     *
+     * @param messageType the type of the mail.
+     * @param sender_guidlow_or_entry The lower part of the GUID of the player sending
+     *                                                                this mail, or the Entry of the non-player object.
+     * @param stationery The stationary associated with this MailSender.
+     *
+     */
+    MailSender(MailMessageType messageType, uint32 sender_guidlow_or_entry, MailStationery stationery = MAIL_STATIONERY_DEFAULT)
+        : m_messageType(messageType), m_senderId(sender_guidlow_or_entry), m_stationery(stationery)
+    {
+    }
+    MailSender(Object* sender, MailStationery stationery = MAIL_STATIONERY_DEFAULT);
+    MailSender(AuctionEntry* sender);
+public:                                                 // Accessors
+    /// The Messagetype of this MailSender.
+    MailMessageType GetMailMessageType() const { return m_messageType; }
+    /// The GUID of the player represented by this MailSender, or the Entry of the non-player object.
+    uint32 GetSenderId() const { return m_senderId; }
+    /// The stationary associated with this MailSender
+    MailStationery GetStationery() const { return m_stationery; }
+private:
+    // Trap for wrong used guid as low guid, no body
+    MailSender(MailMessageType messageType, uint64 wrong_guid, MailStationery stationery = MAIL_STATIONERY_DEFAULT);
 
-        MailMessageType m_messageType;
-        uint32 m_senderId;                                  // player low guid or other object entry
-        MailStationery m_stationery;
+    MailMessageType m_messageType;
+    uint32 m_senderId;                                  // player low guid or other object entry
+    MailStationery m_stationery;
 };
 /**
  * A class to represent the receiver of a mail.
  */
 class MailReceiver
 {
-    public:                                                 // Constructors
-        explicit MailReceiver(ObjectGuid receiver_guid) : m_receiver(NULL), m_receiver_guid(receiver_guid) {}
-        MailReceiver(Player* receiver);
-        MailReceiver(Player* receiver, ObjectGuid receiver_guid);
-    public:                                                 // Accessors
-        /**
-         * Gets the player associated with this MailReciever
-         *
-         * @see Player
-         *
-         * @returns a pointer to the Player this mail is for.
-         *
-         */
-        Player* GetPlayer() const { return m_receiver; }
-        /**
-         * Gets the low part of the recievers GUID.
-         *
-         * @returns the low part of the GUID of the player associated with this MailReciever
-         */
-        ObjectGuid const& GetPlayerGuid() const { return m_receiver_guid; }
-    private:
-        Player* m_receiver;
-        ObjectGuid m_receiver_guid;
+public:                                                 // Constructors
+    explicit MailReceiver(ObjectGuid receiver_guid) : m_receiver(NULL), m_receiver_guid(receiver_guid) {}
+    MailReceiver(Player* receiver);
+    MailReceiver(Player* receiver, ObjectGuid receiver_guid);
+public:                                                 // Accessors
+    /**
+     * Gets the player associated with this MailReciever
+     *
+     * @see Player
+     *
+     * @returns a pointer to the Player this mail is for.
+     *
+     */
+    Player* GetPlayer() const { return m_receiver; }
+    /**
+     * Gets the low part of the recievers GUID.
+     *
+     * @returns the low part of the GUID of the player associated with this MailReciever
+     */
+    ObjectGuid const& GetPlayerGuid() const { return m_receiver_guid; }
+private:
+    Player* m_receiver;
+    ObjectGuid m_receiver_guid;
 };
 /**
  * The class to represent the draft of a mail.
  */
 class MailDraft
 {
-        /**
-         * Holds a Map of GUIDs of items and pointers to the items.
-         */
-        typedef std::map<uint32, Item*> MailItemMap;
+    /**
+     * Holds a Map of GUIDs of items and pointers to the items.
+     */
+    typedef std::map<uint32, Item*> MailItemMap;
 
-    public:                                                 // Constructors
-        /**
-         * Creates a new blank MailDraft object
-         *
-         */
-        MailDraft()
-            : m_mailTemplateId(0), m_mailTemplateItemsNeed(false), m_bodyId(0), m_money(0), m_COD(0) {}
-        /**
-         * Creates a new MailDraft object using mail template id.
-         *
-         * @param mailTemplateId The ID of the Template to be used.
-         * @param a boolean specifying whether the mail needs items or not.
-         *
-         */
-        explicit MailDraft(uint16 mailTemplateId, bool need_items = true)
-            : m_mailTemplateId(mailTemplateId), m_mailTemplateItemsNeed(need_items), m_bodyId(0), m_money(0), m_COD(0)
-        {}
-        /**
-         * Creates a new MailDraft object using subject text and content text id.
-         *
-         * @param subject The subject of the mail.
-         * @param itemTextId The id of the body of the mail.
-         */
-        MailDraft(std::string subject, uint32 itemTextId = 0)
-            : m_mailTemplateId(0), m_mailTemplateItemsNeed(false), m_subject(subject), m_bodyId(itemTextId), m_money(0), m_COD(0) {}
-        /**
-         * Creates a new MailDraft object using subject and contect texts.
-         *
-         * @param subject The subject of the mail.
-         * @param itemText The text of the body of the mail.
-         */
-        MailDraft(std::string subject, std::string text);
-    public:                                                 // Accessors
-        /// Returns the template ID used for this MailDraft.
-        uint16 GetMailTemplateId() const { return m_mailTemplateId; }
-        /// Returns the subject of this MailDraft.
-        std::string const& GetSubject() const { return m_subject; }
-        /// Returns the ID of the text of this MailDraft.
-        uint32 GetBodyId() const { return m_bodyId; }
-        /// Returns the amount of money in this MailDraft.
-        uint32 GetMoney() const { return m_money; }
-        /// Returns the Cost of delivery of this MailDraft.
-        uint32 GetCOD() const { return m_COD; }
-    public:                                                 // modifiers
+public:                                                 // Constructors
+    /**
+     * Creates a new blank MailDraft object
+     *
+     */
+    MailDraft()
+        : m_mailTemplateId(0), m_mailTemplateItemsNeed(false), m_bodyId(0), m_money(0), m_COD(0) {}
+    /**
+     * Creates a new MailDraft object using mail template id.
+     *
+     * @param mailTemplateId The ID of the Template to be used.
+     * @param a boolean specifying whether the mail needs items or not.
+     *
+     */
+    explicit MailDraft(uint16 mailTemplateId, bool need_items = true)
+        : m_mailTemplateId(mailTemplateId), m_mailTemplateItemsNeed(need_items), m_bodyId(0), m_money(0), m_COD(0)
+    {}
+    /**
+     * Creates a new MailDraft object using subject text and content text id.
+     *
+     * @param subject The subject of the mail.
+     * @param itemTextId The id of the body of the mail.
+     */
+    MailDraft(std::string subject, uint32 itemTextId = 0)
+        : m_mailTemplateId(0), m_mailTemplateItemsNeed(false), m_subject(subject), m_bodyId(itemTextId), m_money(0), m_COD(0) {}
+    /**
+     * Creates a new MailDraft object using subject and contect texts.
+     *
+     * @param subject The subject of the mail.
+     * @param itemText The text of the body of the mail.
+     */
+    MailDraft(std::string subject, std::string text);
+public:                                                 // Accessors
+    /// Returns the template ID used for this MailDraft.
+    uint16 GetMailTemplateId() const { return m_mailTemplateId; }
+    /// Returns the subject of this MailDraft.
+    std::string const& GetSubject() const { return m_subject; }
+    /// Returns the ID of the text of this MailDraft.
+    uint32 GetBodyId() const { return m_bodyId; }
+    /// Returns the amount of money in this MailDraft.
+    uint32 GetMoney() const { return m_money; }
+    /// Returns the Cost of delivery of this MailDraft.
+    uint32 GetCOD() const { return m_COD; }
+public:                                                 // modifiers
 
-        // this two modifiers expected to be applied in normal case to blank draft and exclusively, It DON'T must overwrite already set itemTextId, in other cases it will work and with mixed cases but this will be not normal way use.
-        MailDraft& SetSubjectAndBodyId(std::string subject, uint32 itemTextId) { m_subject = subject; MANGOS_ASSERT(!m_bodyId); m_bodyId = itemTextId; return *this; }
-        MailDraft& SetSubjectAndBody(std::string subject, std::string text);
-        MailDraft& SetMailTemplate(uint16 mailTemplateId, bool need_items = true) { m_mailTemplateId = mailTemplateId, m_mailTemplateItemsNeed = need_items; return *this; }
+    // this two modifiers expected to be applied in normal case to blank draft and exclusively, It DON'T must overwrite already set itemTextId, in other cases it will work and with mixed cases but this will be not normal way use.
+    MailDraft& SetSubjectAndBodyId(std::string subject, uint32 itemTextId) { m_subject = subject; MANGOS_ASSERT(!m_bodyId); m_bodyId = itemTextId; return *this; }
+    MailDraft& SetSubjectAndBody(std::string subject, std::string text);
+    MailDraft& SetMailTemplate(uint16 mailTemplateId, bool need_items = true) { m_mailTemplateId = mailTemplateId, m_mailTemplateItemsNeed = need_items; return *this; }
 
-        MailDraft& AddItem(Item* item);
-        /**
-         * Modifies the amount of money in a MailDraft.
-         *
-         * @param money The amount of money included in this MailDraft.
-         */
-        MailDraft& SetMoney(uint32 money) { m_money = money; return *this; }
-        /**
-         * Modifies the cost of delivery of the MailDraft.
-         *
-         * @param COD the amount to which the cod should be set.
-         */
-        MailDraft& SetCOD(uint32 COD) { m_COD = COD; return *this; }
+    MailDraft& AddItem(Item* item);
+    /**
+     * Modifies the amount of money in a MailDraft.
+     *
+     * @param money The amount of money included in this MailDraft.
+     */
+    MailDraft& SetMoney(uint32 money) { m_money = money; return *this; }
+    /**
+     * Modifies the cost of delivery of the MailDraft.
+     *
+     * @param COD the amount to which the cod should be set.
+     */
+    MailDraft& SetCOD(uint32 COD) { m_COD = COD; return *this; }
 
-        void CloneFrom(MailDraft const& draft);
-    public:                                                 // finishers
-        void SendReturnToSender(uint32 sender_acc, ObjectGuid sender_guid, ObjectGuid receiver_guid);
-        void SendMailTo(MailReceiver const& receiver, MailSender const& sender, MailCheckMask checked = MAIL_CHECK_MASK_NONE, uint32 deliver_delay = 0);
-    private:
-        MailDraft(MailDraft const&);                        // trap decl, no body, mail draft must cloned only explicitly...
-        MailDraft& operator=(MailDraft const&);             // trap decl, no body, ...because items clone is high price operation
+    void CloneFrom(MailDraft const& draft);
+public:                                                 // finishers
+    void SendReturnToSender(uint32 sender_acc, ObjectGuid sender_guid, ObjectGuid receiver_guid);
+    void SendMailTo(MailReceiver const& receiver, MailSender const& sender, MailCheckMask checked = MAIL_CHECK_MASK_NONE, uint32 deliver_delay = 0);
+private:
+    MailDraft(MailDraft const&);                        // trap decl, no body, mail draft must cloned only explicitly...
+    MailDraft& operator=(MailDraft const&);             // trap decl, no body, ...because items clone is high price operation
 
-        void deleteIncludedItems(bool inDB = false);
-        bool prepareItems(Player* receiver);                ///< called from SendMailTo for generate mailTemplateBase items
+    void deleteIncludedItems(bool inDB = false);
+    bool prepareItems(Player* receiver);                ///< called from SendMailTo for generate mailTemplateBase items
 
-        /// The ID of the template associated with this MailDraft.
-        uint16      m_mailTemplateId;
-        /// Boolean specifying whether items are required or not.
-        bool        m_mailTemplateItemsNeed;
-        /// The subject of the MailDraft.
-        std::string m_subject;
-        /// The ID of the body of the MailDraft.
-        uint32      m_bodyId;
-        /// A map of items in this MailDraft.
-        MailItemMap m_items;                                ///< Keep the items in a map to avoid duplicate guids (which can happen), store only low part of guid
+    /// The ID of the template associated with this MailDraft.
+    uint16      m_mailTemplateId;
+    /// Boolean specifying whether items are required or not.
+    bool        m_mailTemplateItemsNeed;
+    /// The subject of the MailDraft.
+    std::string m_subject;
+    /// The ID of the body of the MailDraft.
+    uint32      m_bodyId;
+    /// A map of items in this MailDraft.
+    MailItemMap m_items;                                ///< Keep the items in a map to avoid duplicate guids (which can happen), store only low part of guid
 
-        /// The amount of money in this MailDraft.
-        uint32 m_money;
-        /// The cod amount of this MailDraft.
-        uint32 m_COD;
+    /// The amount of money in this MailDraft.
+    uint32 m_money;
+    /// The cod amount of this MailDraft.
+    uint32 m_COD;
 };
 /**
  * Structure holding information about an item in the mail.

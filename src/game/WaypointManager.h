@@ -57,44 +57,44 @@ typedef std::vector<WaypointNode> WaypointPath;
 
 class WaypointManager
 {
-    public:
-        WaypointManager() {}
-        ~WaypointManager() { Unload(); }
+public:
+    WaypointManager() {}
+    ~WaypointManager() { Unload(); }
 
-        void Load();
-        void Unload();
+    void Load();
+    void Unload();
 
-        void Cleanup();
+    void Cleanup();
 
-        WaypointPath* GetPath(uint32 id)
-        {
-            WaypointPathMap::iterator itr = m_pathMap.find(id);
-            return itr != m_pathMap.end() ? &itr->second : NULL;
-        }
+    WaypointPath* GetPath(uint32 id)
+    {
+        WaypointPathMap::iterator itr = m_pathMap.find(id);
+        return itr != m_pathMap.end() ? &itr->second : NULL;
+    }
 
-        WaypointPath* GetPathTemplate(uint32 entry)
-        {
-            WaypointPathTemplateMap::iterator itr = m_pathTemplateMap.find(entry);
-            return itr != m_pathTemplateMap.end() ? &itr->second : NULL;
-        }
+    WaypointPath* GetPathTemplate(uint32 entry)
+    {
+        WaypointPathTemplateMap::iterator itr = m_pathTemplateMap.find(entry);
+        return itr != m_pathTemplateMap.end() ? &itr->second : NULL;
+    }
 
-        void AddLastNode(uint32 id, float x, float y, float z, float o, uint32 delay, uint32 wpGuid);
-        void AddAfterNode(uint32 id, uint32 point, float x, float y, float z, float o, uint32 delay, uint32 wpGuid);
-        uint32 GetLastPoint(uint32 id, uint32 default_notfound);
-        void DeleteNode(uint32 id, uint32 point);
-        void DeletePath(uint32 id);
-        void SetNodePosition(uint32 id, uint32 point, float x, float y, float z);
-        void SetNodeText(uint32 id, uint32 point, const char* text_field, const char* text);
-        void CheckTextsExistance(std::set<int32>& ids);
+    void AddLastNode(uint32 id, float x, float y, float z, float o, uint32 delay, uint32 wpGuid);
+    void AddAfterNode(uint32 id, uint32 point, float x, float y, float z, float o, uint32 delay, uint32 wpGuid);
+    uint32 GetLastPoint(uint32 id, uint32 default_notfound);
+    void DeleteNode(uint32 id, uint32 point);
+    void DeletePath(uint32 id);
+    void SetNodePosition(uint32 id, uint32 point, float x, float y, float z);
+    void SetNodeText(uint32 id, uint32 point, const char* text_field, const char* text);
+    void CheckTextsExistance(std::set<int32>& ids);
 
-    private:
-        void _addNode(uint32 id, uint32 point, float x, float y, float z, float o, uint32 delay, uint32 wpGuid);
-        void _clearPath(WaypointPath& path);
+private:
+    void _addNode(uint32 id, uint32 point, float x, float y, float z, float o, uint32 delay, uint32 wpGuid);
+    void _clearPath(WaypointPath& path);
 
-        typedef UNORDERED_MAP<uint32, WaypointPath> WaypointPathMap;
-        WaypointPathMap m_pathMap;
-        typedef UNORDERED_MAP<uint32, WaypointPath> WaypointPathTemplateMap;
-        WaypointPathTemplateMap m_pathTemplateMap;
+    typedef UNORDERED_MAP<uint32, WaypointPath> WaypointPathMap;
+    WaypointPathMap m_pathMap;
+    typedef UNORDERED_MAP<uint32, WaypointPath> WaypointPathTemplateMap;
+    WaypointPathTemplateMap m_pathTemplateMap;
 };
 
 #define sWaypointMgr MaNGOS::Singleton<WaypointManager>::Instance()

@@ -110,8 +110,8 @@ namespace MaNGOS
         inline uint32 Gain(Player* pl, Unit* u)
         {
             if (u->GetTypeId() == TYPEID_UNIT && (
-                        ((Creature*)u)->IsTotem() || ((Creature*)u)->IsPet() ||
-                        (((Creature*)u)->GetCreatureInfo()->flags_extra & CREATURE_FLAG_EXTRA_NO_XP_AT_KILL)))
+                    ((Creature*)u)->IsTotem() || ((Creature*)u)->IsPet() ||
+                    (((Creature*)u)->GetCreatureInfo()->flags_extra & CREATURE_FLAG_EXTRA_NO_XP_AT_KILL)))
                 return 0;
 
             uint32 xp_gain = BaseGain(pl->getLevel(), u->getLevel(), GetContentLevelsForMapAndZone(pl->GetMapId(), pl->GetZoneId()));

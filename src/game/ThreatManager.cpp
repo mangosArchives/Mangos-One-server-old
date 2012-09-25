@@ -138,8 +138,8 @@ void HostileReference::updateOnlineStatus()
     // target is no player or not gamemaster
     // target is not in flight
     if (isValid() &&
-            ((getTarget()->GetTypeId() != TYPEID_PLAYER || !((Player*)getTarget())->isGameMaster()) ||
-             !getTarget()->IsTaxiFlying()))
+        ((getTarget()->GetTypeId() != TYPEID_PLAYER || !((Player*)getTarget())->isGameMaster()) ||
+         !getTarget()->IsTaxiFlying()))
     {
         Creature* creature = (Creature*) getSourceUnit();
         online = getTarget()->isInAccessablePlaceFor(creature);
@@ -361,7 +361,7 @@ HostileReference* ThreatContainer::selectNextVictim(Creature* pAttacker, Hostile
                 }
 
                 if (pCurrentRef->getThreat() > 1.3f * pCurrentVictim->getThreat() ||
-                        (pCurrentRef->getThreat() > 1.1f * pCurrentVictim->getThreat() && pAttacker->CanReachWithMeleeAttack(pTarget)))
+                    (pCurrentRef->getThreat() > 1.1f * pCurrentVictim->getThreat() && pAttacker->CanReachWithMeleeAttack(pTarget)))
                 {
                     // implement 110% threat rule for targets in melee range
                     found = true;                           // and 130% rule for targets in ranged distances
@@ -536,7 +536,7 @@ void ThreatManager::processThreatEvent(ThreatRefStatusChangeEvent* threatRefStat
     {
         case UEV_THREAT_REF_THREAT_CHANGE:
             if ((getCurrentVictim() == hostileReference && threatRefStatusChangeEvent->getFValue() < 0.0f) ||
-                    (getCurrentVictim() != hostileReference && threatRefStatusChangeEvent->getFValue() > 0.0f))
+                (getCurrentVictim() != hostileReference && threatRefStatusChangeEvent->getFValue() > 0.0f))
                 setDirty(true);                             // the order in the threat list might have changed
             break;
         case UEV_THREAT_REF_ONLINE_STATUS:

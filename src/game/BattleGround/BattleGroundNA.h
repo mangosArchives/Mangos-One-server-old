@@ -22,32 +22,32 @@ class BattleGround;
 
 class BattleGroundNAScore : public BattleGroundScore
 {
-    public:
-        BattleGroundNAScore() {};
-        virtual ~BattleGroundNAScore() {};
-        // TODO fix me
+public:
+    BattleGroundNAScore() {};
+    virtual ~BattleGroundNAScore() {};
+    // TODO fix me
 };
 
 class BattleGroundNA : public BattleGround
 {
-        friend class BattleGroundMgr;
+    friend class BattleGroundMgr;
 
-    public:
-        BattleGroundNA();
-        ~BattleGroundNA();
-        void Update(uint32 diff) override;
+public:
+    BattleGroundNA();
+    ~BattleGroundNA();
+    void Update(uint32 diff) override;
 
-        /* inherited from BattlegroundClass */
-        virtual void AddPlayer(Player* plr) override;
-        virtual void StartingEventCloseDoors() override;
-        virtual void StartingEventOpenDoors() override;
+    /* inherited from BattlegroundClass */
+    virtual void AddPlayer(Player* plr) override;
+    virtual void StartingEventCloseDoors() override;
+    virtual void StartingEventOpenDoors() override;
 
-        void RemovePlayer(Player* plr, ObjectGuid guid) override;
-        void HandleAreaTrigger(Player* source, uint32 trigger) override;
-        bool SetupBattleGround() override;
-        virtual void Reset() override;
-        virtual void FillInitialWorldStates(WorldPacket& d, uint32& count) override;
-        void HandleKillPlayer(Player* player, Player* killer) override;
-        bool HandlePlayerUnderMap(Player* plr) override;
+    void RemovePlayer(Player* plr, ObjectGuid guid) override;
+    void HandleAreaTrigger(Player* source, uint32 trigger) override;
+    bool SetupBattleGround() override;
+    virtual void Reset() override;
+    virtual void FillInitialWorldStates(WorldPacket& d, uint32& count) override;
+    void HandleKillPlayer(Player* player, Player* killer) override;
+    bool HandlePlayerUnderMap(Player* plr) override;
 };
 #endif

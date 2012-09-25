@@ -3566,7 +3566,7 @@ bool ChatHandler::HandleAuraCommand(char* args)
         return false;
 
     if (!IsSpellAppliesAura(spellInfo, (1 << EFFECT_INDEX_0) | (1 << EFFECT_INDEX_1) | (1 << EFFECT_INDEX_2)) &&
-            !IsSpellHaveEffect(spellInfo, SPELL_EFFECT_PERSISTENT_AREA_AURA))
+        !IsSpellHaveEffect(spellInfo, SPELL_EFFECT_PERSISTENT_AREA_AURA))
     {
         PSendSysMessage(LANG_SPELL_NO_HAVE_AURAS, spellID);
         SetSentErrorMessage(true);
@@ -3581,8 +3581,8 @@ bool ChatHandler::HandleAuraCommand(char* args)
         if (eff >= TOTAL_SPELL_EFFECTS)
             continue;
         if (IsAreaAuraEffect(eff)           ||
-                eff == SPELL_EFFECT_APPLY_AURA  ||
-                eff == SPELL_EFFECT_PERSISTENT_AREA_AURA)
+            eff == SPELL_EFFECT_APPLY_AURA  ||
+            eff == SPELL_EFFECT_PERSISTENT_AREA_AURA)
         {
             Aura* aur = CreateAura(spellInfo, SpellEffectIndex(i), NULL, holder, target);
             holder->AddAura(aur, SpellEffectIndex(i));
@@ -6192,7 +6192,7 @@ bool ChatHandler::HandleAccountSetAddonCommand(char* args)
     // Let set addon state only for lesser (strong) security level
     // or to self account
     if (GetAccountId() && GetAccountId() != account_id &&
-            HasLowerSecurityAccount(NULL, account_id, true))
+        HasLowerSecurityAccount(NULL, account_id, true))
         return false;
 
     uint32 lev;
@@ -6644,7 +6644,7 @@ bool ChatHandler::HandleAccountFriendAddCommand(char* args)
 
     AccountOpResult result = sAccountMgr.AddRAFLink(targetAccountId, friendAccountId);
 
-    switch(result)
+    switch (result)
     {
         case AOR_OK:
             SendSysMessage(LANG_COMMAND_FRIEND);
@@ -6676,7 +6676,7 @@ bool ChatHandler::HandleAccountFriendDeleteCommand(char* args)
 
     AccountOpResult result = sAccountMgr.DeleteRAFLink(targetAccountId, friendAccountId);
 
-    switch(result)
+    switch (result)
     {
         case AOR_OK:
             SendSysMessage(LANG_COMMAND_FRIEND);

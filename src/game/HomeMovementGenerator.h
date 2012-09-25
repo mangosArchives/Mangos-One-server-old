@@ -30,20 +30,20 @@ template <>
 class MANGOS_DLL_SPEC HomeMovementGenerator<Creature>
     : public MovementGeneratorMedium< Creature, HomeMovementGenerator<Creature> >
 {
-    public:
+public:
 
-        HomeMovementGenerator() : arrived(false) {}
-        ~HomeMovementGenerator() {}
+    HomeMovementGenerator() : arrived(false) {}
+    ~HomeMovementGenerator() {}
 
-        void Initialize(Creature&);
-        void Finalize(Creature&);
-        void Interrupt(Creature&) {}
-        void Reset(Creature&);
-        bool Update(Creature&, const uint32&);
-        MovementGeneratorType GetMovementGeneratorType() const override { return HOME_MOTION_TYPE; }
+    void Initialize(Creature&);
+    void Finalize(Creature&);
+    void Interrupt(Creature&) {}
+    void Reset(Creature&);
+    bool Update(Creature&, const uint32&);
+    MovementGeneratorType GetMovementGeneratorType() const override { return HOME_MOTION_TYPE; }
 
-    private:
-        void _setTargetLocation(Creature&);
-        bool arrived;
+private:
+    void _setTargetLocation(Creature&);
+    bool arrived;
 };
 #endif

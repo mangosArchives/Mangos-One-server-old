@@ -36,7 +36,7 @@ bool GameEventMgr::CheckOneGameEvent(uint16 entry, time_t currenttime) const
 {
     // Get the event information
     if (mGameEvent[entry].start < currenttime && currenttime < mGameEvent[entry].end &&
-            ((currenttime - mGameEvent[entry].start) % (mGameEvent[entry].occurence * MINUTE)) < (mGameEvent[entry].length * MINUTE))
+        ((currenttime - mGameEvent[entry].start) % (mGameEvent[entry].occurence * MINUTE)) < (mGameEvent[entry].length * MINUTE))
         return true;
     else
         return false;

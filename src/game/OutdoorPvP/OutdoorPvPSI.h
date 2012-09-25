@@ -62,21 +62,21 @@ enum
 
 class OutdoorPvPSI : public OutdoorPvP
 {
-    public:
-        OutdoorPvPSI();
+public:
+    OutdoorPvPSI();
 
-        void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
-        void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
-        void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
+    void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
+    void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
 
-        bool HandleAreaTrigger(Player* player, uint32 triggerId) override;
-        bool HandleGameObjectUse(Player* player, GameObject* go) override;
-        bool HandleDropFlag(Player* player, uint32 spellId) override;
+    bool HandleAreaTrigger(Player* player, uint32 triggerId) override;
+    bool HandleGameObjectUse(Player* player, GameObject* go) override;
+    bool HandleDropFlag(Player* player, uint32 spellId) override;
 
-    private:
-        uint8 m_resourcesAlliance;
-        uint8 m_resourcesHorde;
-        Team m_zoneOwner;
+private:
+    uint8 m_resourcesAlliance;
+    uint8 m_resourcesHorde;
+    Team m_zoneOwner;
 };
 
 #endif

@@ -72,8 +72,8 @@ HASH_NAMESPACE_START
 template<class K>
 class hash
 {
-    public:
-        size_t operator()(K const&);
+public:
+    size_t operator()(K const&);
 };
 
 HASH_NAMESPACE_END
@@ -103,15 +103,15 @@ HASH_NAMESPACE_START
 template<>
 class hash<unsigned long long>
 {
-    public:
-        size_t operator()(const unsigned long long& __x) const { return (size_t)__x; }
+public:
+    size_t operator()(const unsigned long long& __x) const { return (size_t)__x; }
 };
 
 template<typename T>
 class hash<T*>
 {
-    public:
-        size_t operator()(T* const& __x) const { return (size_t)__x; }
+public:
+    size_t operator()(T* const& __x) const { return (size_t)__x; }
 };
 
 template<> struct hash<std::string>

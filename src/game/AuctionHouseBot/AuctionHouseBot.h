@@ -106,62 +106,62 @@ enum AuctionBotConfigBoolValues
 // All basic config data used by other AHBot classes for self-configure.
 class AuctionBotConfig
 {
-    public:
-        AuctionBotConfig();
+public:
+    AuctionBotConfig();
 
-        void        SetConfigFileName(char const* filename) { m_configFileName = filename; }
-        bool        Initialize();
-        const char* GetAHBotIncludes() const { return m_AHBotIncludes.c_str(); }
-        const char* GetAHBotExcludes() const { return m_AHBotExcludes.c_str(); }
+    void        SetConfigFileName(char const* filename) { m_configFileName = filename; }
+    bool        Initialize();
+    const char* GetAHBotIncludes() const { return m_AHBotIncludes.c_str(); }
+    const char* GetAHBotExcludes() const { return m_AHBotExcludes.c_str(); }
 
-        uint32      getConfig(AuctionBotConfigUInt32Values index) const { return m_configUint32Values[index]; }
-        bool        getConfig(AuctionBotConfigBoolValues index) const { return m_configBoolValues[index]; }
-        void        setConfig(AuctionBotConfigBoolValues index, bool value) { m_configBoolValues[index] = value; }
-        void        setConfig(AuctionBotConfigUInt32Values index, uint32 value) { m_configUint32Values[index] = value; }
+    uint32      getConfig(AuctionBotConfigUInt32Values index) const { return m_configUint32Values[index]; }
+    bool        getConfig(AuctionBotConfigBoolValues index) const { return m_configBoolValues[index]; }
+    void        setConfig(AuctionBotConfigBoolValues index, bool value) { m_configBoolValues[index] = value; }
+    void        setConfig(AuctionBotConfigUInt32Values index, uint32 value) { m_configUint32Values[index] = value; }
 
-        uint32 getConfigItemAmountRatio(AuctionHouseType houseType) const;
-        bool getConfigBuyerEnabled(AuctionHouseType houseType) const;
-        uint32 getConfigItemQualityAmount(AuctionQuality quality) const;
+    uint32 getConfigItemAmountRatio(AuctionHouseType houseType) const;
+    bool getConfigBuyerEnabled(AuctionHouseType houseType) const;
+    uint32 getConfigItemQualityAmount(AuctionQuality quality) const;
 
 
-        uint32      GetItemPerCycleBoost() const { return m_ItemsPerCycleBoost; }
-        uint32      GetItemPerCycleNormal() const { return m_ItemsPerCycleNormal; }
-        bool        Reload();
+    uint32      GetItemPerCycleBoost() const { return m_ItemsPerCycleBoost; }
+    uint32      GetItemPerCycleNormal() const { return m_ItemsPerCycleNormal; }
+    bool        Reload();
 
-        static char const* GetItemClassName(ItemClass itemclass);
-        static char const* GetHouseTypeName(AuctionHouseType houseType);
+    static char const* GetItemClassName(ItemClass itemclass);
+    static char const* GetHouseTypeName(AuctionHouseType houseType);
 
-    private:
-        std::string m_configFileName;
-        std::string m_AHBotIncludes;
-        std::string m_AHBotExcludes;
-        Config      m_AhBotCfg;
-        uint32      m_ItemsPerCycleBoost;
-        uint32      m_ItemsPerCycleNormal;
+private:
+    std::string m_configFileName;
+    std::string m_AHBotIncludes;
+    std::string m_AHBotExcludes;
+    Config      m_AhBotCfg;
+    uint32      m_ItemsPerCycleBoost;
+    uint32      m_ItemsPerCycleNormal;
 
-        uint32 m_configUint32Values[CONFIG_UINT32_AHBOT_UINT32_COUNT];
-        bool   m_configBoolValues[CONFIG_UINT32_AHBOT_BOOL_COUNT];
+    uint32 m_configUint32Values[CONFIG_UINT32_AHBOT_UINT32_COUNT];
+    bool   m_configBoolValues[CONFIG_UINT32_AHBOT_BOOL_COUNT];
 
-        void SetAHBotIncludes(const std::string& AHBotIncludes) { m_AHBotIncludes = AHBotIncludes; }
-        void SetAHBotExcludes(const std::string& AHBotExcludes) { m_AHBotExcludes = AHBotExcludes; }
+    void SetAHBotIncludes(const std::string& AHBotIncludes) { m_AHBotIncludes = AHBotIncludes; }
+    void SetAHBotExcludes(const std::string& AHBotExcludes) { m_AHBotExcludes = AHBotExcludes; }
 
-        void setConfig(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue);
-        void setConfigMax(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue, uint32 maxvalue);
-        void setConfigMinMax(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue, uint32 minvalue, uint32 maxvalue);
-        void setConfig(AuctionBotConfigBoolValues index, char const* fieldname, bool defvalue);
-        void GetConfigFromFile();
+    void setConfig(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue);
+    void setConfigMax(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue, uint32 maxvalue);
+    void setConfigMinMax(AuctionBotConfigUInt32Values index, char const* fieldname, uint32 defvalue, uint32 minvalue, uint32 maxvalue);
+    void setConfig(AuctionBotConfigBoolValues index, char const* fieldname, bool defvalue);
+    void GetConfigFromFile();
 };
 
 #define sAuctionBotConfig MaNGOS::Singleton<AuctionBotConfig>::Instance()
 
 class AuctionBotAgent
 {
-    public:
-        AuctionBotAgent() {}
-        virtual ~AuctionBotAgent() {}
-    public:
-        virtual bool Initialize() = 0;
-        virtual bool Update(AuctionHouseType houseType) = 0;
+public:
+    AuctionBotAgent() {}
+    virtual ~AuctionBotAgent() {}
+public:
+    virtual bool Initialize() = 0;
+    virtual bool Update(AuctionHouseType houseType) = 0;
 };
 
 struct AuctionHouseBotStatusInfoPerType
@@ -176,29 +176,29 @@ typedef AuctionHouseBotStatusInfoPerType AuctionHouseBotStatusInfo[MAX_AUCTION_H
 // (holder of AuctionBotBuyer and AuctionBotSeller objects)
 class AuctionHouseBot
 {
-    public:
-        AuctionHouseBot();
-        ~AuctionHouseBot();
+public:
+    AuctionHouseBot();
+    ~AuctionHouseBot();
 
-        void Update();
-        void Initialize();
+    void Update();
+    void Initialize();
 
-        // Followed method is mainly used by level3.cpp for ingame/console command
-        void SetItemsRatio(uint32 al, uint32 ho, uint32 ne);
-        void SetItemsRatioForHouse(AuctionHouseType house, uint32 val);
-        void SetItemsAmount(uint32(&vals)[MAX_AUCTION_QUALITY]);
-        void SetItemsAmountForQuality(AuctionQuality quality, uint32 val);
-        bool ReloadAllConfig();
-        void Rebuild(bool all);
+    // Followed method is mainly used by level3.cpp for ingame/console command
+    void SetItemsRatio(uint32 al, uint32 ho, uint32 ne);
+    void SetItemsRatioForHouse(AuctionHouseType house, uint32 val);
+    void SetItemsAmount(uint32(&vals)[MAX_AUCTION_QUALITY]);
+    void SetItemsAmountForQuality(AuctionQuality quality, uint32 val);
+    bool ReloadAllConfig();
+    void Rebuild(bool all);
 
-        void PrepareStatusInfos(AuctionHouseBotStatusInfo& statusInfo);
-    private:
-        void InitilizeAgents();
+    void PrepareStatusInfos(AuctionHouseBotStatusInfo& statusInfo);
+private:
+    void InitilizeAgents();
 
-        AuctionBotAgent* m_Buyer;
-        AuctionBotAgent* m_Seller;
+    AuctionBotAgent* m_Buyer;
+    AuctionBotAgent* m_Seller;
 
-        uint32 m_OperationSelector;                         // 0..2*MAX_AUCTION_HOUSE_TYPE-1
+    uint32 m_OperationSelector;                         // 0..2*MAX_AUCTION_HOUSE_TYPE-1
 };
 
 #define sAuctionBot MaNGOS::Singleton<AuctionHouseBot>::Instance()

@@ -315,7 +315,7 @@ int RASocket::sendf(const char* msg)
     if (!outActive)
     {
         if (reactor()->schedule_wakeup
-                (this, ACE_Event_Handler::WRITE_MASK) == -1)
+            (this, ACE_Event_Handler::WRITE_MASK) == -1)
         {
             sLog.outError("RASocket::sendf error while schedule_wakeup");
             return -1;

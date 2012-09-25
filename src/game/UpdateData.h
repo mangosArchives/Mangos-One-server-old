@@ -48,23 +48,23 @@ enum ObjectUpdateFlags
 
 class UpdateData
 {
-    public:
-        UpdateData();
+public:
+    UpdateData();
 
-        void AddOutOfRangeGUID(GuidSet& guids);
-        void AddOutOfRangeGUID(ObjectGuid const& guid);
-        void AddUpdateBlock(const ByteBuffer& block);
-        bool BuildPacket(WorldPacket* packet, bool hasTransport = false);
-        bool HasData() { return m_blockCount > 0 || !m_outOfRangeGUIDs.empty(); }
-        void Clear();
+    void AddOutOfRangeGUID(GuidSet& guids);
+    void AddOutOfRangeGUID(ObjectGuid const& guid);
+    void AddUpdateBlock(const ByteBuffer& block);
+    bool BuildPacket(WorldPacket* packet, bool hasTransport = false);
+    bool HasData() { return m_blockCount > 0 || !m_outOfRangeGUIDs.empty(); }
+    void Clear();
 
-        GuidSet const& GetOutOfRangeGUIDs() const { return m_outOfRangeGUIDs; }
+    GuidSet const& GetOutOfRangeGUIDs() const { return m_outOfRangeGUIDs; }
 
-    protected:
-        uint32 m_blockCount;
-        GuidSet m_outOfRangeGUIDs;
-        ByteBuffer m_data;
+protected:
+    uint32 m_blockCount;
+    GuidSet m_outOfRangeGUIDs;
+    ByteBuffer m_data;
 
-        void Compress(void* dst, uint32* dst_size, void* src, int src_size);
+    void Compress(void* dst, uint32* dst_size, void* src, int src_size);
 };
 #endif

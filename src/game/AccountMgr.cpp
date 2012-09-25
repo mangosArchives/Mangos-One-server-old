@@ -220,7 +220,7 @@ bool AccountMgr::CheckPassword(uint32 accid, std::string passwd)
 
 bool AccountMgr::normalizeString(std::string& utf8str)
 {
-    wchar_t wstr_buf[MAX_ACCOUNT_STR+1];
+    wchar_t wstr_buf[MAX_ACCOUNT_STR + 1];
 
     size_t wstr_len = MAX_ACCOUNT_STR;
     if (!Utf8toWStr(utf8str, wstr_buf, wstr_len))

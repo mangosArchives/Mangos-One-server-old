@@ -79,7 +79,7 @@ bool GridMap::loadData(char* filename)
 
     fread(&header, sizeof(header), 1, in);
     if (header.mapMagic     == *((uint32 const*)(MAP_MAGIC)) &&
-            header.versionMagic == *((uint32 const*)(MAP_VERSION_MAGIC)))
+        header.versionMagic == *((uint32 const*)(MAP_VERSION_MAGIC)))
     {
         // loadup area data
         if (header.areaMapOffset && !loadAreaData(in, header.areaMapOffset, header.areaMapSize))
@@ -141,7 +141,7 @@ bool GridMap::loadAreaData(FILE* in, uint32 offset, uint32 /*size*/)
     m_gridArea = header.gridArea;
     if (!(header.flags & MAP_AREA_NO_AREA))
     {
-        m_area_map = new uint16 [16*16];
+        m_area_map = new uint16 [16 * 16];
         fread(m_area_map, sizeof(uint16), 16 * 16, in);
     }
 
@@ -161,8 +161,8 @@ bool GridMap::loadHeightData(FILE* in, uint32 offset, uint32 /*size*/)
     {
         if ((header.flags & MAP_HEIGHT_AS_INT16))
         {
-            m_uint16_V9 = new uint16 [129*129];
-            m_uint16_V8 = new uint16 [128*128];
+            m_uint16_V9 = new uint16 [129 * 129];
+            m_uint16_V8 = new uint16 [128 * 128];
             fread(m_uint16_V9, sizeof(uint16), 129 * 129, in);
             fread(m_uint16_V8, sizeof(uint16), 128 * 128, in);
             m_gridIntHeightMultiplier = (header.gridMaxHeight - header.gridHeight) / 65535;
@@ -170,8 +170,8 @@ bool GridMap::loadHeightData(FILE* in, uint32 offset, uint32 /*size*/)
         }
         else if ((header.flags & MAP_HEIGHT_AS_INT8))
         {
-            m_uint8_V9 = new uint8 [129*129];
-            m_uint8_V8 = new uint8 [128*128];
+            m_uint8_V9 = new uint8 [129 * 129];
+            m_uint8_V8 = new uint8 [128 * 128];
             fread(m_uint8_V9, sizeof(uint8), 129 * 129, in);
             fread(m_uint8_V8, sizeof(uint8), 128 * 128, in);
             m_gridIntHeightMultiplier = (header.gridMaxHeight - header.gridHeight) / 255;
@@ -179,8 +179,8 @@ bool GridMap::loadHeightData(FILE* in, uint32 offset, uint32 /*size*/)
         }
         else
         {
-            m_V9 = new float [129*129];
-            m_V8 = new float [128*128];
+            m_V9 = new float [129 * 129];
+            m_V8 = new float [128 * 128];
             fread(m_V9, sizeof(float), 129 * 129, in);
             fread(m_V8, sizeof(float), 128 * 128, in);
             m_gridGetHeight = &GridMap::getHeightFromFloat;
@@ -209,13 +209,13 @@ bool GridMap::loadGridMapLiquidData(FILE* in, uint32 offset, uint32 /*size*/)
 
     if (!(header.flags & MAP_LIQUID_NO_TYPE))
     {
-        m_liquid_type = new uint8 [16*16];
+        m_liquid_type = new uint8 [16 * 16];
         fread(m_liquid_type, sizeof(uint8), 16 * 16, in);
     }
 
     if (!(header.flags & MAP_LIQUID_NO_HEIGHT))
     {
-        m_liquid_map = new float [m_liquid_width*m_liquid_height];
+        m_liquid_map = new float [m_liquid_width * m_liquid_height];
         fread(m_liquid_map, sizeof(float), m_liquid_width * m_liquid_height, in);
     }
 
@@ -231,7 +231,7 @@ uint16 GridMap::getArea(float x, float y)
     y = 16 * (32 - y / SIZE_OF_GRIDS);
     int lx = (int)x & 15;
     int ly = (int)y & 15;
-    return m_area_map[lx*16 + ly];
+    return m_area_map[lx * 16 + ly];
 }
 
 float GridMap::getHeightFromFlat(float /*x*/, float /*y*/) const
@@ -276,9 +276,9 @@ float GridMap::getHeightFromFloat(float x, float y) const
         if (x > y)
         {
             // 1 triangle (h1, h2, h5 points)
-            float h1 = m_V9[(x_int)*129 + y_int];
-            float h2 = m_V9[(x_int+1)*129 + y_int];
-            float h5 = 2 * m_V8[x_int*128 + y_int];
+            float h1 = m_V9[(x_int) * 129 + y_int];
+            float h2 = m_V9[(x_int + 1) * 129 + y_int];
+            float h5 = 2 * m_V8[x_int * 128 + y_int];
             a = h2 - h1;
             b = h5 - h1 - h2;
             c = h1;
@@ -286,9 +286,9 @@ float GridMap::getHeightFromFloat(float x, float y) const
         else
         {
             // 2 triangle (h1, h3, h5 points)
-            float h1 = m_V9[x_int*129 + y_int  ];
-            float h3 = m_V9[x_int*129 + y_int+1];
-            float h5 = 2 * m_V8[x_int*128 + y_int];
+            float h1 = m_V9[x_int * 129 + y_int  ];
+            float h3 = m_V9[x_int * 129 + y_int + 1];
+            float h5 = 2 * m_V8[x_int * 128 + y_int];
             a = h5 - h1 - h3;
             b = h3 - h1;
             c = h1;
@@ -299,9 +299,9 @@ float GridMap::getHeightFromFloat(float x, float y) const
         if (x > y)
         {
             // 3 triangle (h2, h4, h5 points)
-            float h2 = m_V9[(x_int+1)*129 + y_int  ];
-            float h4 = m_V9[(x_int+1)*129 + y_int+1];
-            float h5 = 2 * m_V8[x_int*128 + y_int];
+            float h2 = m_V9[(x_int + 1) * 129 + y_int  ];
+            float h4 = m_V9[(x_int + 1) * 129 + y_int + 1];
+            float h5 = 2 * m_V8[x_int * 128 + y_int];
             a = h2 + h4 - h5;
             b = h4 - h2;
             c = h5 - h4;
@@ -309,9 +309,9 @@ float GridMap::getHeightFromFloat(float x, float y) const
         else
         {
             // 4 triangle (h3, h4, h5 points)
-            float h3 = m_V9[(x_int)*129 + y_int+1];
-            float h4 = m_V9[(x_int+1)*129 + y_int+1];
-            float h5 = 2 * m_V8[x_int*128 + y_int];
+            float h3 = m_V9[(x_int) * 129 + y_int + 1];
+            float h4 = m_V9[(x_int + 1) * 129 + y_int + 1];
+            float h5 = 2 * m_V8[x_int * 128 + y_int];
             a = h4 - h3;
             b = h3 + h4 - h5;
             c = h5 - h4;
@@ -337,7 +337,7 @@ float GridMap::getHeightFromUint8(float x, float y) const
     y_int &= (MAP_RESOLUTION - 1);
 
     int32 a, b, c;
-    uint8* V9_h1_ptr = &m_uint8_V9[x_int*128 + x_int + y_int];
+    uint8* V9_h1_ptr = &m_uint8_V9[x_int * 128 + x_int + y_int];
     if (x + y < 1)
     {
         if (x > y)
@@ -345,7 +345,7 @@ float GridMap::getHeightFromUint8(float x, float y) const
             // 1 triangle (h1, h2, h5 points)
             int32 h1 = V9_h1_ptr[  0];
             int32 h2 = V9_h1_ptr[129];
-            int32 h5 = 2 * m_uint8_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint8_V8[x_int * 128 + y_int];
             a = h2 - h1;
             b = h5 - h1 - h2;
             c = h1;
@@ -355,7 +355,7 @@ float GridMap::getHeightFromUint8(float x, float y) const
             // 2 triangle (h1, h3, h5 points)
             int32 h1 = V9_h1_ptr[0];
             int32 h3 = V9_h1_ptr[1];
-            int32 h5 = 2 * m_uint8_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint8_V8[x_int * 128 + y_int];
             a = h5 - h1 - h3;
             b = h3 - h1;
             c = h1;
@@ -368,7 +368,7 @@ float GridMap::getHeightFromUint8(float x, float y) const
             // 3 triangle (h2, h4, h5 points)
             int32 h2 = V9_h1_ptr[129];
             int32 h4 = V9_h1_ptr[130];
-            int32 h5 = 2 * m_uint8_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint8_V8[x_int * 128 + y_int];
             a = h2 + h4 - h5;
             b = h4 - h2;
             c = h5 - h4;
@@ -378,7 +378,7 @@ float GridMap::getHeightFromUint8(float x, float y) const
             // 4 triangle (h3, h4, h5 points)
             int32 h3 = V9_h1_ptr[  1];
             int32 h4 = V9_h1_ptr[130];
-            int32 h5 = 2 * m_uint8_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint8_V8[x_int * 128 + y_int];
             a = h4 - h3;
             b = h3 + h4 - h5;
             c = h5 - h4;
@@ -405,7 +405,7 @@ float GridMap::getHeightFromUint16(float x, float y) const
     y_int &= (MAP_RESOLUTION - 1);
 
     int32 a, b, c;
-    uint16* V9_h1_ptr = &m_uint16_V9[x_int*128 + x_int + y_int];
+    uint16* V9_h1_ptr = &m_uint16_V9[x_int * 128 + x_int + y_int];
     if (x + y < 1)
     {
         if (x > y)
@@ -413,7 +413,7 @@ float GridMap::getHeightFromUint16(float x, float y) const
             // 1 triangle (h1, h2, h5 points)
             int32 h1 = V9_h1_ptr[  0];
             int32 h2 = V9_h1_ptr[129];
-            int32 h5 = 2 * m_uint16_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint16_V8[x_int * 128 + y_int];
             a = h2 - h1;
             b = h5 - h1 - h2;
             c = h1;
@@ -423,7 +423,7 @@ float GridMap::getHeightFromUint16(float x, float y) const
             // 2 triangle (h1, h3, h5 points)
             int32 h1 = V9_h1_ptr[0];
             int32 h3 = V9_h1_ptr[1];
-            int32 h5 = 2 * m_uint16_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint16_V8[x_int * 128 + y_int];
             a = h5 - h1 - h3;
             b = h3 - h1;
             c = h1;
@@ -436,7 +436,7 @@ float GridMap::getHeightFromUint16(float x, float y) const
             // 3 triangle (h2, h4, h5 points)
             int32 h2 = V9_h1_ptr[129];
             int32 h4 = V9_h1_ptr[130];
-            int32 h5 = 2 * m_uint16_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint16_V8[x_int * 128 + y_int];
             a = h2 + h4 - h5;
             b = h4 - h2;
             c = h5 - h4;
@@ -446,7 +446,7 @@ float GridMap::getHeightFromUint16(float x, float y) const
             // 4 triangle (h3, h4, h5 points)
             int32 h3 = V9_h1_ptr[  1];
             int32 h4 = V9_h1_ptr[130];
-            int32 h5 = 2 * m_uint16_V8[x_int*128 + y_int];
+            int32 h5 = 2 * m_uint16_V8[x_int * 128 + y_int];
             a = h4 - h3;
             b = h3 + h4 - h5;
             c = h5 - h4;
@@ -474,7 +474,7 @@ float GridMap::getLiquidLevel(float x, float y)
     if (cy_int < 0 || cy_int >= m_liquid_width)
         return INVALID_HEIGHT_VALUE;
 
-    return m_liquid_map[cx_int*m_liquid_width + cy_int];
+    return m_liquid_map[cx_int * m_liquid_width + cy_int];
 }
 
 uint8 GridMap::getTerrainType(float x, float y)
@@ -486,7 +486,7 @@ uint8 GridMap::getTerrainType(float x, float y)
     y = 16 * (32 - y / SIZE_OF_GRIDS);
     int lx = (int)x & 15;
     int ly = (int)y & 15;
-    return m_liquid_type[lx*16 + ly];
+    return m_liquid_type[lx * 16 + ly];
 }
 
 // Get water state on map
@@ -504,7 +504,7 @@ GridMapLiquidStatus GridMap::getLiquidStatus(float x, float y, float z, uint8 Re
     int y_int = (int)cy & (MAP_RESOLUTION - 1);
 
     // Check water type in cell
-    uint8 type = m_liquid_type ? m_liquid_type[(x_int>>3)*16 + (y_int>>3)] : m_liquidType;
+    uint8 type = m_liquid_type ? m_liquid_type[(x_int >> 3) * 16 + (y_int >> 3)] : m_liquidType;
     if (type == 0)
         return LIQUID_MAP_NO_WATER;
 
@@ -523,7 +523,7 @@ GridMapLiquidStatus GridMap::getLiquidStatus(float x, float y, float z, uint8 Re
         return LIQUID_MAP_NO_WATER;
 
     // Get water level
-    float liquid_level = m_liquid_map ? m_liquid_map[lx_int*m_liquid_width + ly_int] : m_liquidLevel;
+    float liquid_level = m_liquid_map ? m_liquid_map[lx_int * m_liquid_width + ly_int] : m_liquidLevel;
 
     // Get ground level (sub 0.2 for fix some errors)
     float ground_level = getHeight(x, y);
@@ -574,7 +574,7 @@ bool GridMap::ExistMap(uint32 mapid, int gx, int gy)
     GridMapFileHeader header;
     fread(&header, sizeof(header), 1, pf);
     if (header.mapMagic     != *((uint32 const*)(MAP_MAGIC)) ||
-            header.versionMagic != *((uint32 const*)(MAP_VERSION_MAGIC)))
+        header.versionMagic != *((uint32 const*)(MAP_VERSION_MAGIC)))
     {
         sLog.outError("Map file '%s' is non-compatible version (outdated?). Please, create new using ad.exe program.", tmp);
         delete[] tmp;

@@ -33,85 +33,85 @@
 
 class MaNGOSsoapRunnable: public ACE_Based::Runnable
 {
-    public:
-        MaNGOSsoapRunnable() { }
-        void run() override;
-        void setListenArguments(std::string host, uint16 port)
-        {
-            m_host = host;
-            m_port = port;
-        }
-    private:
-        std::string m_host;
-        uint16 m_port;
+public:
+    MaNGOSsoapRunnable() { }
+    void run() override;
+    void setListenArguments(std::string host, uint16 port)
+    {
+        m_host = host;
+        m_port = port;
+    }
+private:
+    std::string m_host;
+    uint16 m_port;
 };
 
 class SOAPWorkingThread : public ACE_Task<ACE_MT_SYNCH>
 {
-    public:
-        SOAPWorkingThread()
-        { }
+public:
+    SOAPWorkingThread()
+    { }
 
-        virtual int svc(void) override
+    virtual int svc(void) override
+    {
+        while (1)
         {
-            while (1)
+            ACE_Message_Block* mb = 0;
+            if (this->getq(mb) == -1)
             {
-                ACE_Message_Block* mb = 0;
-                if (this->getq(mb) == -1)
-                {
-                    ACE_DEBUG((LM_INFO,
-                               ACE_TEXT("(%t) Shutting down\n")));
-                    break;
-                }
-
-                // Process the message.
-                process_message(mb);
+                ACE_DEBUG((LM_INFO,
+                           ACE_TEXT("(%t) Shutting down\n")));
+                break;
             }
 
-            return 0;
+            // Process the message.
+            process_message(mb);
         }
-    private:
-        void process_message(ACE_Message_Block* mb);
+
+        return 0;
+    }
+private:
+    void process_message(ACE_Message_Block* mb);
 };
 
 
 class SOAPCommand
 {
-    public:
-        SOAPCommand():
-            pendingCommands(0, USYNC_THREAD, "pendingCommands")
-        {
+public:
+    SOAPCommand():
+        pendingCommands(0, USYNC_THREAD, "pendingCommands")
+    {
 
-        }
-        ~SOAPCommand()
-        {
-        }
+    }
+    ~SOAPCommand()
+    {
+    }
 
-        void appendToPrintBuffer(const char* msg)
-        {
-            m_printBuffer += msg;
-        }
+    void appendToPrintBuffer(const char* msg)
+    {
+        m_printBuffer += msg;
+    }
 
-        ACE_Semaphore pendingCommands;
+    ACE_Semaphore pendingCommands;
 
-        void setCommandSuccess(bool val)
-        {
-            m_success = val;
-        }
-        bool hasCommandSucceeded()
-        {
-            return m_success;
-        }
+    void setCommandSuccess(bool val)
+    {
+        m_success = val;
+    }
+    bool hasCommandSucceeded()
+    {
+        return m_success;
+    }
 
-        static void print(void* callbackArg, const char* msg)
-        {
-            ((SOAPCommand*)callbackArg)->appendToPrintBuffer(msg);
-        }
+    static void print(void* callbackArg, const char* msg)
+    {
+        ((SOAPCommand*)callbackArg)->appendToPrintBuffer(msg);
+    }
 
-        static void commandFinished(void* callbackArg, bool success);
+    static void commandFinished(void* callbackArg, bool success);
 
-        bool m_success;
-        std::string m_printBuffer;
+    bool m_success;
+    std::string m_printBuffer;
 };
 
 #endif

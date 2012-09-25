@@ -38,7 +38,7 @@ using namespace VMAP;
 
 namespace MMAP
 {
-    typedef map<uint32,set<uint32>*> TileList;
+    typedef map<uint32, set<uint32>*> TileList;
     struct Tile
     {
         Tile() : chf(NULL), solid(NULL), cset(NULL), pmesh(NULL), dmesh(NULL) {}
@@ -59,69 +59,69 @@ namespace MMAP
 
     class MapBuilder
     {
-        public:
-            MapBuilder(float maxWalkableAngle   = 60.f,
-                       bool skipLiquid          = false,
-                       bool skipContinents      = false,
-                       bool skipJunkMaps        = true,
-                       bool skipBattlegrounds   = false,
-                       bool debugOutput         = false,
-                       bool bigBaseUnit         = false,
-                       const char* offMeshFilePath = NULL);
+    public:
+        MapBuilder(float maxWalkableAngle   = 60.f,
+                   bool skipLiquid          = false,
+                   bool skipContinents      = false,
+                   bool skipJunkMaps        = true,
+                   bool skipBattlegrounds   = false,
+                   bool debugOutput         = false,
+                   bool bigBaseUnit         = false,
+                   const char* offMeshFilePath = NULL);
 
-            ~MapBuilder();
+        ~MapBuilder();
 
-            // builds all mmap tiles for the specified map id (ignores skip settings)
-            void buildMap(uint32 mapID);
+        // builds all mmap tiles for the specified map id (ignores skip settings)
+        void buildMap(uint32 mapID);
 
-            // builds an mmap tile for the specified map and its mesh
-            void buildSingleTile(uint32 mapID, uint32 tileX, uint32 tileY);
+        // builds an mmap tile for the specified map and its mesh
+        void buildSingleTile(uint32 mapID, uint32 tileX, uint32 tileY);
 
-            // builds list of maps, then builds all of mmap tiles (based on the skip settings)
-            void buildAllMaps();
+        // builds list of maps, then builds all of mmap tiles (based on the skip settings)
+        void buildAllMaps();
 
-        private:
-            // detect maps and tiles
-            void discoverTiles();
-            set<uint32>* getTileList(uint32 mapID);
+    private:
+        // detect maps and tiles
+        void discoverTiles();
+        set<uint32>* getTileList(uint32 mapID);
 
-            void buildNavMesh(uint32 mapID, dtNavMesh* &navMesh);
+        void buildNavMesh(uint32 mapID, dtNavMesh* &navMesh);
 
-            void buildTile(uint32 mapID, uint32 tileX, uint32 tileY, dtNavMesh* navMesh);
+        void buildTile(uint32 mapID, uint32 tileX, uint32 tileY, dtNavMesh* navMesh);
 
-            // move map building
-            void buildMoveMapTile(uint32 mapID,
-                                  uint32 tileX,
-                                  uint32 tileY,
-                                  MeshData &meshData,
-                                  float bmin[3],
-                                  float bmax[3],
-                                  dtNavMesh* navMesh);
+        // move map building
+        void buildMoveMapTile(uint32 mapID,
+                              uint32 tileX,
+                              uint32 tileY,
+                              MeshData &meshData,
+                              float bmin[3],
+                              float bmax[3],
+                              dtNavMesh* navMesh);
 
-            void getTileBounds(uint32 tileX, uint32 tileY,
-                               float* verts, int vertCount,
-                               float* bmin, float* bmax);
-            void getGridBounds(uint32 mapID, uint32 &minX, uint32 &minY, uint32 &maxX, uint32 &maxY);
+        void getTileBounds(uint32 tileX, uint32 tileY,
+                           float* verts, int vertCount,
+                           float* bmin, float* bmax);
+        void getGridBounds(uint32 mapID, uint32 &minX, uint32 &minY, uint32 &maxX, uint32 &maxY);
 
-            bool shouldSkipMap(uint32 mapID);
-            bool isTransportMap(uint32 mapID);
-            bool shouldSkipTile(uint32 mapID, uint32 tileX, uint32 tileY);
+        bool shouldSkipMap(uint32 mapID);
+        bool isTransportMap(uint32 mapID);
+        bool shouldSkipTile(uint32 mapID, uint32 tileX, uint32 tileY);
 
-            TerrainBuilder* m_terrainBuilder;
-            TileList m_tiles;
+        TerrainBuilder* m_terrainBuilder;
+        TileList m_tiles;
 
-            bool m_debugOutput;
+        bool m_debugOutput;
 
-            const char* m_offMeshFilePath;
-            bool m_skipContinents;
-            bool m_skipJunkMaps;
-            bool m_skipBattlegrounds;
+        const char* m_offMeshFilePath;
+        bool m_skipContinents;
+        bool m_skipJunkMaps;
+        bool m_skipBattlegrounds;
 
-            float m_maxWalkableAngle;
-            bool m_bigBaseUnit;
+        float m_maxWalkableAngle;
+        bool m_bigBaseUnit;
 
-            // build performance - not really used for now
-            rcContext* m_rcContext;
+        // build performance - not really used for now
+        rcContext* m_rcContext;
     };
 }
 

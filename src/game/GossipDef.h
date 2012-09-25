@@ -156,132 +156,132 @@ typedef std::vector<QuestMenuItem> QuestMenuItemList;
 
 class MANGOS_DLL_SPEC GossipMenu
 {
-    public:
-        explicit GossipMenu(WorldSession* session);
-        ~GossipMenu();
+public:
+    explicit GossipMenu(WorldSession* session);
+    ~GossipMenu();
 
-        void AddMenuItem(uint8 Icon, const std::string& Message, bool Coded = false);
-        void AddMenuItem(uint8 Icon, const std::string& Message, uint32 dtSender, uint32 dtAction, const std::string& BoxMessage, uint32 BoxMoney, bool Coded = false);
+    void AddMenuItem(uint8 Icon, const std::string& Message, bool Coded = false);
+    void AddMenuItem(uint8 Icon, const std::string& Message, uint32 dtSender, uint32 dtAction, const std::string& BoxMessage, uint32 BoxMoney, bool Coded = false);
 
-        // for using from scripts, don't must be inlined
-        void AddMenuItem(uint8 Icon, char const* Message, bool Coded = false);
-        void AddMenuItem(uint8 Icon, char const* Message, uint32 dtSender, uint32 dtAction, char const* BoxMessage, uint32 BoxMoney, bool Coded = false);
+    // for using from scripts, don't must be inlined
+    void AddMenuItem(uint8 Icon, char const* Message, bool Coded = false);
+    void AddMenuItem(uint8 Icon, char const* Message, uint32 dtSender, uint32 dtAction, char const* BoxMessage, uint32 BoxMoney, bool Coded = false);
 
-        void AddMenuItem(uint8 Icon, int32 itemText, uint32 dtSender, uint32 dtAction, int32 boxText, uint32 BoxMoney, bool Coded = false);
+    void AddMenuItem(uint8 Icon, int32 itemText, uint32 dtSender, uint32 dtAction, int32 boxText, uint32 BoxMoney, bool Coded = false);
 
-        void SetMenuId(uint32 menu_id) { m_gMenuId = menu_id; }
-        uint32 GetMenuId() { return m_gMenuId; }
+    void SetMenuId(uint32 menu_id) { m_gMenuId = menu_id; }
+    uint32 GetMenuId() { return m_gMenuId; }
 
-        void AddGossipMenuItemData(int32 action_menu, uint32 action_poi, uint32 action_script);
+    void AddGossipMenuItemData(int32 action_menu, uint32 action_poi, uint32 action_script);
 
-        unsigned int MenuItemCount() const
-        {
-            return m_gItems.size();
-        }
+    unsigned int MenuItemCount() const
+    {
+        return m_gItems.size();
+    }
 
-        bool Empty() const
-        {
-            return m_gItems.empty();
-        }
+    bool Empty() const
+    {
+        return m_gItems.empty();
+    }
 
-        GossipMenuItem const& GetItem(unsigned int Id)
-        {
-            return m_gItems[ Id ];
-        }
+    GossipMenuItem const& GetItem(unsigned int Id)
+    {
+        return m_gItems[ Id ];
+    }
 
-        GossipMenuItemData const& GetItemData(unsigned int indexId)
-        {
-            return m_gItemsData[indexId];
-        }
+    GossipMenuItemData const& GetItemData(unsigned int indexId)
+    {
+        return m_gItemsData[indexId];
+    }
 
-        uint32 MenuItemSender(unsigned int ItemId);
-        uint32 MenuItemAction(unsigned int ItemId);
-        bool MenuItemCoded(unsigned int ItemId);
+    uint32 MenuItemSender(unsigned int ItemId);
+    uint32 MenuItemAction(unsigned int ItemId);
+    bool MenuItemCoded(unsigned int ItemId);
 
-        void ClearMenu();
+    void ClearMenu();
 
-        WorldSession* GetMenuSession() const { return m_session; }
+    WorldSession* GetMenuSession() const { return m_session; }
 
-    protected:
-        GossipMenuItemList      m_gItems;
-        GossipMenuItemDataList  m_gItemsData;
+protected:
+    GossipMenuItemList      m_gItems;
+    GossipMenuItemDataList  m_gItemsData;
 
-        uint32 m_gMenuId;
+    uint32 m_gMenuId;
 
-    private:
-        WorldSession* m_session;
+private:
+    WorldSession* m_session;
 };
 
 class QuestMenu
 {
-    public:
-        QuestMenu();
-        ~QuestMenu();
+public:
+    QuestMenu();
+    ~QuestMenu();
 
-        void AddMenuItem(uint32 QuestId, uint8 Icon);
-        void ClearMenu();
+    void AddMenuItem(uint32 QuestId, uint8 Icon);
+    void ClearMenu();
 
-        uint8 MenuItemCount() const
-        {
-            return m_qItems.size();
-        }
+    uint8 MenuItemCount() const
+    {
+        return m_qItems.size();
+    }
 
-        bool Empty() const
-        {
-            return m_qItems.empty();
-        }
+    bool Empty() const
+    {
+        return m_qItems.empty();
+    }
 
-        bool HasItem(uint32 questid);
+    bool HasItem(uint32 questid);
 
-        QuestMenuItem const& GetItem(uint16 Id)
-        {
-            return m_qItems[ Id ];
-        }
+    QuestMenuItem const& GetItem(uint16 Id)
+    {
+        return m_qItems[ Id ];
+    }
 
-    protected:
-        QuestMenuItemList m_qItems;
+protected:
+    QuestMenuItemList m_qItems;
 };
 
 class MANGOS_DLL_SPEC PlayerMenu
 {
-    private:
-        GossipMenu mGossipMenu;
-        QuestMenu  mQuestMenu;
+private:
+    GossipMenu mGossipMenu;
+    QuestMenu  mQuestMenu;
 
-    public:
-        explicit PlayerMenu(WorldSession* Session);
-        ~PlayerMenu();
+public:
+    explicit PlayerMenu(WorldSession* Session);
+    ~PlayerMenu();
 
-        GossipMenu& GetGossipMenu() { return mGossipMenu; }
-        QuestMenu& GetQuestMenu() { return mQuestMenu; }
+    GossipMenu& GetGossipMenu() { return mGossipMenu; }
+    QuestMenu& GetQuestMenu() { return mQuestMenu; }
 
-        WorldSession* GetMenuSession() const { return mGossipMenu.GetMenuSession(); }
+    WorldSession* GetMenuSession() const { return mGossipMenu.GetMenuSession(); }
 
-        bool Empty() const { return mGossipMenu.Empty() && mQuestMenu.Empty(); }
+    bool Empty() const { return mGossipMenu.Empty() && mQuestMenu.Empty(); }
 
-        void ClearMenus();
-        uint32 GossipOptionSender(unsigned int Selection);
-        uint32 GossipOptionAction(unsigned int Selection);
-        bool GossipOptionCoded(unsigned int Selection);
+    void ClearMenus();
+    uint32 GossipOptionSender(unsigned int Selection);
+    uint32 GossipOptionAction(unsigned int Selection);
+    bool GossipOptionCoded(unsigned int Selection);
 
-        void SendGossipMenu(uint32 titleTextId, ObjectGuid objectGuid);
-        void CloseGossip();
-        void SendPointOfInterest(float X, float Y, uint32 Icon, uint32 Flags, uint32 Data, const char* locName);
-        void SendPointOfInterest(uint32 poi_id);
-        void SendTalking(uint32 textID);
-        void SendTalking(char const* title, char const* text);
+    void SendGossipMenu(uint32 titleTextId, ObjectGuid objectGuid);
+    void CloseGossip();
+    void SendPointOfInterest(float X, float Y, uint32 Icon, uint32 Flags, uint32 Data, const char* locName);
+    void SendPointOfInterest(uint32 poi_id);
+    void SendTalking(uint32 textID);
+    void SendTalking(char const* title, char const* text);
 
-        /*********************************************************/
-        /***                    QUEST SYSTEM                   ***/
-        /*********************************************************/
-        void SendQuestGiverStatus(uint8 questStatus, ObjectGuid npcGUID);
+    /*********************************************************/
+    /***                    QUEST SYSTEM                   ***/
+    /*********************************************************/
+    void SendQuestGiverStatus(uint8 questStatus, ObjectGuid npcGUID);
 
-        void SendQuestGiverQuestList(QEmote eEmote, const std::string& Title, ObjectGuid npcGUID);
+    void SendQuestGiverQuestList(QEmote eEmote, const std::string& Title, ObjectGuid npcGUID);
 
-        void SendQuestQueryResponse(Quest const* pQuest);
-        void SendQuestGiverQuestDetails(Quest const* pQuest, ObjectGuid npcGUID, bool ActivateAccept);
+    void SendQuestQueryResponse(Quest const* pQuest);
+    void SendQuestGiverQuestDetails(Quest const* pQuest, ObjectGuid npcGUID, bool ActivateAccept);
 
-        void SendQuestGiverOfferReward(Quest const* pQuest, ObjectGuid npcGUID, bool EnbleNext);
-        void SendQuestGiverRequestItems(Quest const* pQuest, ObjectGuid npcGUID, bool Completable, bool CloseOnCancel);
+    void SendQuestGiverOfferReward(Quest const* pQuest, ObjectGuid npcGUID, bool EnbleNext);
+    void SendQuestGiverRequestItems(Quest const* pQuest, ObjectGuid npcGUID, bool Completable, bool CloseOnCancel);
 };
 #endif

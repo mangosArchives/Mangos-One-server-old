@@ -60,75 +60,75 @@ enum MMCleanFlag
 
 class MANGOS_DLL_SPEC MotionMaster : private std::stack<MovementGenerator*>
 {
-    private:
-        typedef std::stack<MovementGenerator*> Impl;
-        typedef std::vector<MovementGenerator*> ExpireList;
-    public:
+private:
+    typedef std::stack<MovementGenerator*> Impl;
+    typedef std::vector<MovementGenerator*> ExpireList;
+public:
 
-        explicit MotionMaster(Unit* unit) : m_owner(unit), m_expList(NULL), m_cleanFlag(MMCF_NONE) {}
-        ~MotionMaster();
+    explicit MotionMaster(Unit* unit) : m_owner(unit), m_expList(NULL), m_cleanFlag(MMCF_NONE) {}
+    ~MotionMaster();
 
-        void Initialize();
+    void Initialize();
 
-        MovementGenerator* operator->(void) { return top(); }
+    MovementGenerator* operator->(void) { return top(); }
 
-        using Impl::top;
-        using Impl::empty;
+    using Impl::top;
+    using Impl::empty;
 
-        typedef Impl::container_type::const_iterator const_iterator;
-        const_iterator begin() const { return Impl::c.begin(); }
-        const_iterator end() const { return Impl::c.end(); }
+    typedef Impl::container_type::const_iterator const_iterator;
+    const_iterator begin() const { return Impl::c.begin(); }
+    const_iterator end() const { return Impl::c.end(); }
 
-        void UpdateMotion(uint32 diff);
-        void Clear(bool reset = true, bool all = false)
-        {
-            if (m_cleanFlag & MMCF_UPDATE)
-                DelayedClean(reset, all);
-            else
-                DirectClean(reset, all);
-        }
-        void MovementExpired(bool reset = true)
-        {
-            if (m_cleanFlag & MMCF_UPDATE)
-                DelayedExpire(reset);
-            else
-                DirectExpire(reset);
-        }
+    void UpdateMotion(uint32 diff);
+    void Clear(bool reset = true, bool all = false)
+    {
+        if (m_cleanFlag & MMCF_UPDATE)
+            DelayedClean(reset, all);
+        else
+            DirectClean(reset, all);
+    }
+    void MovementExpired(bool reset = true)
+    {
+        if (m_cleanFlag & MMCF_UPDATE)
+            DelayedExpire(reset);
+        else
+            DirectExpire(reset);
+    }
 
-        void MoveIdle();
-        void MoveRandomAroundPoint(float x, float y, float z, float radius, float verticalZ = 0.0f);
-        void MoveTargetedHome();
-        void MoveFollow(Unit* target, float dist, float angle);
-        void MoveChase(Unit* target, float dist = 0.0f, float angle = 0.0f);
-        void MoveConfused();
-        void MoveFleeing(Unit* enemy, uint32 timeLimit = 0);
-        void MovePoint(uint32 id, float x, float y, float z, bool generatePath = true);
-        void MoveSeekAssistance(float x, float y, float z);
-        void MoveSeekAssistanceDistract(uint32 timer);
-        void MoveWaypoint();
-        void MoveTaxiFlight(uint32 path, uint32 pathnode);
-        void MoveDistract(uint32 timeLimit);
-        void MoveFall();
+    void MoveIdle();
+    void MoveRandomAroundPoint(float x, float y, float z, float radius, float verticalZ = 0.0f);
+    void MoveTargetedHome();
+    void MoveFollow(Unit* target, float dist, float angle);
+    void MoveChase(Unit* target, float dist = 0.0f, float angle = 0.0f);
+    void MoveConfused();
+    void MoveFleeing(Unit* enemy, uint32 timeLimit = 0);
+    void MovePoint(uint32 id, float x, float y, float z, bool generatePath = true);
+    void MoveSeekAssistance(float x, float y, float z);
+    void MoveSeekAssistanceDistract(uint32 timer);
+    void MoveWaypoint();
+    void MoveTaxiFlight(uint32 path, uint32 pathnode);
+    void MoveDistract(uint32 timeLimit);
+    void MoveFall();
 
-        MovementGeneratorType GetCurrentMovementGeneratorType() const;
+    MovementGeneratorType GetCurrentMovementGeneratorType() const;
 
-        void propagateSpeedChange();
+    void propagateSpeedChange();
 
-        // will only work in MMgens where we have a target (TARGETED_MOTION_TYPE)
-        void UpdateFinalDistanceToTarget(float fDistance);
+    // will only work in MMgens where we have a target (TARGETED_MOTION_TYPE)
+    void UpdateFinalDistanceToTarget(float fDistance);
 
-        bool GetDestination(float& x, float& y, float& z);
-    private:
-        void Mutate(MovementGenerator* m);                  // use Move* functions instead
+    bool GetDestination(float& x, float& y, float& z);
+private:
+    void Mutate(MovementGenerator* m);                  // use Move* functions instead
 
-        void DirectClean(bool reset, bool all);
-        void DelayedClean(bool reset, bool all);
+    void DirectClean(bool reset, bool all);
+    void DelayedClean(bool reset, bool all);
 
-        void DirectExpire(bool reset);
-        void DelayedExpire(bool reset);
+    void DirectExpire(bool reset);
+    void DelayedExpire(bool reset);
 
-        Unit*       m_owner;
-        ExpireList* m_expList;
-        uint8       m_cleanFlag;
+    Unit*       m_owner;
+    ExpireList* m_expList;
+    uint8       m_cleanFlag;
 };
 #endif

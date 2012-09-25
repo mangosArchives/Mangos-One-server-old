@@ -457,7 +457,7 @@ void WorldSession::HandleRaidTargetUpdateOpcode(WorldPacket& recv_data)
     else                                                    // target icon update
     {
         if (!group->IsLeader(GetPlayer()->GetObjectGuid()) &&
-                !group->IsAssistant(GetPlayer()->GetObjectGuid()))
+            !group->IsAssistant(GetPlayer()->GetObjectGuid()))
             return;
 
         ObjectGuid guid;
@@ -503,7 +503,7 @@ void WorldSession::HandleGroupChangeSubGroupOpcode(WorldPacket& recv_data)
 
     /** error handling **/
     if (!group->IsLeader(GetPlayer()->GetObjectGuid()) &&
-            !group->IsAssistant(GetPlayer()->GetObjectGuid()))
+        !group->IsAssistant(GetPlayer()->GetObjectGuid()))
         return;
 
     if (!group->HasFreeSlotSubGroup(groupNr))
@@ -580,7 +580,7 @@ void WorldSession::HandleRaidReadyCheckOpcode(WorldPacket& recv_data)
 
         /** error handling **/
         if (!group->IsLeader(GetPlayer()->GetObjectGuid()) &&
-                !group->IsAssistant(GetPlayer()->GetObjectGuid()))
+            !group->IsAssistant(GetPlayer()->GetObjectGuid()))
             return;
         /********************/
 
@@ -793,7 +793,7 @@ void WorldSession::HandleRequestPartyMemberStatsOpcode(WorldPacket& recv_data)
     if (pet)
         mask1 = 0x7FFFFFFF;                                 // for hunters and other classes with pets
 
-    uint16 online_status = GetPlayer()->IsReferAFriendLinked(player) ?  (MEMBER_STATUS_ONLINE | MEMBER_STATUS_RAF) : MEMBER_STATUS_ONLINE;
+    uint16 online_status = GetPlayer()->IsReferAFriendLinked(player) ? (MEMBER_STATUS_ONLINE | MEMBER_STATUS_RAF) : MEMBER_STATUS_ONLINE;
 
     Powers powerType = player->getPowerType();
     data << uint32(mask1);                                  // group update mask

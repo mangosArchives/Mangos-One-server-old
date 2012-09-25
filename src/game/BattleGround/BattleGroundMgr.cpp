@@ -658,7 +658,7 @@ bool BattleGroundQueue::CheckNormalMatch(BattleGround* bg_template, BattleGround
     if (m_SelectionPools[BG_TEAM_HORDE].GetPlayerCount() < m_SelectionPools[BG_TEAM_ALLIANCE].GetPlayerCount())
         j = BG_TEAM_HORDE;
     if (sWorld.getConfig(CONFIG_UINT32_BATTLEGROUND_INVITATION_TYPE) != 0
-            && m_SelectionPools[BG_TEAM_HORDE].GetPlayerCount() >= minPlayers && m_SelectionPools[BG_TEAM_ALLIANCE].GetPlayerCount() >= minPlayers)
+        && m_SelectionPools[BG_TEAM_HORDE].GetPlayerCount() >= minPlayers && m_SelectionPools[BG_TEAM_ALLIANCE].GetPlayerCount() >= minPlayers)
     {
         // we will try to invite more groups to team with less players indexed by j
         ++(itr_team[j]);                                    // this will not cause a crash, because for cycle above reached break;
@@ -748,9 +748,9 @@ void BattleGroundQueue::Update(BattleGroundTypeId bgTypeId, BattleGroundBracketI
     // ACE_Guard<ACE_Recursive_Thread_Mutex> guard(m_Lock);
     // if no players in queue - do nothing
     if (m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_ALLIANCE].empty() &&
-            m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_HORDE].empty() &&
-            m_QueuedGroups[bracket_id][BG_QUEUE_NORMAL_ALLIANCE].empty() &&
-            m_QueuedGroups[bracket_id][BG_QUEUE_NORMAL_HORDE].empty())
+        m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_HORDE].empty() &&
+        m_QueuedGroups[bracket_id][BG_QUEUE_NORMAL_ALLIANCE].empty() &&
+        m_QueuedGroups[bracket_id][BG_QUEUE_NORMAL_HORDE].empty())
         return;
 
     // battleground with free slot for player should be always in the beggining of the queue
@@ -762,7 +762,7 @@ void BattleGroundQueue::Update(BattleGroundTypeId bgTypeId, BattleGroundBracketI
         ++next;
         // DO NOT allow queue manager to invite new player to arena
         if ((*itr)->isBattleGround() && (*itr)->GetTypeID() == bgTypeId && (*itr)->GetBracketId() == bracket_id &&
-                (*itr)->GetStatus() > STATUS_WAIT_QUEUE && (*itr)->GetStatus() < STATUS_WAIT_LEAVE)
+            (*itr)->GetStatus() > STATUS_WAIT_QUEUE && (*itr)->GetStatus() < STATUS_WAIT_LEAVE)
         {
             BattleGround* bg = *itr; // we have to store battleground pointer here, because when battleground is full, it is removed from free queue (not yet implemented!!)
             // and iterator is invalid
@@ -864,7 +864,7 @@ void BattleGroundQueue::Update(BattleGroundTypeId bgTypeId, BattleGroundBracketI
     {
         // if there are enough players in pools, start new battleground or non rated arena
         if (CheckNormalMatch(bg_template, bracket_id, MinPlayersPerTeam, MaxPlayersPerTeam)
-                || (bg_template->isArena() && CheckSkirmishForSameFaction(bracket_id, MinPlayersPerTeam)))
+            || (bg_template->isArena() && CheckSkirmishForSameFaction(bracket_id, MinPlayersPerTeam)))
         {
             // we successfully created a pool
             BattleGround* bg2 = sBattleGroundMgr.CreateNewBattleGround(bgTypeId, bracket_id, arenaType, false);
@@ -933,8 +933,8 @@ void BattleGroundQueue::Update(BattleGroundTypeId bgTypeId, BattleGroundBracketI
             {
                 // if group match conditions, then add it to pool
                 if (!(*itr_team[i])->IsInvitedToBGInstanceGUID
-                        && (((*itr_team[i])->ArenaTeamRating >= arenaMinRating && (*itr_team[i])->ArenaTeamRating <= arenaMaxRating)
-                            || (*itr_team[i])->JoinTime < discardTime))
+                    && (((*itr_team[i])->ArenaTeamRating >= arenaMinRating && (*itr_team[i])->ArenaTeamRating <= arenaMaxRating)
+                        || (*itr_team[i])->JoinTime < discardTime))
                 {
                     m_SelectionPools[i].AddGroup((*itr_team[i]), MaxPlayersPerTeam);
                     // break for cycle to be able to start selecting another group from same faction queue
@@ -953,8 +953,8 @@ void BattleGroundQueue::Update(BattleGroundTypeId bgTypeId, BattleGroundBracketI
             for (; itr_team[BG_TEAM_ALLIANCE] != m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_HORDE].end(); ++(itr_team[BG_TEAM_ALLIANCE]))
             {
                 if (!(*itr_team[BG_TEAM_ALLIANCE])->IsInvitedToBGInstanceGUID
-                        && (((*itr_team[BG_TEAM_ALLIANCE])->ArenaTeamRating >= arenaMinRating && (*itr_team[BG_TEAM_ALLIANCE])->ArenaTeamRating <= arenaMaxRating)
-                            || (*itr_team[BG_TEAM_ALLIANCE])->JoinTime < discardTime))
+                    && (((*itr_team[BG_TEAM_ALLIANCE])->ArenaTeamRating >= arenaMinRating && (*itr_team[BG_TEAM_ALLIANCE])->ArenaTeamRating <= arenaMaxRating)
+                        || (*itr_team[BG_TEAM_ALLIANCE])->JoinTime < discardTime))
                 {
                     m_SelectionPools[BG_TEAM_ALLIANCE].AddGroup((*itr_team[BG_TEAM_ALLIANCE]), MaxPlayersPerTeam);
                     break;
@@ -969,8 +969,8 @@ void BattleGroundQueue::Update(BattleGroundTypeId bgTypeId, BattleGroundBracketI
             for (; itr_team[BG_TEAM_HORDE] != m_QueuedGroups[bracket_id][BG_QUEUE_PREMADE_ALLIANCE].end(); ++(itr_team[BG_TEAM_HORDE]))
             {
                 if (!(*itr_team[BG_TEAM_HORDE])->IsInvitedToBGInstanceGUID
-                        && (((*itr_team[BG_TEAM_HORDE])->ArenaTeamRating >= arenaMinRating && (*itr_team[BG_TEAM_HORDE])->ArenaTeamRating <= arenaMaxRating)
-                            || (*itr_team[BG_TEAM_HORDE])->JoinTime < discardTime))
+                    && (((*itr_team[BG_TEAM_HORDE])->ArenaTeamRating >= arenaMinRating && (*itr_team[BG_TEAM_HORDE])->ArenaTeamRating <= arenaMaxRating)
+                        || (*itr_team[BG_TEAM_HORDE])->JoinTime < discardTime))
                 {
                     m_SelectionPools[BG_TEAM_HORDE].AddGroup((*itr_team[BG_TEAM_HORDE]), MaxPlayersPerTeam);
                     break;
@@ -1463,7 +1463,7 @@ BattleGround* BattleGroundMgr::CreateNewBattleGround(BattleGroundTypeId bgTypeId
     if (bg_template->isArena())
     {
         BattleGroundTypeId arenas[] = { BATTLEGROUND_NA, BATTLEGROUND_BE, BATTLEGROUND_RL };
-        bgTypeId = arenas[urand(0, countof(arenas)-1)];
+        bgTypeId = arenas[urand(0, countof(arenas) - 1)];
         bg_template = GetBattleGroundTemplate(bgTypeId);
         if (!bg_template)
         {

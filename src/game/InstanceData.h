@@ -30,70 +30,70 @@ class Creature;
 
 class MANGOS_DLL_SPEC InstanceData
 {
-    public:
+public:
 
-        explicit InstanceData(Map* map) : instance(map) {}
-        virtual ~InstanceData() {}
+    explicit InstanceData(Map* map) : instance(map) {}
+    virtual ~InstanceData() {}
 
-        Map* instance;
+    Map* instance;
 
-        // On creation, NOT load.
-        virtual void Initialize() {}
+    // On creation, NOT load.
+    virtual void Initialize() {}
 
-        // On load
-        virtual void Load(const char* /*data*/) {}
+    // On load
+    virtual void Load(const char* /*data*/) {}
 
-        // When save is needed, this function generates the data
-        virtual const char* Save() { return ""; }
+    // When save is needed, this function generates the data
+    virtual const char* Save() { return ""; }
 
-        void SaveToDB();
+    void SaveToDB();
 
-        // Called every map update
-        virtual void Update(uint32 /*diff*/) {}
+    // Called every map update
+    virtual void Update(uint32 /*diff*/) {}
 
-        // Used by the map's CanEnter function.
-        // This is to prevent players from entering during boss encounters.
-        virtual bool IsEncounterInProgress() const { return false; };
+    // Used by the map's CanEnter function.
+    // This is to prevent players from entering during boss encounters.
+    virtual bool IsEncounterInProgress() const { return false; };
 
-        // Called when a player successfully enters the instance (after really added to map)
-        virtual void OnPlayerEnter(Player*) {}
+    // Called when a player successfully enters the instance (after really added to map)
+    virtual void OnPlayerEnter(Player*) {}
 
-        // Called when a player dies inside instance
-        virtual void OnPlayerDeath(Player*) {}
+    // Called when a player dies inside instance
+    virtual void OnPlayerDeath(Player*) {}
 
-        // Called when a player leaves the instance (before really removed from map (or possibly world))
-        virtual void OnPlayerLeave(Player*) {}
+    // Called when a player leaves the instance (before really removed from map (or possibly world))
+    virtual void OnPlayerLeave(Player*) {}
 
-        // Called when a gameobject is created
-        virtual void OnObjectCreate(GameObject*) {}
+    // Called when a gameobject is created
+    virtual void OnObjectCreate(GameObject*) {}
 
-        // called on creature creation
-        virtual void OnCreatureCreate(Creature * /*creature*/) {}
+    // called on creature creation
+    virtual void OnCreatureCreate(Creature * /*creature*/) {}
 
-        // called on creature enter combat
-        virtual void OnCreatureEnterCombat(Creature * /*creature*/) {}
+    // called on creature enter combat
+    virtual void OnCreatureEnterCombat(Creature * /*creature*/) {}
 
-        // called on creature evade
-        virtual void OnCreatureEvade(Creature * /*creature*/) {}
+    // called on creature evade
+    virtual void OnCreatureEvade(Creature * /*creature*/) {}
 
-        // called on creature death
-        virtual void OnCreatureDeath(Creature * /*creature*/) {}
+    // called on creature death
+    virtual void OnCreatureDeath(Creature * /*creature*/) {}
 
-        // All-purpose data storage 64 bit
-        virtual uint64 GetData64(uint32 /*Data*/) { return 0; }
-        virtual void SetData64(uint32 /*Data*/, uint64 /*Value*/) { }
+    // All-purpose data storage 64 bit
+    virtual uint64 GetData64(uint32 /*Data*/) { return 0; }
+    virtual void SetData64(uint32 /*Data*/, uint64 /*Value*/) { }
 
-        // Guid data storage (wrapper for set/get from uint64 storage
-        ObjectGuid GetGuid(uint32 dataIdx) { return ObjectGuid(GetData64(dataIdx)); }
-        void SetGuid(uint32 dataIdx, ObjectGuid value) { SetData64(dataIdx, value.GetRawValue()); }
+    // Guid data storage (wrapper for set/get from uint64 storage
+    ObjectGuid GetGuid(uint32 dataIdx) { return ObjectGuid(GetData64(dataIdx)); }
+    void SetGuid(uint32 dataIdx, ObjectGuid value) { SetData64(dataIdx, value.GetRawValue()); }
 
-        // All-purpose data storage 32 bit
-        virtual uint32 GetData(uint32 /*Type*/) { return 0; }
-        virtual void SetData(uint32 /*Type*/, uint32 /*Data*/) {}
+    // All-purpose data storage 32 bit
+    virtual uint32 GetData(uint32 /*Type*/) { return 0; }
+    virtual void SetData(uint32 /*Type*/, uint32 /*Data*/) {}
 
-        // Condition criteria additional requirements check
-        // This is used for such things are heroic loot
-        virtual bool CheckConditionCriteriaMeet(Player const* source, uint32 map_id, uint32 instance_condition_id);
+    // Condition criteria additional requirements check
+    // This is used for such things are heroic loot
+    virtual bool CheckConditionCriteriaMeet(Player const* source, uint32 map_id, uint32 instance_condition_id);
 };
 
 #endif

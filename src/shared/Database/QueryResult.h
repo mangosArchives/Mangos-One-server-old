@@ -25,60 +25,60 @@
 
 class MANGOS_DLL_SPEC QueryResult
 {
-    public:
-        QueryResult(uint64 rowCount, uint32 fieldCount)
-            : mFieldCount(fieldCount), mRowCount(rowCount) {}
+public:
+    QueryResult(uint64 rowCount, uint32 fieldCount)
+        : mFieldCount(fieldCount), mRowCount(rowCount) {}
 
-        virtual ~QueryResult() {}
+    virtual ~QueryResult() {}
 
-        virtual bool NextRow() = 0;
+    virtual bool NextRow() = 0;
 
-        Field* Fetch() const { return mCurrentRow; }
+    Field* Fetch() const { return mCurrentRow; }
 
-        const Field& operator [](int index) const { return mCurrentRow[index]; }
+    const Field& operator [](int index) const { return mCurrentRow[index]; }
 
-        uint32 GetFieldCount() const { return mFieldCount; }
-        uint64 GetRowCount() const { return mRowCount; }
+    uint32 GetFieldCount() const { return mFieldCount; }
+    uint64 GetRowCount() const { return mRowCount; }
 
-    protected:
-        Field* mCurrentRow;
-        uint32 mFieldCount;
-        uint64 mRowCount;
+protected:
+    Field* mCurrentRow;
+    uint32 mFieldCount;
+    uint64 mRowCount;
 };
 
 typedef std::vector<std::string> QueryFieldNames;
 
 class MANGOS_DLL_SPEC QueryNamedResult
 {
-    public:
-        explicit QueryNamedResult(QueryResult* query, QueryFieldNames const& names) : mQuery(query), mFieldNames(names) {}
-        ~QueryNamedResult() { delete mQuery; }
+public:
+    explicit QueryNamedResult(QueryResult* query, QueryFieldNames const& names) : mQuery(query), mFieldNames(names) {}
+    ~QueryNamedResult() { delete mQuery; }
 
-        // compatible interface with QueryResult
-        bool NextRow() { return mQuery->NextRow(); }
-        Field* Fetch() const { return mQuery->Fetch(); }
-        uint32 GetFieldCount() const { return mQuery->GetFieldCount(); }
-        uint64 GetRowCount() const { return mQuery->GetRowCount(); }
-        Field const& operator[](int index) const { return (*mQuery)[index]; }
+    // compatible interface with QueryResult
+    bool NextRow() { return mQuery->NextRow(); }
+    Field* Fetch() const { return mQuery->Fetch(); }
+    uint32 GetFieldCount() const { return mQuery->GetFieldCount(); }
+    uint64 GetRowCount() const { return mQuery->GetRowCount(); }
+    Field const& operator[](int index) const { return (*mQuery)[index]; }
 
-        // named access
-        Field const& operator[](const std::string& name) const { return mQuery->Fetch()[GetField_idx(name)]; }
-        QueryFieldNames const& GetFieldNames() const { return mFieldNames; }
+    // named access
+    Field const& operator[](const std::string& name) const { return mQuery->Fetch()[GetField_idx(name)]; }
+    QueryFieldNames const& GetFieldNames() const { return mFieldNames; }
 
-        uint32 GetField_idx(const std::string& name) const
+    uint32 GetField_idx(const std::string& name) const
+    {
+        for (size_t idx = 0; idx < mFieldNames.size(); ++idx)
         {
-            for (size_t idx = 0; idx < mFieldNames.size(); ++idx)
-            {
-                if (mFieldNames[idx] == name)
-                    return idx;
-            }
-            MANGOS_ASSERT(false && "unknown field name");
-            return uint32(-1);
+            if (mFieldNames[idx] == name)
+                return idx;
         }
+        MANGOS_ASSERT(false && "unknown field name");
+        return uint32(-1);
+    }
 
-    protected:
-        QueryResult* mQuery;
-        QueryFieldNames mFieldNames;
+protected:
+    QueryResult* mQuery;
+    QueryFieldNames mFieldNames;
 };
 
 #endif

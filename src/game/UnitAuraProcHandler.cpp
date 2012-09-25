@@ -635,14 +635,14 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
                         case CLASS_DRUID:                   // 39511,40997,40998,40999,41002,41005,41009,41011,41409
                         {
                             uint32 RandomSpell[] = {39511, 40997, 40998, 40999, 41002, 41005, 41009, 41011, 41409};
-                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell)-1)];
+                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell) - 1)];
                             break;
                         }
                         case CLASS_ROGUE:                   // 39511,40997,40998,41002,41005,41011
                         case CLASS_WARRIOR:                 // 39511,40997,40998,41002,41005,41011
                         {
                             uint32 RandomSpell[] = {39511, 40997, 40998, 41002, 41005, 41011};
-                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell)-1)];
+                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell) - 1)];
                             break;
                         }
                         case CLASS_PRIEST:                  // 40999,41002,41005,41009,41011,41406,41409
@@ -651,13 +651,13 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
                         case CLASS_WARLOCK:                 // 40999,41002,41005,41009,41011,41406,41409
                         {
                             uint32 RandomSpell[] = {40999, 41002, 41005, 41009, 41011, 41406, 41409};
-                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell)-1)];
+                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell) - 1)];
                             break;
                         }
                         case CLASS_HUNTER:                  // 40997,40999,41002,41005,41009,41011,41406,41409
                         {
                             uint32 RandomSpell[] = {40997, 40999, 41002, 41005, 41009, 41011, 41406, 41409};
-                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell)-1)];
+                            triggered_spell_id = RandomSpell[urand(0, countof(RandomSpell) - 1)];
                             break;
                         }
                         default:
@@ -827,11 +827,11 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
                 {
                     switch (dummySpell->Id)
                     {
-                        case 11119: basepoints[0] = int32(0.04f*damage); break;
-                        case 11120: basepoints[0] = int32(0.08f*damage); break;
-                        case 12846: basepoints[0] = int32(0.12f*damage); break;
-                        case 12847: basepoints[0] = int32(0.16f*damage); break;
-                        case 12848: basepoints[0] = int32(0.20f*damage); break;
+                        case 11119: basepoints[0] = int32(0.04f * damage); break;
+                        case 11120: basepoints[0] = int32(0.08f * damage); break;
+                        case 12846: basepoints[0] = int32(0.12f * damage); break;
+                        case 12847: basepoints[0] = int32(0.16f * damage); break;
+                        case 12848: basepoints[0] = int32(0.20f * damage); break;
                         default:
                             sLog.outError("Unit::HandleDummyAuraProc: non handled spell id: %u (IG)", dummySpell->Id);
                             return SPELL_AURA_PROC_FAILED;
@@ -880,8 +880,8 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
 
                 switch (dummySpell->Id)
                 {
-                    case 29838: triggered_spell_id=29842; break;
-                    case 29834: triggered_spell_id=29841; break;
+                    case 29838: triggered_spell_id = 29842; break;
+                    case 29834: triggered_spell_id = 29841; break;
                     default:
                         sLog.outError("Unit::HandleDummyAuraProc: non handled spell id: %u (SW)", dummySpell->Id);
                         return SPELL_AURA_PROC_FAILED;
@@ -1409,8 +1409,8 @@ SpellAuraProcResult Unit::HandleDummyAuraProc(Unit* pVictim, uint32 damage, Aura
                         case 283: spellId = 33757; break;   // 1 Rank
                         case 284: spellId = 33756; break;   // 2 Rank
                         case 525: spellId = 33755; break;   // 3 Rank
-                        case 1669:spellId = 33754; break;   // 4 Rank
-                        case 2636:spellId = 33727; break;   // 5 Rank
+                        case 1669: spellId = 33754; break;  // 4 Rank
+                        case 2636: spellId = 33727; break;  // 5 Rank
                         default:
                         {
                             sLog.outError("Unit::HandleDummyAuraProc: non handled item enchantment (rank?) %u for spell id: %u (Windfury)",

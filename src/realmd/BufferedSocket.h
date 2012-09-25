@@ -34,44 +34,44 @@
 
 class BufferedSocket: public ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_NULL_SYNCH>
 {
-    protected:
-        typedef ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_NULL_SYNCH> Base;
+protected:
+    typedef ACE_Svc_Handler<ACE_SOCK_STREAM, ACE_NULL_SYNCH> Base;
 
-        virtual void OnRead(void) { }
-        virtual void OnAccept(void) { }
-        virtual void OnClose(void) { }
+    virtual void OnRead(void) { }
+    virtual void OnAccept(void) { }
+    virtual void OnClose(void) { }
 
-    public:
-        BufferedSocket(void);
-        virtual ~BufferedSocket(void);
+public:
+    BufferedSocket(void);
+    virtual ~BufferedSocket(void);
 
-        size_t recv_len(void) const;
-        bool recv_soft(char* buf, size_t len);
-        bool recv(char* buf, size_t len);
-        void recv_skip(size_t len);
+    size_t recv_len(void) const;
+    bool recv_soft(char* buf, size_t len);
+    bool recv(char* buf, size_t len);
+    void recv_skip(size_t len);
 
-        bool send(const char* buf, size_t len);
+    bool send(const char* buf, size_t len);
 
-        const std::string& get_remote_address(void) const;
+    const std::string& get_remote_address(void) const;
 
-        virtual int open(void*) override;
+    virtual int open(void*) override;
 
-        void close_connection(void);
+    void close_connection(void);
 
-        virtual int handle_input(ACE_HANDLE = ACE_INVALID_HANDLE) override;
-        virtual int handle_output(ACE_HANDLE = ACE_INVALID_HANDLE) override;
+    virtual int handle_input(ACE_HANDLE = ACE_INVALID_HANDLE) override;
+    virtual int handle_output(ACE_HANDLE = ACE_INVALID_HANDLE) override;
 
-        virtual int handle_close(ACE_HANDLE = ACE_INVALID_HANDLE,
-                                 ACE_Reactor_Mask = ACE_Event_Handler::ALL_EVENTS_MASK);
+    virtual int handle_close(ACE_HANDLE = ACE_INVALID_HANDLE,
+                             ACE_Reactor_Mask = ACE_Event_Handler::ALL_EVENTS_MASK);
 
-    private:
-        ssize_t noblk_send(ACE_Message_Block& message_block);
+private:
+    ssize_t noblk_send(ACE_Message_Block& message_block);
 
-    private:
-        ACE_Message_Block input_buffer_;
+private:
+    ACE_Message_Block input_buffer_;
 
-    protected:
-        std::string remote_address_;
+protected:
+    std::string remote_address_;
 
 };
 

@@ -214,7 +214,7 @@ bool Guild::AddMember(ObjectGuid plGuid, uint32 plRank)
         delete result;
 
         if (newmember.Level < 1 || newmember.Level > STRONG_MAX_LEVEL ||
-                !((1 << (newmember.Class - 1)) & CLASSMASK_ALL_PLAYABLE))
+            !((1 << (newmember.Class - 1)) & CLASSMASK_ALL_PLAYABLE))
         {
             sLog.outError("%s has a broken data in field `characters` table, cannot add him to guild.", plGuid.GetString().c_str());
             return false;
@@ -448,8 +448,8 @@ bool Guild::LoadMembersFromDB(QueryResult* guildMembersResult)
         newmember.BankRemMoney          = fields[6].GetUInt32();
         for (int i = 0; i < GUILD_BANK_MAX_TABS; ++i)
         {
-            newmember.BankResetTimeTab[i] = fields[7+(2*i)].GetUInt32();
-            newmember.BankRemSlotsTab[i]  = fields[8+(2*i)].GetUInt32();
+            newmember.BankResetTimeTab[i] = fields[7 + (2 * i)].GetUInt32();
+            newmember.BankRemSlotsTab[i]  = fields[8 + (2 * i)].GetUInt32();
         }
 
         newmember.Name                  = fields[19].GetCppString();
@@ -744,7 +744,7 @@ void Guild::Disband()
 void Guild::Roster(WorldSession* session /*= NULL*/)
 {
     // we can only guess size
-    WorldPacket data(SMSG_GUILD_ROSTER, (4 + MOTD.length() + 1 + GINFO.length() + 1 + 4 + m_Ranks.size()*(4 + 4 + GUILD_BANK_MAX_TABS*(4 + 4)) + members.size() * 50));
+    WorldPacket data(SMSG_GUILD_ROSTER, (4 + MOTD.length() + 1 + GINFO.length() + 1 + 4 + m_Ranks.size() * (4 + 4 + GUILD_BANK_MAX_TABS * (4 + 4)) + members.size() * 50));
     data << uint32(members.size());
     data << MOTD;
     data << GINFO;
@@ -1549,7 +1549,7 @@ void Guild::DisplayGuildBankLogs(WorldSession* session, uint8 TabId)
     if (TabId == GUILD_BANK_MAX_TABS)
     {
         // Here we display money logs
-        WorldPacket data(MSG_GUILD_BANK_LOG_QUERY, m_GuildBankEventLog_Money.size()*(4 * 4 + 1) + 1 + 1);
+        WorldPacket data(MSG_GUILD_BANK_LOG_QUERY, m_GuildBankEventLog_Money.size() * (4 * 4 + 1) + 1 + 1);
         data << uint8(TabId);                               // Here GUILD_BANK_MAX_TABS
         data << uint8(m_GuildBankEventLog_Money.size());    // number of log entries
         for (GuildBankEventLog::const_iterator itr = m_GuildBankEventLog_Money.begin(); itr != m_GuildBankEventLog_Money.end(); ++itr)
@@ -1564,7 +1564,7 @@ void Guild::DisplayGuildBankLogs(WorldSession* session, uint8 TabId)
     else
     {
         // here we display current tab logs
-        WorldPacket data(MSG_GUILD_BANK_LOG_QUERY, m_GuildBankEventLog_Item[TabId].size()*(4 * 4 + 1 + 1) + 1 + 1);
+        WorldPacket data(MSG_GUILD_BANK_LOG_QUERY, m_GuildBankEventLog_Item[TabId].size() * (4 * 4 + 1 + 1) + 1 + 1);
         data << uint8(TabId);                               // Here a real Tab Id
         // number of log entries
         data << uint8(m_GuildBankEventLog_Item[TabId].size());

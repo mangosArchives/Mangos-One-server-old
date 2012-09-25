@@ -392,7 +392,7 @@ struct GameObjectInfo
             case GAMEOBJECT_TYPE_AREADAMAGE: return areadamage.lockId;
             case GAMEOBJECT_TYPE_CAMERA:     return camera.lockId;
             case GAMEOBJECT_TYPE_FLAGSTAND:  return flagstand.lockId;
-            case GAMEOBJECT_TYPE_FISHINGHOLE:return fishinghole.lockId;
+            case GAMEOBJECT_TYPE_FISHINGHOLE: return fishinghole.lockId;
             case GAMEOBJECT_TYPE_FLAGDROP:   return flagdrop.lockId;
             default: return 0;
         }
@@ -578,185 +578,185 @@ struct GameObjectDisplayInfoEntry;
 
 class MANGOS_DLL_SPEC GameObject : public WorldObject
 {
-    public:
-        explicit GameObject();
-        ~GameObject();
+public:
+    explicit GameObject();
+    ~GameObject();
 
-        void AddToWorld() override;
-        void RemoveFromWorld() override;
+    void AddToWorld() override;
+    void RemoveFromWorld() override;
 
-        bool Create(uint32 guidlow, uint32 name_id, Map* map, float x, float y, float z, float ang,
-                    float rotation0 = 0.0f, float rotation1 = 0.0f, float rotation2 = 0.0f, float rotation3 = 0.0f, uint32 animprogress = GO_ANIMPROGRESS_DEFAULT, GOState go_state = GO_STATE_READY);
-        void Update(uint32 update_diff, uint32 p_time) override;
-        GameObjectInfo const* GetGOInfo() const;
+    bool Create(uint32 guidlow, uint32 name_id, Map* map, float x, float y, float z, float ang,
+                float rotation0 = 0.0f, float rotation1 = 0.0f, float rotation2 = 0.0f, float rotation3 = 0.0f, uint32 animprogress = GO_ANIMPROGRESS_DEFAULT, GOState go_state = GO_STATE_READY);
+    void Update(uint32 update_diff, uint32 p_time) override;
+    GameObjectInfo const* GetGOInfo() const;
 
-        bool IsTransport() const;
+    bool IsTransport() const;
 
-        bool HasStaticDBSpawnData() const;                  // listed in `gameobject` table and have fixed in DB guid
+    bool HasStaticDBSpawnData() const;                  // listed in `gameobject` table and have fixed in DB guid
 
-        void UpdateRotationFields(float rotation2 = 0.0f, float rotation3 = 0.0f);
+    void UpdateRotationFields(float rotation2 = 0.0f, float rotation3 = 0.0f);
 
-        // overwrite WorldObject function for proper name localization
-        const char* GetNameForLocaleIdx(int32 locale_idx) const override;
+    // overwrite WorldObject function for proper name localization
+    const char* GetNameForLocaleIdx(int32 locale_idx) const override;
 
-        void SaveToDB();
-        void SaveToDB(uint32 mapid, uint8 spawnMask);
-        bool LoadFromDB(uint32 guid, Map* map);
-        void DeleteFromDB();
+    void SaveToDB();
+    void SaveToDB(uint32 mapid, uint8 spawnMask);
+    bool LoadFromDB(uint32 guid, Map* map);
+    void DeleteFromDB();
 
-        void SetOwnerGuid(ObjectGuid ownerGuid)
-        {
-            m_spawnedByDefault = false;                     // all object with owner is despawned after delay
-            SetGuidValue(OBJECT_FIELD_CREATED_BY, ownerGuid);
-        }
-        ObjectGuid const& GetOwnerGuid() const { return GetGuidValue(OBJECT_FIELD_CREATED_BY); }
-        Unit* GetOwner() const;
+    void SetOwnerGuid(ObjectGuid ownerGuid)
+    {
+        m_spawnedByDefault = false;                     // all object with owner is despawned after delay
+        SetGuidValue(OBJECT_FIELD_CREATED_BY, ownerGuid);
+    }
+    ObjectGuid const& GetOwnerGuid() const { return GetGuidValue(OBJECT_FIELD_CREATED_BY); }
+    Unit* GetOwner() const;
 
-        void SetSpellId(uint32 id)
-        {
-            m_spawnedByDefault = false;                     // all summoned object is despawned after delay
-            m_spellId = id;
-        }
-        uint32 GetSpellId() const { return m_spellId;}
+    void SetSpellId(uint32 id)
+    {
+        m_spawnedByDefault = false;                     // all summoned object is despawned after delay
+        m_spellId = id;
+    }
+    uint32 GetSpellId() const { return m_spellId;}
 
-        time_t GetRespawnTime() const { return m_respawnTime; }
-        time_t GetRespawnTimeEx() const
-        {
-            time_t now = time(NULL);
-            if (m_respawnTime > now)
-                return m_respawnTime;
-            else
-                return now;
-        }
+    time_t GetRespawnTime() const { return m_respawnTime; }
+    time_t GetRespawnTimeEx() const
+    {
+        time_t now = time(NULL);
+        if (m_respawnTime > now)
+            return m_respawnTime;
+        else
+            return now;
+    }
 
-        void SetRespawnTime(time_t respawn)
-        {
-            m_respawnTime = respawn > 0 ? time(NULL) + respawn : 0;
-            m_respawnDelayTime = respawn > 0 ? uint32(respawn) : 0;
-        }
-        void Respawn();
-        bool isSpawned() const
-        {
-            return m_respawnDelayTime == 0 ||
-                   (m_respawnTime > 0 && !m_spawnedByDefault) ||
-                   (m_respawnTime == 0 && m_spawnedByDefault);
-        }
-        bool isSpawnedByDefault() const { return m_spawnedByDefault; }
-        uint32 GetRespawnDelay() const { return m_respawnDelayTime; }
-        void Refresh();
-        void Delete();
+    void SetRespawnTime(time_t respawn)
+    {
+        m_respawnTime = respawn > 0 ? time(NULL) + respawn : 0;
+        m_respawnDelayTime = respawn > 0 ? uint32(respawn) : 0;
+    }
+    void Respawn();
+    bool isSpawned() const
+    {
+        return m_respawnDelayTime == 0 ||
+               (m_respawnTime > 0 && !m_spawnedByDefault) ||
+               (m_respawnTime == 0 && m_spawnedByDefault);
+    }
+    bool isSpawnedByDefault() const { return m_spawnedByDefault; }
+    uint32 GetRespawnDelay() const { return m_respawnDelayTime; }
+    void Refresh();
+    void Delete();
 
-        // Functions spawn/remove gameobject with DB guid in all loaded map copies (if point grid loaded in map)
-        static void AddToRemoveListInMaps(uint32 db_guid, GameObjectData const* data);
-        static void SpawnInMaps(uint32 db_guid, GameObjectData const* data);
+    // Functions spawn/remove gameobject with DB guid in all loaded map copies (if point grid loaded in map)
+    static void AddToRemoveListInMaps(uint32 db_guid, GameObjectData const* data);
+    static void SpawnInMaps(uint32 db_guid, GameObjectData const* data);
 
-        GameobjectTypes GetGoType() const { return GameobjectTypes(GetUInt32Value(GAMEOBJECT_TYPE_ID)); }
-        void SetGoType(GameobjectTypes type) { SetUInt32Value(GAMEOBJECT_TYPE_ID, type); }
-        GOState GetGoState() const { return GOState(GetUInt32Value(GAMEOBJECT_STATE)); }
-        void SetGoState(GOState state) { SetUInt32Value(GAMEOBJECT_STATE, state); }
-        uint32 GetGoArtKit() const { return GetUInt32Value(GAMEOBJECT_ARTKIT); }
-        void SetGoArtKit(uint32 artkit) { SetUInt32Value(GAMEOBJECT_ARTKIT, artkit); }
-        uint32 GetGoAnimProgress() const { return GetUInt32Value(GAMEOBJECT_ANIMPROGRESS); }
-        void SetGoAnimProgress(uint32 animprogress) { SetUInt32Value(GAMEOBJECT_ANIMPROGRESS, animprogress); }
-        uint32 GetDisplayId() const { return GetUInt32Value(GAMEOBJECT_DISPLAYID); }
-        void SetDisplayId(uint32 modelId);
+    GameobjectTypes GetGoType() const { return GameobjectTypes(GetUInt32Value(GAMEOBJECT_TYPE_ID)); }
+    void SetGoType(GameobjectTypes type) { SetUInt32Value(GAMEOBJECT_TYPE_ID, type); }
+    GOState GetGoState() const { return GOState(GetUInt32Value(GAMEOBJECT_STATE)); }
+    void SetGoState(GOState state) { SetUInt32Value(GAMEOBJECT_STATE, state); }
+    uint32 GetGoArtKit() const { return GetUInt32Value(GAMEOBJECT_ARTKIT); }
+    void SetGoArtKit(uint32 artkit) { SetUInt32Value(GAMEOBJECT_ARTKIT, artkit); }
+    uint32 GetGoAnimProgress() const { return GetUInt32Value(GAMEOBJECT_ANIMPROGRESS); }
+    void SetGoAnimProgress(uint32 animprogress) { SetUInt32Value(GAMEOBJECT_ANIMPROGRESS, animprogress); }
+    uint32 GetDisplayId() const { return GetUInt32Value(GAMEOBJECT_DISPLAYID); }
+    void SetDisplayId(uint32 modelId);
 
-        float GetObjectBoundingRadius() const override;     // overwrite WorldObject version
+    float GetObjectBoundingRadius() const override;     // overwrite WorldObject version
 
-        void Use(Unit* user);
+    void Use(Unit* user);
 
-        LootState getLootState() const { return m_lootState; }
-        void SetLootState(LootState s) { m_lootState = s; }
+    LootState getLootState() const { return m_lootState; }
+    void SetLootState(LootState s) { m_lootState = s; }
 
-        void AddToSkillupList(Player* player);
-        bool IsInSkillupList(Player* player) const;
-        void ClearSkillupList() { m_SkillupSet.clear(); }
-        void ClearAllUsesData()
-        {
-            ClearSkillupList();
-            m_useTimes = 0;
-            m_firstUser.Clear();
-            m_UniqueUsers.clear();
-        }
+    void AddToSkillupList(Player* player);
+    bool IsInSkillupList(Player* player) const;
+    void ClearSkillupList() { m_SkillupSet.clear(); }
+    void ClearAllUsesData()
+    {
+        ClearSkillupList();
+        m_useTimes = 0;
+        m_firstUser.Clear();
+        m_UniqueUsers.clear();
+    }
 
-        void AddUniqueUse(Player* player);
-        void AddUse() { ++m_useTimes; }
+    void AddUniqueUse(Player* player);
+    void AddUse() { ++m_useTimes; }
 
-        uint32 GetUseCount() const { return m_useTimes; }
-        uint32 GetUniqueUseCount() const { return m_UniqueUsers.size(); }
+    uint32 GetUseCount() const { return m_useTimes; }
+    uint32 GetUniqueUseCount() const { return m_UniqueUsers.size(); }
 
-        void SaveRespawnTime() override;
+    void SaveRespawnTime() override;
 
-        // Loot System
-        Loot loot;
-        void getFishLoot(Loot* loot, Player* loot_owner);
-        void StartGroupLoot(Group* group, uint32 timer) override;
+    // Loot System
+    Loot loot;
+    void getFishLoot(Loot* loot, Player* loot_owner);
+    void StartGroupLoot(Group* group, uint32 timer) override;
 
-        ObjectGuid GetLootRecipientGuid() const { return m_lootRecipientGuid; }
-        uint32 GetLootGroupRecipientId() const { return m_lootGroupRecipientId; }
-        Player* GetLootRecipient() const;                   // use group cases as prefered
-        Group* GetGroupLootRecipient() const;
-        bool HasLootRecipient() const { return m_lootGroupRecipientId || !m_lootRecipientGuid.IsEmpty(); }
-        bool IsGroupLootRecipient() const { return m_lootGroupRecipientId; }
-        void SetLootRecipient(Unit* pUnit);
-        Player* GetOriginalLootRecipient() const;           // ignore group changes/etc, not for looting
+    ObjectGuid GetLootRecipientGuid() const { return m_lootRecipientGuid; }
+    uint32 GetLootGroupRecipientId() const { return m_lootGroupRecipientId; }
+    Player* GetLootRecipient() const;                   // use group cases as prefered
+    Group* GetGroupLootRecipient() const;
+    bool HasLootRecipient() const { return m_lootGroupRecipientId || !m_lootRecipientGuid.IsEmpty(); }
+    bool IsGroupLootRecipient() const { return m_lootGroupRecipientId; }
+    void SetLootRecipient(Unit* pUnit);
+    Player* GetOriginalLootRecipient() const;           // ignore group changes/etc, not for looting
 
-        bool HasQuest(uint32 quest_id) const override;
-        bool HasInvolvedQuest(uint32 quest_id) const override;
-        bool ActivateToQuest(Player* pTarget) const;
-        void UseDoorOrButton(uint32 time_to_restore = 0, bool alternative = false);
-        // 0 = use `gameobject`.`spawntimesecs`
-        void ResetDoorOrButton();
+    bool HasQuest(uint32 quest_id) const override;
+    bool HasInvolvedQuest(uint32 quest_id) const override;
+    bool ActivateToQuest(Player* pTarget) const;
+    void UseDoorOrButton(uint32 time_to_restore = 0, bool alternative = false);
+    // 0 = use `gameobject`.`spawntimesecs`
+    void ResetDoorOrButton();
 
-        bool IsHostileTo(Unit const* unit) const override;
-        bool IsFriendlyTo(Unit const* unit) const override;
+    bool IsHostileTo(Unit const* unit) const override;
+    bool IsFriendlyTo(Unit const* unit) const override;
 
-        void SummonLinkedTrapIfAny();
-        void TriggerLinkedGameObject(Unit* target);
+    void SummonLinkedTrapIfAny();
+    void TriggerLinkedGameObject(Unit* target);
 
-        bool isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const override;
+    bool isVisibleForInState(Player const* u, WorldObject const* viewPoint, bool inVisibleList) const override;
 
-        GameObject* LookupFishingHoleAround(float range);
+    GameObject* LookupFishingHoleAround(float range);
 
-        void SetCapturePointSlider(int8 value);
+    void SetCapturePointSlider(int8 value);
 
-        GridReference<GameObject> &GetGridRef() { return m_gridRef; }
+    GridReference<GameObject> &GetGridRef() { return m_gridRef; }
 
-    protected:
-        uint32      m_spellId;
-        time_t      m_respawnTime;                          // (secs) time of next respawn (or despawn if GO have owner()),
-        uint32      m_respawnDelayTime;                     // (secs) if 0 then current GO state no dependent from timer
-        LootState   m_lootState;
-        bool        m_spawnedByDefault;
-        time_t      m_cooldownTime;                         // used as internal reaction delay time store (not state change reaction).
-        // For traps/goober this: spell casting cooldown, for doors/buttons: reset time.
+protected:
+    uint32      m_spellId;
+    time_t      m_respawnTime;                          // (secs) time of next respawn (or despawn if GO have owner()),
+    uint32      m_respawnDelayTime;                     // (secs) if 0 then current GO state no dependent from timer
+    LootState   m_lootState;
+    bool        m_spawnedByDefault;
+    time_t      m_cooldownTime;                         // used as internal reaction delay time store (not state change reaction).
+    // For traps/goober this: spell casting cooldown, for doors/buttons: reset time.
 
-        uint32      m_captureTimer;                         // (msecs) timer used for capture points
-        float       m_captureSlider;
-        CapturePointState m_captureState;
+    uint32      m_captureTimer;                         // (msecs) timer used for capture points
+    float       m_captureSlider;
+    CapturePointState m_captureState;
 
-        GuidSet m_SkillupSet;                               // players that already have skill-up at GO use
+    GuidSet m_SkillupSet;                               // players that already have skill-up at GO use
 
-        uint32 m_useTimes;                                  // amount uses/charges triggered
+    uint32 m_useTimes;                                  // amount uses/charges triggered
 
-        // collected only for GAMEOBJECT_TYPE_SUMMONING_RITUAL
-        ObjectGuid m_firstUser;                             // first GO user, in most used cases owner, but in some cases no, for example non-summoned multi-use GAMEOBJECT_TYPE_SUMMONING_RITUAL
-        GuidSet m_UniqueUsers;                              // all players who use item, some items activated after specific amount unique uses
+    // collected only for GAMEOBJECT_TYPE_SUMMONING_RITUAL
+    ObjectGuid m_firstUser;                             // first GO user, in most used cases owner, but in some cases no, for example non-summoned multi-use GAMEOBJECT_TYPE_SUMMONING_RITUAL
+    GuidSet m_UniqueUsers;                              // all players who use item, some items activated after specific amount unique uses
 
-        GameObjectInfo const* m_goInfo;
-        GameObjectDisplayInfoEntry const* m_displayInfo;
+    GameObjectInfo const* m_goInfo;
+    GameObjectDisplayInfoEntry const* m_displayInfo;
 
-        // Loot System
-        uint32 m_groupLootTimer;                            // (msecs)timer used for group loot
-        uint32 m_groupLootId;                               // used to find group which is looting
-        void StopGroupLoot() override;
-        ObjectGuid m_lootRecipientGuid;                     // player who will have rights for looting if m_lootGroupRecipient==0 or group disbanded
-        uint32 m_lootGroupRecipientId;                      // group who will have rights for looting if set and exist
+    // Loot System
+    uint32 m_groupLootTimer;                            // (msecs)timer used for group loot
+    uint32 m_groupLootId;                               // used to find group which is looting
+    void StopGroupLoot() override;
+    ObjectGuid m_lootRecipientGuid;                     // player who will have rights for looting if m_lootGroupRecipient==0 or group disbanded
+    uint32 m_lootGroupRecipientId;                      // group who will have rights for looting if set and exist
 
-    private:
-        void SwitchDoorOrButton(bool activate, bool alternative = false);
-        void TickCapturePoint();
+private:
+    void SwitchDoorOrButton(bool activate, bool alternative = false);
+    void TickCapturePoint();
 
-        GridReference<GameObject> m_gridRef;
+    GridReference<GameObject> m_gridRef;
 };
 #endif

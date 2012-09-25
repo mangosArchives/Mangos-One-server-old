@@ -817,7 +817,7 @@ bool GameObject::ActivateToQuest(Player* pTarget) const
             for (QuestRelationsMap::const_iterator itr = bounds.first; itr != bounds.second; ++itr)
             {
                 if ((pTarget->GetQuestStatus(itr->second) == QUEST_STATUS_INCOMPLETE || pTarget->GetQuestStatus(itr->second) == QUEST_STATUS_COMPLETE)
-                        && !pTarget->GetQuestRewardStatus(itr->second))
+                    && !pTarget->GetQuestRewardStatus(itr->second))
                     return true;
             }
 

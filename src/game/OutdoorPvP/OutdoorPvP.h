@@ -45,77 +45,77 @@ enum CapturePointAnimations
     CAPTURE_ANIM_NEUTRAL    = 2
 };
 
-typedef std::map<ObjectGuid /*playerGuid*/, bool /*isMainZone*/> GuidZoneMap;
+typedef std::map < ObjectGuid /*playerGuid*/, bool /*isMainZone*/ > GuidZoneMap;
 
 class OutdoorPvP
 {
     friend class OutdoorPvPMgr;
 
-    public:
-        OutdoorPvP() {}
-        ~OutdoorPvP() {}
+public:
+    OutdoorPvP() {}
+    ~OutdoorPvP() {}
 
-        // called when the zone is initialized
-        virtual void FillInitialWorldStates(WorldPacket& /*data*/, uint32& /*count*/) {}
+    // called when the zone is initialized
+    virtual void FillInitialWorldStates(WorldPacket& /*data*/, uint32& /*count*/) {}
 
-        // Process Capture event
-        virtual bool HandleEvent(uint32 /*eventId*/, GameObject* /*go*/) { return false; }
+    // Process Capture event
+    virtual bool HandleEvent(uint32 /*eventId*/, GameObject* /*go*/) { return false; }
 
-        // handle capture objective complete
-        virtual void HandleObjectiveComplete(uint32 /*eventId*/, std::list<Player*> /*players*/, Team /*team*/) {}
+    // handle capture objective complete
+    virtual void HandleObjectiveComplete(uint32 /*eventId*/, std::list<Player*> /*players*/, Team /*team*/) {}
 
-        // Called when a creature or gameobject is created
-        virtual void HandleCreatureCreate(Creature* /*creature*/) {}
-        virtual void HandleGameObjectCreate(GameObject* /*go*/) {}
+    // Called when a creature or gameobject is created
+    virtual void HandleCreatureCreate(Creature* /*creature*/) {}
+    virtual void HandleGameObjectCreate(GameObject* /*go*/) {}
 
-        // Called on creature death
-        virtual void HandleCreatureDeath(Creature* /*creature*/) {}
+    // Called on creature death
+    virtual void HandleCreatureDeath(Creature* /*creature*/) {}
 
-        // called when a player uses a gameobject related to outdoor pvp events
-        virtual bool HandleGameObjectUse(Player* /*player*/, GameObject* /*go*/) { return false; }
+    // called when a player uses a gameobject related to outdoor pvp events
+    virtual bool HandleGameObjectUse(Player* /*player*/, GameObject* /*go*/) { return false; }
 
-        // called when a player triggers an areatrigger
-        virtual bool HandleAreaTrigger(Player* /*player*/, uint32 /*triggerId*/) { return false; }
+    // called when a player triggers an areatrigger
+    virtual bool HandleAreaTrigger(Player* /*player*/, uint32 /*triggerId*/) { return false; }
 
-        // called when a player drops a flag
-        virtual bool HandleDropFlag(Player* /*player*/, uint32 /*spellId*/) { return false; }
+    // called when a player drops a flag
+    virtual bool HandleDropFlag(Player* /*player*/, uint32 /*spellId*/) { return false; }
 
-        // update - called by the OutdoorPvPMgr
-        virtual void Update(uint32 /*diff*/) {}
+    // update - called by the OutdoorPvPMgr
+    virtual void Update(uint32 /*diff*/) {}
 
-        // handle npc/player kill
-        void HandlePlayerKill(Player* killer, Unit* victim);
+    // handle npc/player kill
+    void HandlePlayerKill(Player* killer, Unit* victim);
 
-    protected:
+protected:
 
-        // Player related stuff
-        virtual void HandlePlayerEnterZone(Player* /*player*/, bool /*isMainZone*/);
-        virtual void HandlePlayerLeaveZone(Player* /*player*/, bool /*isMainZone*/);
+    // Player related stuff
+    virtual void HandlePlayerEnterZone(Player* /*player*/, bool /*isMainZone*/);
+    virtual void HandlePlayerLeaveZone(Player* /*player*/, bool /*isMainZone*/);
 
-        // remove world states
-        virtual void SendRemoveWorldStates(Player* /*player*/) {}
+    // remove world states
+    virtual void SendRemoveWorldStates(Player* /*player*/) {}
 
-        // handle npc/player kill
-        virtual void HandlePlayerKillInsideArea(Player* /*killer*/, Unit* /*victim*/) {}
+    // handle npc/player kill
+    virtual void HandlePlayerKillInsideArea(Player* /*killer*/, Unit* /*victim*/) {}
 
-        // send world state update to all players present
-        void SendUpdateWorldState(uint32 field, uint32 value);
+    // send world state update to all players present
+    void SendUpdateWorldState(uint32 field, uint32 value);
 
-        // applies buff to a team inside the specific zone
-        void BuffTeam(Team team, uint32 spellId, bool remove = false);
+    // applies buff to a team inside the specific zone
+    void BuffTeam(Team team, uint32 spellId, bool remove = false);
 
-        // get banner artkit based on controlling team
-        uint32 GetBannerArtKit(Team team, uint32 artKitAlliance = CAPTURE_ARTKIT_ALLIANCE, uint32 artKitHorde = CAPTURE_ARTKIT_HORDE, uint32 artKitNeutral = CAPTURE_ARTKIT_NEUTRAL);
+    // get banner artkit based on controlling team
+    uint32 GetBannerArtKit(Team team, uint32 artKitAlliance = CAPTURE_ARTKIT_ALLIANCE, uint32 artKitHorde = CAPTURE_ARTKIT_HORDE, uint32 artKitNeutral = CAPTURE_ARTKIT_NEUTRAL);
 
-        // set banner visual
-        void SetBannerVisual(const WorldObject* objRef, ObjectGuid goGuid, uint32 artKit, uint32 animId);
-        void SetBannerVisual(GameObject* go, uint32 artKit, uint32 animId);
+    // set banner visual
+    void SetBannerVisual(const WorldObject* objRef, ObjectGuid goGuid, uint32 artKit, uint32 animId);
+    void SetBannerVisual(GameObject* go, uint32 artKit, uint32 animId);
 
-        // Handle gameobject spawn / despawn
-        void RespawnGO(const WorldObject* objRef, ObjectGuid goGuid, bool respawn);
+    // Handle gameobject spawn / despawn
+    void RespawnGO(const WorldObject* objRef, ObjectGuid goGuid, bool respawn);
 
-        // store the players inside the area
-        GuidZoneMap m_zonePlayers;
+    // store the players inside the area
+    GuidZoneMap m_zonePlayers;
 };
 
 #endif

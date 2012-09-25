@@ -583,65 +583,65 @@ struct CreatureEventAIHolder
 
 class MANGOS_DLL_SPEC CreatureEventAI : public CreatureAI
 {
-    public:
-        explicit CreatureEventAI(Creature* c);
-        ~CreatureEventAI()
-        {
-            m_CreatureEventAIList.clear();
-        }
+public:
+    explicit CreatureEventAI(Creature* c);
+    ~CreatureEventAI()
+    {
+        m_CreatureEventAIList.clear();
+    }
 
-        void GetAIInformation(ChatHandler& reader) override;
+    void GetAIInformation(ChatHandler& reader) override;
 
-        void JustRespawned() override;
-        void Reset();
-        void JustReachedHome() override;
-        void EnterCombat(Unit* enemy) override;
-        void EnterEvadeMode() override;
-        void JustDied(Unit* killer) override;
-        void KilledUnit(Unit* victim) override;
-        void JustSummoned(Creature* pUnit) override;
-        void AttackStart(Unit* who) override;
-        void MoveInLineOfSight(Unit* who) override;
-        void SpellHit(Unit* pUnit, const SpellEntry* pSpell) override;
-        void DamageTaken(Unit* done_by, uint32& damage) override;
-        void UpdateAI(const uint32 diff) override;
-        bool IsVisible(Unit*) const override;
-        void ReceiveEmote(Player* pPlayer, uint32 text_emote) override;
-        void SummonedCreatureJustDied(Creature* unit) override;
-        void SummonedCreatureDespawn(Creature* unit) override;
+    void JustRespawned() override;
+    void Reset();
+    void JustReachedHome() override;
+    void EnterCombat(Unit* enemy) override;
+    void EnterEvadeMode() override;
+    void JustDied(Unit* killer) override;
+    void KilledUnit(Unit* victim) override;
+    void JustSummoned(Creature* pUnit) override;
+    void AttackStart(Unit* who) override;
+    void MoveInLineOfSight(Unit* who) override;
+    void SpellHit(Unit* pUnit, const SpellEntry* pSpell) override;
+    void DamageTaken(Unit* done_by, uint32& damage) override;
+    void UpdateAI(const uint32 diff) override;
+    bool IsVisible(Unit*) const override;
+    void ReceiveEmote(Player* pPlayer, uint32 text_emote) override;
+    void SummonedCreatureJustDied(Creature* unit) override;
+    void SummonedCreatureDespawn(Creature* unit) override;
 
-        static int Permissible(const Creature*);
+    static int Permissible(const Creature*);
 
-        bool ProcessEvent(CreatureEventAIHolder& pHolder, Unit* pActionInvoker = NULL);
-        void ProcessAction(CreatureEventAI_Action const& action, uint32 rnd, uint32 EventId, Unit* pActionInvoker);
-        inline uint32 GetRandActionParam(uint32 rnd, uint32 param1, uint32 param2, uint32 param3);
-        inline int32 GetRandActionParam(uint32 rnd, int32 param1, int32 param2, int32 param3);
-        inline Unit* GetTargetByType(uint32 Target, Unit* pActionInvoker);
+    bool ProcessEvent(CreatureEventAIHolder& pHolder, Unit* pActionInvoker = NULL);
+    void ProcessAction(CreatureEventAI_Action const& action, uint32 rnd, uint32 EventId, Unit* pActionInvoker);
+    inline uint32 GetRandActionParam(uint32 rnd, uint32 param1, uint32 param2, uint32 param3);
+    inline int32 GetRandActionParam(uint32 rnd, int32 param1, int32 param2, int32 param3);
+    inline Unit* GetTargetByType(uint32 Target, Unit* pActionInvoker);
 
-        void DoScriptText(int32 textEntry, WorldObject* pSource, Unit* target);
-        bool CanCast(Unit* Target, SpellEntry const* Spell, bool Triggered);
+    void DoScriptText(int32 textEntry, WorldObject* pSource, Unit* target);
+    bool CanCast(Unit* Target, SpellEntry const* Spell, bool Triggered);
 
-        bool SpawnedEventConditionsCheck(CreatureEventAI_Event const& event);
+    bool SpawnedEventConditionsCheck(CreatureEventAI_Event const& event);
 
-        Unit* DoSelectLowestHpFriendly(float range, uint32 MinHPDiff);
-        void DoFindFriendlyMissingBuff(std::list<Creature*>& _list, float range, uint32 spellid);
-        void DoFindFriendlyCC(std::list<Creature*>& _list, float range);
+    Unit* DoSelectLowestHpFriendly(float range, uint32 MinHPDiff);
+    void DoFindFriendlyMissingBuff(std::list<Creature*>& _list, float range, uint32 spellid);
+    void DoFindFriendlyCC(std::list<Creature*>& _list, float range);
 
-    protected:
-        uint32 m_EventUpdateTime;                           // Time between event updates
-        uint32 m_EventDiff;                                 // Time between the last event call
-        bool   m_bEmptyList;
+protected:
+    uint32 m_EventUpdateTime;                           // Time between event updates
+    uint32 m_EventDiff;                                 // Time between the last event call
+    bool   m_bEmptyList;
 
-        // Variables used by Events themselves
-        typedef std::vector<CreatureEventAIHolder> CreatureEventAIList;
-        CreatureEventAIList m_CreatureEventAIList;          // Holder for events (stores enabled, time, and eventid)
+    // Variables used by Events themselves
+    typedef std::vector<CreatureEventAIHolder> CreatureEventAIList;
+    CreatureEventAIList m_CreatureEventAIList;          // Holder for events (stores enabled, time, and eventid)
 
-        uint8  m_Phase;                                     // Current phase, max 32 phases
-        bool   m_CombatMovementEnabled;                     // If we allow targeted movment gen (movement twoards top threat)
-        bool   m_MeleeEnabled;                              // If we allow melee auto attack
-        float  m_AttackDistance;                            // Distance to attack from
-        float  m_AttackAngle;                               // Angle of attack
-        uint32 m_InvinceabilityHpLevel;                     // Minimal health level allowed at damage apply
+    uint8  m_Phase;                                     // Current phase, max 32 phases
+    bool   m_CombatMovementEnabled;                     // If we allow targeted movment gen (movement twoards top threat)
+    bool   m_MeleeEnabled;                              // If we allow melee auto attack
+    float  m_AttackDistance;                            // Distance to attack from
+    float  m_AttackAngle;                               // Angle of attack
+    uint32 m_InvinceabilityHpLevel;                     // Minimal health level allowed at damage apply
 };
 
 #endif

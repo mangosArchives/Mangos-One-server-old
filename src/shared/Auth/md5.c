@@ -131,20 +131,20 @@ static void
 md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
 {
     md5_word_t
-        a = pms->abcd[0], b = pms->abcd[1],
-        c = pms->abcd[2], d = pms->abcd[3];
+    a = pms->abcd[0], b = pms->abcd[1],
+    c = pms->abcd[2], d = pms->abcd[3];
     md5_word_t t;
-    #if BYTE_ORDER > 0
+#if BYTE_ORDER > 0
     /* Define storage only for big-endian CPUs. */
     md5_word_t X[16];
-    #else
+#else
     /* Define storage for little-endian or both types of CPUs. */
     md5_word_t xbuf[16];
     const md5_word_t *X;
-    #endif
+#endif
 
     {
-        #if BYTE_ORDER == 0
+#if BYTE_ORDER == 0
         /*
          * Determine dynamically whether this is a big-endian or
          * little-endian machine, since we can use a more efficient
@@ -153,8 +153,8 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
         static const int w = 1;
 
         if (*((const md5_byte_t *)&w))                      /* dynamic little-endian */
-        #endif
-        #if BYTE_ORDER <= 0                                 /* little-endian */
+#endif
+#if BYTE_ORDER <= 0                                 /* little-endian */
         {
             /*
              * On little-endian machines, we can process properly aligned
@@ -172,11 +172,11 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
                 X = xbuf;
             }
         }
-        #endif
-        #if BYTE_ORDER == 0
+#endif
+#if BYTE_ORDER == 0
         else                                                /* dynamic big-endian */
-        #endif
-        #if BYTE_ORDER >= 0                                 /* big-endian */
+#endif
+#if BYTE_ORDER >= 0                                 /* big-endian */
         {
             /*
              * On big-endian machines, we must arrange the bytes in the
@@ -185,26 +185,26 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
             const md5_byte_t *xp = data;
             int i;
 
-            #  if BYTE_ORDER == 0
+#  if BYTE_ORDER == 0
             X = xbuf;                                       /* (dynamic only) */
-            #  else
-            #    define xbuf X                              /* (static only) */
-            #  endif
+#  else
+#    define xbuf X                              /* (static only) */
+#  endif
             for (i = 0; i < 16; ++i, xp += 4)
                 xbuf[i] = xp[0] + (xp[1] << 8) + (xp[2] << 16) + (xp[3] << 24);
         }
-        #endif
+#endif
     }
 
-    #define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
+#define ROTATE_LEFT(x, n) (((x) << (n)) | ((x) >> (32 - (n))))
 
     /* Round 1. */
     /* Let [abcd k s i] denote the operation
        a = b + ((a + F(b,c,d) + X[k] + T[i]) <<< s). */
-    #define F(x, y, z) (((x) & (y)) | (~(x) & (z)))
-    #define SET(a, b, c, d, k, s, Ti)\
-        t = a + F(b,c,d) + X[k] + Ti;\
-        a = ROTATE_LEFT(t, s) + b
+#define F(x, y, z) (((x) & (y)) | (~(x) & (z)))
+#define SET(a, b, c, d, k, s, Ti)\
+    t = a + F(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
     /* Do the following 16 operations. */
     SET(a, b, c, d,  0,  7,  T1);
     SET(d, a, b, c,  1, 12,  T2);
@@ -222,15 +222,15 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
     SET(d, a, b, c, 13, 12, T14);
     SET(c, d, a, b, 14, 17, T15);
     SET(b, c, d, a, 15, 22, T16);
-    #undef SET
+#undef SET
 
     /* Round 2. */
     /* Let [abcd k s i] denote the operation
          a = b + ((a + G(b,c,d) + X[k] + T[i]) <<< s). */
-    #define G(x, y, z) (((x) & (z)) | ((y) & ~(z)))
-    #define SET(a, b, c, d, k, s, Ti)\
-        t = a + G(b,c,d) + X[k] + Ti;\
-        a = ROTATE_LEFT(t, s) + b
+#define G(x, y, z) (((x) & (z)) | ((y) & ~(z)))
+#define SET(a, b, c, d, k, s, Ti)\
+    t = a + G(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
     /* Do the following 16 operations. */
     SET(a, b, c, d,  1,  5, T17);
     SET(d, a, b, c,  6,  9, T18);
@@ -248,15 +248,15 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
     SET(d, a, b, c,  2,  9, T30);
     SET(c, d, a, b,  7, 14, T31);
     SET(b, c, d, a, 12, 20, T32);
-    #undef SET
+#undef SET
 
     /* Round 3. */
     /* Let [abcd k s t] denote the operation
          a = b + ((a + H(b,c,d) + X[k] + T[i]) <<< s). */
-    #define H(x, y, z) ((x) ^ (y) ^ (z))
-    #define SET(a, b, c, d, k, s, Ti)\
-        t = a + H(b,c,d) + X[k] + Ti;\
-        a = ROTATE_LEFT(t, s) + b
+#define H(x, y, z) ((x) ^ (y) ^ (z))
+#define SET(a, b, c, d, k, s, Ti)\
+    t = a + H(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
     /* Do the following 16 operations. */
     SET(a, b, c, d,  5,  4, T33);
     SET(d, a, b, c,  8, 11, T34);
@@ -274,15 +274,15 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
     SET(d, a, b, c, 12, 11, T46);
     SET(c, d, a, b, 15, 16, T47);
     SET(b, c, d, a,  2, 23, T48);
-    #undef SET
+#undef SET
 
     /* Round 4. */
     /* Let [abcd k s t] denote the operation
          a = b + ((a + I(b,c,d) + X[k] + T[i]) <<< s). */
-    #define I(x, y, z) ((y) ^ ((x) | ~(z)))
-    #define SET(a, b, c, d, k, s, Ti)\
-        t = a + I(b,c,d) + X[k] + Ti;\
-        a = ROTATE_LEFT(t, s) + b
+#define I(x, y, z) ((y) ^ ((x) | ~(z)))
+#define SET(a, b, c, d, k, s, Ti)\
+    t = a + I(b,c,d) + X[k] + Ti;\
+    a = ROTATE_LEFT(t, s) + b
     /* Do the following 16 operations. */
     SET(a, b, c, d,  0,  6, T49);
     SET(d, a, b, c,  7, 10, T50);
@@ -300,7 +300,7 @@ md5_process(md5_state_t *pms, const md5_byte_t *data /*[64]*/)
     SET(d, a, b, c, 11, 10, T62);
     SET(c, d, a, b,  2, 15, T63);
     SET(b, c, d, a,  9, 21, T64);
-    #undef SET
+#undef SET
 
     /* Then perform the following additions. (That is increment each
        of the four registers by the value it had before this block

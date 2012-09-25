@@ -888,14 +888,14 @@ void World::SetInitialWorldSettings()
 
     ///- Check the existence of the map files for all races start areas.
     if (!MapManager::ExistMapAndVMap(0, -6240.32f, 331.033f) ||
-            !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f) ||
-            !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f) ||
-            !MapManager::ExistMapAndVMap(1, -618.518f, -4251.67f) ||
-            !MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f) ||
-            !MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f) ||
-            !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f) ||
-            (m_configUint32Values[CONFIG_UINT32_EXPANSION] &&
-             (!MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) || !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))))
+        !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f) ||
+        !MapManager::ExistMapAndVMap(0, -8949.95f, -132.493f) ||
+        !MapManager::ExistMapAndVMap(1, -618.518f, -4251.67f) ||
+        !MapManager::ExistMapAndVMap(0, 1676.35f, 1677.45f) ||
+        !MapManager::ExistMapAndVMap(1, 10311.3f, 832.463f) ||
+        !MapManager::ExistMapAndVMap(1, -2917.58f, -257.98f) ||
+        (m_configUint32Values[CONFIG_UINT32_EXPANSION] &&
+         (!MapManager::ExistMapAndVMap(530, 10349.6f, -6357.29f) || !MapManager::ExistMapAndVMap(530, -3961.64f, -13931.2f))))
     {
         sLog.outError("Correct *.map files not found in path '%smaps' or *.vmtree/*.vmtile files in '%svmaps'. Please place *.map and vmap files in appropriate directories or correct the DataDir value in the mangosd.conf file.", m_dataPath.c_str(), m_dataPath.c_str());
         Log::WaitBeforeContinueIfNeed();
@@ -1376,7 +1376,7 @@ void World::DetectDBCLang()
     }
 
     if (default_locale != m_lang_confid && m_lang_confid < MAX_LOCALE &&
-            (m_availableDbcLocaleMask & (1 << m_lang_confid)))
+        (m_availableDbcLocaleMask & (1 << m_lang_confid)))
     {
         default_locale = m_lang_confid;
     }
@@ -1523,56 +1523,56 @@ namespace MaNGOS
 {
     class WorldWorldTextBuilder
     {
-        public:
-            typedef std::vector<WorldPacket*> WorldPacketList;
-            explicit WorldWorldTextBuilder(int32 textId, va_list* args = NULL) : i_textId(textId), i_args(args) {}
-            void operator()(WorldPacketList& data_list, int32 loc_idx)
+    public:
+        typedef std::vector<WorldPacket*> WorldPacketList;
+        explicit WorldWorldTextBuilder(int32 textId, va_list* args = NULL) : i_textId(textId), i_args(args) {}
+        void operator()(WorldPacketList& data_list, int32 loc_idx)
+        {
+            char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+
+            if (i_args)
             {
-                char const* text = sObjectMgr.GetMangosString(i_textId, loc_idx);
+                // we need copy va_list before use or original va_list will corrupted
+                va_list ap;
+                va_copy(ap, *i_args);
 
-                if (i_args)
-                {
-                    // we need copy va_list before use or original va_list will corrupted
-                    va_list ap;
-                    va_copy(ap, *i_args);
+                char str [2048];
+                vsnprintf(str, 2048, text, ap);
+                va_end(ap);
 
-                    char str [2048];
-                    vsnprintf(str, 2048, text, ap);
-                    va_end(ap);
-
-                    do_helper(data_list, &str[0]);
-                }
-                else
-                    do_helper(data_list, (char*)text);
+                do_helper(data_list, &str[0]);
             }
-        private:
-            char* lineFromMessage(char*& pos) { char* start = strtok(pos, "\n"); pos = NULL; return start; }
-            void do_helper(WorldPacketList& data_list, char* text)
+            else
+                do_helper(data_list, (char*)text);
+        }
+    private:
+        char* lineFromMessage(char*& pos) { char* start = strtok(pos, "\n"); pos = NULL; return start; }
+        void do_helper(WorldPacketList& data_list, char* text)
+        {
+            char* pos = text;
+
+            while (char* line = lineFromMessage(pos))
             {
-                char* pos = text;
+                WorldPacket* data = new WorldPacket();
 
-                while (char* line = lineFromMessage(pos))
-                {
-                    WorldPacket* data = new WorldPacket();
+                uint32 lineLength = (line ? strlen(line) : 0) + 1;
 
-                    uint32 lineLength = (line ? strlen(line) : 0) + 1;
+                data->Initialize(SMSG_MESSAGECHAT, 100);// guess size
+                *data << uint8(CHAT_MSG_SYSTEM);
+                *data << uint32(LANG_UNIVERSAL);
+                *data << uint64(0);
+                *data << uint32(0);                     // can be chat msg group or something
+                *data << uint64(0);
+                *data << uint32(lineLength);
+                *data << line;
+                *data << uint8(0);
 
-                    data->Initialize(SMSG_MESSAGECHAT, 100);// guess size
-                    *data << uint8(CHAT_MSG_SYSTEM);
-                    *data << uint32(LANG_UNIVERSAL);
-                    *data << uint64(0);
-                    *data << uint32(0);                     // can be chat msg group or something
-                    *data << uint64(0);
-                    *data << uint32(lineLength);
-                    *data << line;
-                    *data << uint8(0);
-
-                    data_list.push_back(data);
-                }
+                data_list.push_back(data);
             }
+        }
 
-            int32 i_textId;
-            va_list* i_args;
+        int32 i_textId;
+        va_list* i_args;
     };
 }                                                           // namespace MaNGOS
 
@@ -1601,8 +1601,8 @@ void World::SendGlobalMessage(WorldPacket* packet)
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (itr->second &&
-                itr->second->GetPlayer() &&
-                itr->second->GetPlayer()->IsInWorld())
+            itr->second->GetPlayer() &&
+            itr->second->GetPlayer()->IsInWorld())
         {
             itr->second->SendPacket(packet);
         }
@@ -1631,10 +1631,10 @@ void World::SendZoneUnderAttackMessage(uint32 zoneId, Team team)
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (itr->second &&
-                itr->second->GetPlayer() &&
-                itr->second->GetPlayer()->IsInWorld() &&
-                itr->second->GetPlayer()->GetTeam() == team &&
-                !itr->second->GetPlayer()->GetMap()->Instanceable())
+            itr->second->GetPlayer() &&
+            itr->second->GetPlayer()->IsInWorld() &&
+            itr->second->GetPlayer()->GetTeam() == team &&
+            !itr->second->GetPlayer()->GetMap()->Instanceable())
         {
             itr->second->SendPacket(&data);
         }
@@ -1647,9 +1647,9 @@ void World::SendDefenseMessage(uint32 zoneId, int32 textId)
     for (SessionMap::const_iterator itr = m_sessions.begin(); itr != m_sessions.end(); ++itr)
     {
         if (itr->second &&
-                itr->second->GetPlayer() &&
-                itr->second->GetPlayer()->IsInWorld() &&
-                !itr->second->GetPlayer()->GetMap()->Instanceable())
+            itr->second->GetPlayer() &&
+            itr->second->GetPlayer()->IsInWorld() &&
+            !itr->second->GetPlayer()->GetMap()->Instanceable())
         {
             char const* message = itr->second->GetMangosString(textId);
             uint32 messageLength = strlen(message) + 1;
@@ -1832,11 +1832,11 @@ void World::ShutdownMsg(bool show /*= false*/, Player* player /*= NULL*/)
 
     ///- Display a message every 12 hours, 1 hour, 5 minutes, 1 minute and 15 seconds
     if (show ||
-            (m_ShutdownTimer < 5 * MINUTE && (m_ShutdownTimer % 15) == 0) ||            // < 5 min; every 15 sec
-            (m_ShutdownTimer < 15 * MINUTE && (m_ShutdownTimer % MINUTE) == 0) ||       // < 15 min; every 1 min
-            (m_ShutdownTimer < 30 * MINUTE && (m_ShutdownTimer % (5 * MINUTE)) == 0) || // < 30 min; every 5 min
-            (m_ShutdownTimer < 12 * HOUR && (m_ShutdownTimer % HOUR) == 0) ||           // < 12 h; every 1 h
-            (m_ShutdownTimer >= 12 * HOUR && (m_ShutdownTimer % (12 * HOUR)) == 0))     // >= 12 h; every 12 h
+        (m_ShutdownTimer < 5 * MINUTE && (m_ShutdownTimer % 15) == 0) ||            // < 5 min; every 15 sec
+        (m_ShutdownTimer < 15 * MINUTE && (m_ShutdownTimer % MINUTE) == 0) ||       // < 15 min; every 1 min
+        (m_ShutdownTimer < 30 * MINUTE && (m_ShutdownTimer % (5 * MINUTE)) == 0) || // < 30 min; every 5 min
+        (m_ShutdownTimer < 12 * HOUR && (m_ShutdownTimer % HOUR) == 0) ||           // < 12 h; every 1 h
+        (m_ShutdownTimer >= 12 * HOUR && (m_ShutdownTimer % (12 * HOUR)) == 0))     // >= 12 h; every 12 h
     {
         std::string str = secsToTimeString(m_ShutdownTimer);
 

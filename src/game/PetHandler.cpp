@@ -410,7 +410,7 @@ void WorldSession::HandlePetSetAction(WorldPacket& recv_data)
             uint32 spell_id_0 = UNIT_ACTION_BUTTON_ACTION(data[0]);
             UnitActionBarEntry const* actionEntry_1 = charmInfo->GetActionBarEntry(position[1]);
             if (!actionEntry_1 || spell_id_0 != actionEntry_1->GetAction() ||
-                    act_state_0 != actionEntry_1->GetType())
+                act_state_0 != actionEntry_1->GetType())
                 return;
         }
 
@@ -420,7 +420,7 @@ void WorldSession::HandlePetSetAction(WorldPacket& recv_data)
             uint32 spell_id_1 = UNIT_ACTION_BUTTON_ACTION(data[1]);
             UnitActionBarEntry const* actionEntry_0 = charmInfo->GetActionBarEntry(position[0]);
             if (!actionEntry_0 || spell_id_1 != actionEntry_0->GetAction() ||
-                    act_state_1 != actionEntry_0->GetType())
+                act_state_1 != actionEntry_0->GetType())
                 return;
         }
     }
@@ -474,8 +474,8 @@ void WorldSession::HandlePetRename(WorldPacket& recv_data)
     Pet* pet = _player->GetMap()->GetPet(petGuid);
     // check it!
     if (!pet || pet->getPetType() != HUNTER_PET ||
-            !pet->HasByteFlag(UNIT_FIELD_BYTES_2, 2, UNIT_CAN_BE_RENAMED) ||
-            pet->GetOwnerGuid() != _player->GetObjectGuid() || !pet->GetCharmInfo())
+        !pet->HasByteFlag(UNIT_FIELD_BYTES_2, 2, UNIT_CAN_BE_RENAMED) ||
+        pet->GetOwnerGuid() != _player->GetObjectGuid() || !pet->GetCharmInfo())
         return;
 
     PetNameInvalidReason res = ObjectMgr::CheckPetName(name);
@@ -598,7 +598,7 @@ void WorldSession::HandlePetUnlearnOpcode(WorldPacket& recvPacket)
         pet->unlearnSpell(spell_id, false);
     }
 
-    pet->SetTP(pet->getLevel() *(pet->GetLoyaltyLevel() - 1));
+    pet->SetTP(pet->getLevel() * (pet->GetLoyaltyLevel() - 1));
 
     for (int i = 0; i < MAX_UNIT_ACTION_BAR_INDEX; ++i)
         if (UnitActionBarEntry const* ab = charmInfo->GetActionBarEntry(i))

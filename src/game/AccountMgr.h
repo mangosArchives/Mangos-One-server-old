@@ -37,27 +37,27 @@ enum AccountOpResult
 
 class AccountMgr
 {
-    public:
-        AccountMgr();
-        ~AccountMgr();
+public:
+    AccountMgr();
+    ~AccountMgr();
 
-        AccountOpResult CreateAccount(std::string username, std::string password);
-        AccountOpResult DeleteAccount(uint32 accid);
-        AccountOpResult ChangeUsername(uint32 accid, std::string new_uname, std::string new_passwd);
-        AccountOpResult ChangePassword(uint32 accid, std::string new_passwd);
-        bool CheckPassword(uint32 accid, std::string passwd);
+    AccountOpResult CreateAccount(std::string username, std::string password);
+    AccountOpResult DeleteAccount(uint32 accid);
+    AccountOpResult ChangeUsername(uint32 accid, std::string new_uname, std::string new_passwd);
+    AccountOpResult ChangePassword(uint32 accid, std::string new_passwd);
+    bool CheckPassword(uint32 accid, std::string passwd);
 
-        uint32 GetId(std::string username);
-        AccountTypes GetSecurity(uint32 acc_id);
-        bool GetName(uint32 acc_id, std::string& name);
-        uint32 GetCharactersCount(uint32 acc_id);
-        std::string CalculateShaPassHash(std::string& name, std::string& password);
+    uint32 GetId(std::string username);
+    AccountTypes GetSecurity(uint32 acc_id);
+    bool GetName(uint32 acc_id, std::string& name);
+    uint32 GetCharactersCount(uint32 acc_id);
+    std::string CalculateShaPassHash(std::string& name, std::string& password);
 
-        std::vector<uint32> GetRAFAccounts(uint32 accid, bool referred = true);
-        AccountOpResult AddRAFLink(uint32 accid, uint32 friendid);
-        AccountOpResult DeleteRAFLink(uint32 accid, uint32 friendid);
+    std::vector<uint32> GetRAFAccounts(uint32 accid, bool referred = true);
+    AccountOpResult AddRAFLink(uint32 accid, uint32 friendid);
+    AccountOpResult DeleteRAFLink(uint32 accid, uint32 friendid);
 
-        static bool normalizeString(std::string& utf8str);
+    static bool normalizeString(std::string& utf8str);
 };
 
 #define sAccountMgr MaNGOS::Singleton<AccountMgr>::Instance()

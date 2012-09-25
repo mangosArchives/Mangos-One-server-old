@@ -220,7 +220,7 @@ bool Transport::GenerateWaypoints(uint32 pathid, std::set<uint32> &mapids)
         if (mapChange == 0)
         {
             TaxiPathNodeEntry const& node_i = path[i];
-            if (node_i.mapid == path[i+1].mapid)
+            if (node_i.mapid == path[i + 1].mapid)
             {
                 keyFrame k(node_i);
                 keyFrames.push_back(k);
@@ -250,7 +250,7 @@ bool Transport::GenerateWaypoints(uint32 pathid, std::set<uint32> &mapids)
     // find the rest of the distances between key points
     for (size_t i = 1; i < keyFrames.size(); ++i)
     {
-        if ((keyFrames[i].node->actionFlag == 1) || (keyFrames[i].node->mapid != keyFrames[i-1].node->mapid))
+        if ((keyFrames[i].node->actionFlag == 1) || (keyFrames[i].node->mapid != keyFrames[i - 1].node->mapid))
         {
             keyFrames[i].distFromPrev = 0;
         }

@@ -281,7 +281,8 @@ void WheatyExceptionReport::printTracesForAllThreads()
             }
             CloseHandle(threadHandle);
         }
-    } while (Thread32Next(hThreadSnap, &te32));
+    }
+    while (Thread32Next(hThreadSnap, &te32));
 
 //  Don't forget to clean up the snapshot object.
     CloseHandle(hThreadSnap);
@@ -475,8 +476,8 @@ BOOL WheatyExceptionReport::GetLogicalAddress(
     // Iterate through the section table, looking for the one that encompasses
     // the linear address.
     for (unsigned i = 0;
-            i < pNtHdr->FileHeader.NumberOfSections;
-            ++i, ++pSection)
+         i < pNtHdr->FileHeader.NumberOfSections;
+         ++i, ++pSection)
     {
         DWORD_PTR sectionStart = pSection->VirtualAddress;
         DWORD_PTR sectionEnd = sectionStart
@@ -576,10 +577,10 @@ void WheatyExceptionReport::WriteStackDetails(
         // Get the name of the function for this stack frame entry
         CSymbolInfoPackage sip;
         if (SymFromAddr(
-                    m_hProcess,                             // Process handle of the current process
-                    sf.AddrPC.Offset,                       // Symbol address
-                    &symDisplacement,                       // Address of the variable that will receive the displacement
-                    &sip.si))                               // Address of the SYMBOL_INFO structure (inside "sip" object)
+                m_hProcess,                             // Process handle of the current process
+                sf.AddrPC.Offset,                       // Symbol address
+                &symDisplacement,                       // Address of the variable that will receive the displacement
+                &sip.si))                               // Address of the SYMBOL_INFO structure (inside "sip" object)
         {
             _tprintf(_T("%hs+%I64X"), sip.si.Name, symDisplacement);
 
@@ -644,10 +645,10 @@ WheatyExceptionReport::EnumerateSymbolsCallback(
     __try
     {
         if (FormatSymbolValue(pSymInfo, (STACKFRAME*)UserContext,
-        szBuffer, sizeof(szBuffer)))
+                              szBuffer, sizeof(szBuffer)))
             _tprintf(_T("\t%s\r\n"), szBuffer);
     }
-    __except(1)
+    __except (1)
     {
         _tprintf(_T("punting on symbol %s\r\n"), pSymInfo->Name);
     }

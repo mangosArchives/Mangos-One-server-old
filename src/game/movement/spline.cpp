@@ -57,7 +57,7 @@ namespace Movement
     };
 
 ///////////
-#pragma region evaluation methtods
+    #pragma region evaluation methtods
 
     using G3D::Matrix4;
     static const Matrix4 s_catmullRomCoeffs(
@@ -117,7 +117,7 @@ namespace Movement
     void SplineBase::EvaluateLinear(index_type index, float u, Vector3& result) const
     {
         MANGOS_ASSERT(index >= index_lo && index < index_hi);
-        result = points[index] + (points[index+1] - points[index]) * u;
+        result = points[index] + (points[index + 1] - points[index]) * u;
     }
 
     void SplineBase::EvaluateCatmullRom(index_type index, float t, Vector3& result) const
@@ -136,7 +136,7 @@ namespace Movement
     void SplineBase::EvaluateDerivativeLinear(index_type index, float, Vector3& result) const
     {
         MANGOS_ASSERT(index >= index_lo && index < index_hi);
-        result = points[index+1] - points[index];
+        result = points[index + 1] - points[index];
     }
 
     void SplineBase::EvaluateDerivativeCatmullRom(index_type index, float t, Vector3& result) const
@@ -155,7 +155,7 @@ namespace Movement
     float SplineBase::SegLengthLinear(index_type index) const
     {
         MANGOS_ASSERT(index >= index_lo && index < index_hi);
-        return (points[index] - points[index+1]).length();
+        return (points[index] - points[index + 1]).length();
     }
 
     float SplineBase::SegLengthCatmullRom(index_type index) const
@@ -200,7 +200,7 @@ namespace Movement
         }
         return length;
     }
-#pragma endregion
+    #pragma endregion
 
     void SplineBase::init_spline(const Vector3* controls, index_type count, EvaluationMode m)
     {
@@ -232,7 +232,7 @@ namespace Movement
         if (cyclic)
             points[count] = controls[cyclic_point];
         else
-            points[count] = controls[count-1];
+            points[count] = controls[count - 1];
 
         index_lo = 0;
         index_hi = cyclic ? count : (count - 1);
@@ -254,17 +254,17 @@ namespace Movement
         if (cyclic)
         {
             if (cyclic_point == 0)
-                points[0] = controls[count-1];
+                points[0] = controls[count - 1];
             else
                 points[0] = controls[0].lerp(controls[1], -1);
 
-            points[high_index+1] = controls[cyclic_point];
-            points[high_index+2] = controls[cyclic_point+1];
+            points[high_index + 1] = controls[cyclic_point];
+            points[high_index + 2] = controls[cyclic_point + 1];
         }
         else
         {
             points[0] = controls[0].lerp(controls[1], -1);
-            points[high_index+1] = controls[count-1];
+            points[high_index + 1] = controls[count - 1];
         }
 
         index_lo = lo_index;

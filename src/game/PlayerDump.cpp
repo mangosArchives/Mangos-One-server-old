@@ -97,7 +97,7 @@ bool findnth(std::string& str, int n, std::string::size_type& s, std::string::si
         if (e == std::string::npos)
             return false;
     }
-    while (str[e-1] == '\\');
+    while (str[e - 1] == '\\');
 
     for (int i = 1; i < n; ++i)
     {
@@ -108,7 +108,7 @@ bool findnth(std::string& str, int n, std::string::size_type& s, std::string::si
             if (e == std::string::npos)
                 return false;
         }
-        while (str[e-1] == '\\');
+        while (str[e - 1] == '\\');
     }
     return true;
 }

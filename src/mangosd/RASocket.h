@@ -38,59 +38,59 @@
 typedef ACE_Svc_Handler < ACE_SOCK_STREAM, ACE_NULL_SYNCH> RAHandler;
 class RASocket: protected RAHandler
 {
-    public:
-        ACE_Semaphore pendingCommands;
-        typedef ACE_Acceptor<RASocket, ACE_SOCK_ACCEPTOR > Acceptor;
-        friend class ACE_Acceptor<RASocket, ACE_SOCK_ACCEPTOR >;
+public:
+    ACE_Semaphore pendingCommands;
+    typedef ACE_Acceptor<RASocket, ACE_SOCK_ACCEPTOR > Acceptor;
+    friend class ACE_Acceptor<RASocket, ACE_SOCK_ACCEPTOR >;
 
-        int sendf(const char*);
+    int sendf(const char*);
 
-    protected:
-        /// things called by ACE framework.
-        RASocket(void);
-        virtual ~RASocket(void);
+protected:
+    /// things called by ACE framework.
+    RASocket(void);
+    virtual ~RASocket(void);
 
-        /// Called on open ,the void* is the acceptor.
-        virtual int open(void*) override;
+    /// Called on open ,the void* is the acceptor.
+    virtual int open(void*) override;
 
-        /// Called on failures inside of the acceptor, don't call from your code.
-        virtual int close(int);
+    /// Called on failures inside of the acceptor, don't call from your code.
+    virtual int close(int);
 
-        /// Called when we can read from the socket.
-        virtual int handle_input(ACE_HANDLE = ACE_INVALID_HANDLE) override;
+    /// Called when we can read from the socket.
+    virtual int handle_input(ACE_HANDLE = ACE_INVALID_HANDLE) override;
 
-        /// Called when the socket can write.
-        virtual int handle_output(ACE_HANDLE = ACE_INVALID_HANDLE) override;
+    /// Called when the socket can write.
+    virtual int handle_output(ACE_HANDLE = ACE_INVALID_HANDLE) override;
 
-        /// Called when connection is closed or error happens.
-        virtual int handle_close(ACE_HANDLE = ACE_INVALID_HANDLE,
-                                 ACE_Reactor_Mask = ACE_Event_Handler::ALL_EVENTS_MASK);
+    /// Called when connection is closed or error happens.
+    virtual int handle_close(ACE_HANDLE = ACE_INVALID_HANDLE,
+                             ACE_Reactor_Mask = ACE_Event_Handler::ALL_EVENTS_MASK);
 
-    private:
-        bool outActive;
+private:
+    bool outActive;
 
-        char inputBuffer[RA_BUFF_SIZE];
-        uint32 inputBufferLen;
+    char inputBuffer[RA_BUFF_SIZE];
+    uint32 inputBufferLen;
 
-        ACE_Thread_Mutex outBufferLock;
-        char outputBuffer[RA_BUFF_SIZE];
-        uint32 outputBufferLen;
+    ACE_Thread_Mutex outBufferLock;
+    char outputBuffer[RA_BUFF_SIZE];
+    uint32 outputBufferLen;
 
-        uint32 accId;
-        AccountTypes accAccessLevel;
-        bool bSecure;                                       // kick on wrong pass, non exist. user OR user with no priv
-        // will protect from DOS, bruteforce attacks
-        bool bStricted;                                     // not allow execute console only commands (SEC_CONSOLE) remotly
-        AccountTypes iMinLevel;
-        enum
-        {
-            NONE,                                           // initial value
-            LG,                                             // only login was entered
-            OK,                                             // both login and pass were given, they were correct and user has enough priv.
-        } stage;
+    uint32 accId;
+    AccountTypes accAccessLevel;
+    bool bSecure;                                       // kick on wrong pass, non exist. user OR user with no priv
+    // will protect from DOS, bruteforce attacks
+    bool bStricted;                                     // not allow execute console only commands (SEC_CONSOLE) remotly
+    AccountTypes iMinLevel;
+    enum
+    {
+        NONE,                                           // initial value
+        LG,                                             // only login was entered
+        OK,                                             // both login and pass were given, they were correct and user has enough priv.
+    } stage;
 
-        static void zprint(void* callbackArg, const char* szText);
-        static void commandFinished(void* callbackArg, bool success);
+    static void zprint(void* callbackArg, const char* szText);
+    static void commandFinished(void* callbackArg, bool success);
 };
 #endif
 /// @}

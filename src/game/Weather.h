@@ -50,23 +50,23 @@ struct WeatherZoneChances;
 /// Weather for one zone
 class Weather
 {
-    public:
-        Weather(uint32 zone, WeatherZoneChances const* weatherChances);
-        ~Weather() { };
-        bool ReGenerate();
-        bool UpdateWeather();
-        void SendWeatherUpdateToPlayer(Player* player);
-        static void SendFineWeatherUpdateToPlayer(Player* player);
-        void SetWeather(WeatherType type, float grade);
-        /// For which zone is this weather?
-        uint32 GetZone() { return m_zone; };
-        bool Update(time_t diff);
-    private:
-        WeatherState GetWeatherState() const;
-        uint32 m_zone;
-        WeatherType m_type;
-        float m_grade;
-        ShortIntervalTimer m_timer;
-        WeatherZoneChances const* m_weatherChances;
+public:
+    Weather(uint32 zone, WeatherZoneChances const* weatherChances);
+    ~Weather() { };
+    bool ReGenerate();
+    bool UpdateWeather();
+    void SendWeatherUpdateToPlayer(Player* player);
+    static void SendFineWeatherUpdateToPlayer(Player* player);
+    void SetWeather(WeatherType type, float grade);
+    /// For which zone is this weather?
+    uint32 GetZone() { return m_zone; };
+    bool Update(time_t diff);
+private:
+    WeatherState GetWeatherState() const;
+    uint32 m_zone;
+    WeatherType m_type;
+    float m_grade;
+    ShortIntervalTimer m_timer;
+    WeatherZoneChances const* m_weatherChances;
 };
 #endif

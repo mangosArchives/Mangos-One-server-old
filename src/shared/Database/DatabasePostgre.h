@@ -36,44 +36,44 @@
 
 class MANGOS_DLL_SPEC PostgreSQLConnection : public SqlConnection
 {
-    public:
-        PostgreSQLConnection() : mPGconn(NULL) {}
-        ~PostgreSQLConnection();
+public:
+    PostgreSQLConnection() : mPGconn(NULL) {}
+    ~PostgreSQLConnection();
 
-        bool Initialize(const char* infoString) override;
+    bool Initialize(const char* infoString) override;
 
-        QueryResult* Query(const char* sql) override;
-        QueryNamedResult* QueryNamed(const char* sql) override;
-        bool Execute(const char* sql) override;
+    QueryResult* Query(const char* sql) override;
+    QueryNamedResult* QueryNamed(const char* sql) override;
+    bool Execute(const char* sql) override;
 
-        unsigned long escape_string(char* to, const char* from, unsigned long length);
+    unsigned long escape_string(char* to, const char* from, unsigned long length);
 
-        bool BeginTransaction() override;
-        bool CommitTransaction() override;
-        bool RollbackTransaction() override;
+    bool BeginTransaction() override;
+    bool CommitTransaction() override;
+    bool RollbackTransaction() override;
 
-    private:
-        bool _TransactionCmd(const char* sql);
-        bool _Query(const char* sql, PGresult** pResult, uint64* pRowCount, uint32* pFieldCount) override;
+private:
+    bool _TransactionCmd(const char* sql);
+    bool _Query(const char* sql, PGresult** pResult, uint64* pRowCount, uint32* pFieldCount) override;
 
-        PGconn* mPGconn;
+    PGconn* mPGconn;
 };
 
 class MANGOS_DLL_SPEC DatabasePostgre : public Database
 {
-        friend class MaNGOS::OperatorNew<DatabasePostgre>;
+    friend class MaNGOS::OperatorNew<DatabasePostgre>;
 
-    public:
-        DatabasePostgre();
-        ~DatabasePostgre();
+public:
+    DatabasePostgre();
+    ~DatabasePostgre();
 
-        //! Initializes Postgres and connects to a server.
-        /*! infoString should be formated like hostname;username;password;database. */
+    //! Initializes Postgres and connects to a server.
+    /*! infoString should be formated like hostname;username;password;database. */
 
-    protected:
-        virtual SqlConnection* CreateConnection() override;
+protected:
+    virtual SqlConnection* CreateConnection() override;
 
-    private:
-        static size_t db_count;
+private:
+    static size_t db_count;
 };
 #endif

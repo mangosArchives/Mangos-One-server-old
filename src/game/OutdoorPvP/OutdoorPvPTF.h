@@ -157,45 +157,45 @@ class OutdoorPvPTF : public OutdoorPvP
 {
     friend class OutdoorPvPMgr;
 
-    public:
-        OutdoorPvPTF();
+public:
+    OutdoorPvPTF();
 
-        void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
-        void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
-        void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
-        void SendRemoveWorldStates(Player* player) override;
+    void HandlePlayerEnterZone(Player* player, bool isMainZone) override;
+    void HandlePlayerLeaveZone(Player* player, bool isMainZone) override;
+    void FillInitialWorldStates(WorldPacket& data, uint32& count) override;
+    void SendRemoveWorldStates(Player* player) override;
 
-        bool HandleEvent(uint32 eventId, GameObject* go) override;
-        void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
+    bool HandleEvent(uint32 eventId, GameObject* go) override;
+    void HandleObjectiveComplete(uint32 eventId, std::list<Player*> players, Team team) override;
 
-        void HandleGameObjectCreate(GameObject* go) override;
-        void Update(uint32 diff) override;
+    void HandleGameObjectCreate(GameObject* go) override;
+    void Update(uint32 diff) override;
 
-    private:
-        void UpdateTimerWorldState();
+private:
+    void UpdateTimerWorldState();
 
-        // process capture events
-        bool ProcessCaptureEvent(GameObject* go, uint32 towerId, Team team, uint32 newWorldState);
+    // process capture events
+    bool ProcessCaptureEvent(GameObject* go, uint32 towerId, Team team, uint32 newWorldState);
 
-        void LockZone(GameObject* go, uint32 towerId, Team team, uint32 newWorldState);
-        void UnlockZone();
+    void LockZone(GameObject* go, uint32 towerId, Team team, uint32 newWorldState);
+    void UnlockZone();
 
-        void LockTowers(const WorldObject* objRef);
-        void ResetTowers(const WorldObject* objRef);
+    void LockTowers(const WorldObject* objRef);
+    void ResetTowers(const WorldObject* objRef);
 
-        uint32 m_towerWorldState[MAX_TF_TOWERS];
-        uint32 m_zoneWorldState;
+    uint32 m_towerWorldState[MAX_TF_TOWERS];
+    uint32 m_zoneWorldState;
 
-        Team m_towerOwner[MAX_TF_TOWERS];
-        Team m_zoneOwner;
+    Team m_towerOwner[MAX_TF_TOWERS];
+    Team m_zoneOwner;
 
-        uint32 m_zoneLockTimer;
-        //uint32 m_zoneUpdateTimer;
+    uint32 m_zoneLockTimer;
+    //uint32 m_zoneUpdateTimer;
 
-        uint8 m_towersAlliance;
-        uint8 m_towersHorde;
+    uint8 m_towersAlliance;
+    uint8 m_towersHorde;
 
-        ObjectGuid m_towerBanners[MAX_TF_TOWERS];
+    ObjectGuid m_towerBanners[MAX_TF_TOWERS];
 };
 
 #endif

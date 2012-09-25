@@ -2424,7 +2424,7 @@ char* ChatHandler::ExtractLinkArg(char** args, char const* const* linkTypes /*= 
             // exactly string with follow : or |
             int l = strlen(linkTypes[linktype_idx]);
             if (strncmp(tail, linkTypes[linktype_idx], l) == 0 &&
-                    (tail[l] == ':' || tail[l] == '|'))
+                (tail[l] == ':' || tail[l] == '|'))
                 break;
         }
 

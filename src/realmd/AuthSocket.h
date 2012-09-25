@@ -33,51 +33,51 @@
 /// Handle login commands
 class AuthSocket: public BufferedSocket
 {
-    public:
-        const static int s_BYTE_SIZE = 32;
+public:
+    const static int s_BYTE_SIZE = 32;
 
-        AuthSocket();
-        ~AuthSocket();
+    AuthSocket();
+    ~AuthSocket();
 
-        void OnAccept() override;
-        void OnRead() override;
-        void SendProof(Sha1Hash sha);
-        void LoadRealmlist(ByteBuffer& pkt, uint32 acctid);
+    void OnAccept() override;
+    void OnRead() override;
+    void SendProof(Sha1Hash sha);
+    void LoadRealmlist(ByteBuffer& pkt, uint32 acctid);
 
-        bool _HandleLogonChallenge();
-        bool _HandleLogonProof();
-        bool _HandleReconnectChallenge();
-        bool _HandleReconnectProof();
-        bool _HandleRealmList();
-        // data transfer handle for patch
+    bool _HandleLogonChallenge();
+    bool _HandleLogonProof();
+    bool _HandleReconnectChallenge();
+    bool _HandleReconnectProof();
+    bool _HandleRealmList();
+    // data transfer handle for patch
 
-        bool _HandleXferResume();
-        bool _HandleXferCancel();
-        bool _HandleXferAccept();
+    bool _HandleXferResume();
+    bool _HandleXferCancel();
+    bool _HandleXferAccept();
 
-        void _SetVSFields(const std::string& rI);
+    void _SetVSFields(const std::string& rI);
 
-    private:
+private:
 
-        BigNumber N, s, g, v;
-        BigNumber b, B;
-        BigNumber K;
-        BigNumber _reconnectProof;
+    BigNumber N, s, g, v;
+    BigNumber b, B;
+    BigNumber K;
+    BigNumber _reconnectProof;
 
-        bool _authed;
+    bool _authed;
 
-        std::string _login;
-        std::string _safelogin;
+    std::string _login;
+    std::string _safelogin;
 
-        // Since GetLocaleByName() is _NOT_ bijective, we have to store the locale as a string. Otherwise we can't differ
-        // between enUS and enGB, which is important for the patch system
-        std::string _localizationName;
-        uint16 _build;
-        AccountTypes _accountSecurityLevel;
+    // Since GetLocaleByName() is _NOT_ bijective, we have to store the locale as a string. Otherwise we can't differ
+    // between enUS and enGB, which is important for the patch system
+    std::string _localizationName;
+    uint16 _build;
+    AccountTypes _accountSecurityLevel;
 
-        ACE_HANDLE patch_;
+    ACE_HANDLE patch_;
 
-        void InitPatch();
+    void InitPatch();
 };
 #endif
 /// @}
