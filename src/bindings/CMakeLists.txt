@@ -16,4 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
-# add_subdirectory(universal)
+# Uncomment once you have cloned https://github.com/mangos-one/scripts
+# into the scripts subdirectory.
+#add_subdirectory(scripts)
+
