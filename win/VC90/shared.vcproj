@@ -696,6 +696,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\shared\Auth\Hmac.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\shared\Auth\Hmac.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\shared\Auth\HMACSHA1.cpp"
 				>
 			</File>
@@ -712,11 +720,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\shared\Auth\SARC4.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\shared\Auth\SARC4.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\shared\Auth\Sha1.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\src\shared\Auth\Sha1.h"
+				>
+			</File
+			<File
+				RelativePath="..\..\src\shared\Auth\WardenKeyGeneration.h"
 				>
 			</File>
 		</Filter>

@@ -1807,6 +1807,51 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="Warden"
+			>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenBase.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenBase.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenDataStorage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenDataStorage.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenMac.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenMac.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenModuleMac.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenModuleWin.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenWin.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\game\Warden\WardenWin.h"
+				>
+			</File>
+			<File>
+		</Filter>
 		<File
 			RelativePath="..\..\src\game\pchdef.cpp"
 			>

@@ -28,6 +28,7 @@
 #include "ObjectGuid.h"
 #include "AuctionHouseMgr.h"
 #include "Item.h"
+#include "Warden/WardenBase.h"
 
 struct ItemPrototype;
 struct AuctionEntry;
@@ -172,6 +173,8 @@ public:
     std::string const& GetRemoteAddress() { return m_Address; }
     void SetPlayer(Player* plr) { _player = plr; }
     uint8 Expansion() const { return m_expansion; }
+
+    void InitWarden(BigNumber *K, std::string os);
 
     /// Session in auth.queue currently
     void SetInQueue(bool state) { m_inQueue = state; }
@@ -757,6 +760,9 @@ private:
     AccountTypes _security;
     uint32 _accountId;
     uint8 m_expansion;
+
+    // Warden
+    WardenBase *m_Warden;
 
     time_t _logoutTime;
     bool m_inQueue;                                     // session wait in auth.queue

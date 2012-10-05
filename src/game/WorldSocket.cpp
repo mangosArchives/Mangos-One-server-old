@@ -678,7 +678,8 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
                              "s, "                       //6
                              "expansion, "               //7
                              "mutetime, "                //8
-                             "locale "                   //9
+                             "locale, "                  //9
+                             "os "                       //10
                              "FROM account "
                              "WHERE username = '%s'",
                              safe_account.c_str());
@@ -742,6 +743,8 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     locale = LocaleConstant(fields[9].GetUInt8());
     if (locale >= MAX_LOCALE)
         locale = LOCALE_enUS;
+
+    std::string os = fields[10].GetString();
 
     delete result;
 
@@ -821,6 +824,10 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     m_Crypt.Init(&K);
 
     m_Session->LoadTutorialsData();
+
+    // Initialize Warden system only if it is enabled by config
+    if (sWorld.getConfig(CONFIG_BOOL_WARDEN_ENABLED))
+        m_Session->InitWarden(&K, os);
 
     // In case needed sometime the second arg is in microseconds 1 000 000 = 1 sec
     ACE_OS::sleep(ACE_Time_Value(0, 10000));

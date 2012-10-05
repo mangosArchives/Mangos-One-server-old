@@ -52,6 +52,7 @@ CREATE TABLE `account` (
   `expansion` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `mutetime` bigint(40) unsigned NOT NULL DEFAULT '0',
   `locale` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `os` varchar(4) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`),
   KEY `idx_gmlevel` (`gmlevel`)
@@ -64,11 +65,11 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` (`id`, `username`, `sha_pass_hash`, `gmlevel`, `sessionkey`, `v`, `s`, `email`, `joindate`, `last_ip`, `failed_logins`, `locked`, `last_login`, `active_realm_id`, `expansion`, `mutetime`, `locale`) VALUES
-(1,'ADMINISTRATOR','a34b29541b87b7e4823683ce6c7bf6ae68beaaac',3,'','0','0','','2006-04-25 10:18:56','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0),
-(2,'GAMEMASTER','7841e21831d7c6bc0b57fbe7151eb82bd65ea1f9',2,'','0','0','','2006-04-25 10:18:56','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0),
-(3,'MODERATOR','a7f5fbff0b4eec2d6b6e78e38e8312e64d700008',1,'','0','0','','2006-04-25 10:19:35','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0),
-(4,'PLAYER','3ce8a96d17c5ae88a30681024e86279f1a38c041',0,'','0','0','','2006-04-25 10:19:35','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0);
+INSERT INTO `account` (`id`, `username`, `sha_pass_hash`, `gmlevel`, `sessionkey`, `v`, `s`, `email`, `joindate`, `last_ip`, `failed_logins`, `locked`, `last_login`, `active_realm_id`, `expansion`, `mutetime`, `locale`, `os`) VALUES
+(1,'ADMINISTRATOR','a34b29541b87b7e4823683ce6c7bf6ae68beaaac',3,'','0','0','','2006-04-25 10:18:56','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0,''),
+(2,'GAMEMASTER','7841e21831d7c6bc0b57fbe7151eb82bd65ea1f9',2,'','0','0','','2006-04-25 10:18:56','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0,''),
+(3,'MODERATOR','a7f5fbff0b4eec2d6b6e78e38e8312e64d700008',1,'','0','0','','2006-04-25 10:19:35','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0,''),
+(4,'PLAYER','3ce8a96d17c5ae88a30681024e86279f1a38c041',0,'','0','0','','2006-04-25 10:19:35','127.0.0.1',0,0,'0000-00-00 00:00:00',0,0,0,0,'');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +184,7 @@ DROP TABLE IF EXISTS `realmd_db_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `realmd_db_version` (
-  `required_s1699_xxxxx_01_realmd_account_friends` bit(1) DEFAULT NULL
+  `required_s1704_xxxxx_03_realmd_warden_data_result` bit(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Last applied sql update to DB';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -256,6 +257,40 @@ CREATE TABLE `uptime` (
 LOCK TABLES `uptime` WRITE;
 /*!40000 ALTER TABLE `uptime` DISABLE KEYS */;
 /*!40000 ALTER TABLE `uptime` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `warden_data_result`
+--
+
+DROP TABLE IF EXISTS `warden_data_result`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `warden_data_result` (
+  `id` int(4) NOT NULL AUTO_INCREMENT,
+  `check` int(3) DEFAULT NULL,
+  `data` tinytext,
+  `str` tinytext,
+  `address` int(8) DEFAULT NULL,
+  `length` int(2) DEFAULT NULL,
+  `result` tinytext,
+  `comment` text,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `warden_data_result`
+--
+
+LOCK TABLES `warden_data_result` WRITE;
+/*!40000 ALTER TABLE `warden_data_result` DISABLE KEYS */;
+INSERT INTO `warden_data_result` (`id`, `check`, `data`, `str`, `address`, `length`, `result`, `comment`) VALUES
+(1000,243,'','',4840352,2,'558B','lua protection'),
+(1001,243,'','',8979979,5,'E04D62503F','Hyper speed'),
+(1002,243,'','',9208923,5,'C0854A3340','gravity'),
+(1003,243,'','',8100062,2,'7541','air jump');
+/*!40000 ALTER TABLE `warden_data_result` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
