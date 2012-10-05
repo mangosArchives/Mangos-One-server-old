@@ -1850,7 +1850,6 @@
 				RelativePath="..\..\src\game\Warden\WardenWin.h"
 				>
 			</File>
-			<File>
 		</Filter>
 		<File
 			RelativePath="..\..\src\game\pchdef.cpp"

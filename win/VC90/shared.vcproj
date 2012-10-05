@@ -734,7 +734,7 @@
 			<File
 				RelativePath="..\..\src\shared\Auth\Sha1.h"
 				>
-			</File
+			</File>
 			<File
 				RelativePath="..\..\src\shared\Auth\WardenKeyGeneration.h"
 				>
