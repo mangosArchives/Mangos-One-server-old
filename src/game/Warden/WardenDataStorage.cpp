@@ -23,7 +23,7 @@
 #include "ProgressBar.h"
 #include "Database/DatabaseEnv.h"
 #include "Util.h"
-#include "world.h"
+#include "World.h"
 #include "WardenDataStorage.h"
 #include "WardenWin.h"
 
