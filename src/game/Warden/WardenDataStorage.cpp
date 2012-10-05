@@ -23,6 +23,7 @@
 #include "ProgressBar.h"
 #include "Database/DatabaseEnv.h"
 #include "Util.h"
+#include "world.h"
 #include "WardenDataStorage.h"
 #include "WardenWin.h"
 
@@ -42,21 +43,22 @@ CWardenDataStorage::~CWardenDataStorage()
         delete itr2->second;
 }
 
-void CWardenDataStorage::Init(bool reload)
+void CWardenDataStorage::Init()
 {
-    LoadWardenDataResult(reload);
+    LoadWardenDataResult();
 }
 
-void CWardenDataStorage::LoadWardenDataResult(bool reload)
+void CWardenDataStorage::LoadWardenDataResult()
 {
-    if(reload)
+    // Check if Warden is enabled by config before loading anything
+    if (!sWorld.getConfig(CONFIG_BOOL_WARDEN_ENABLED))
     {
-        _data_map.clear();
-        _result_map.clear();
-        InternalDataID = 1;
+        sLog.outString(">> Warden disabled, loading checks skipped.");
+        sLog.outString();
+        return;
     }
 
-    QueryResult *result = LoginDatabase.Query("SELECT `check`, `data`, `result`, `address`, `length`, `str`, `id` FROM warden_data_result");
+    QueryResult *result = LoginDatabase.Query("SELECT `check`, `data`, `result`, `address`, `length`, `str` FROM warden_data_result");
 
     uint32 count = 0;
 
@@ -84,7 +86,6 @@ void CWardenDataStorage::LoadWardenDataResult(bool reload)
         uint32 id = GenerateInternalDataID();
         WardenData *wd = new WardenData();
         wd->Type = type;
-        wd->id = fields[6].GetUInt16();
 
         if (type == PAGE_CHECK_A || type == PAGE_CHECK_B || type == DRIVER_CHECK)
         {
@@ -134,6 +135,8 @@ void CWardenDataStorage::LoadWardenDataResult(bool reload)
             _result_map[id] = wr;
         }
     } while (result->NextRow());
+
+    delete result;
 
     sLog.outString();
     sLog.outString(">> Loaded %u warden data and results", count);

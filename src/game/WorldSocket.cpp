@@ -824,10 +824,7 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     m_Crypt.Init(&K);
 
     m_Session->LoadTutorialsData();
-
-    // Initialize Warden system only if it is enabled by config
-    if (sWorld.getConfig(CONFIG_BOOL_WARDEN_ENABLED))
-        m_Session->InitWarden(&K, os);
+    m_Session->InitWarden(&K, os);
 
     // In case needed sometime the second arg is in microseconds 1 000 000 = 1 sec
     ACE_OS::sleep(ACE_Time_Value(0, 10000));

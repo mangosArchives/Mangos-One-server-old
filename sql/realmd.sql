@@ -184,7 +184,7 @@ DROP TABLE IF EXISTS `realmd_db_version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `realmd_db_version` (
-  `required_s1704_xxxxx_03_realmd_warden_data_result` bit(1) DEFAULT NULL
+  `required_s1706_xxxxx_01_realmd_warden_data_result` bit(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Last applied sql update to DB';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -267,15 +267,13 @@ DROP TABLE IF EXISTS `warden_data_result`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `warden_data_result` (
-  `id` int(4) NOT NULL AUTO_INCREMENT,
   `check` int(3) DEFAULT NULL,
   `data` tinytext,
   `str` tinytext,
   `address` int(8) DEFAULT NULL,
   `length` int(2) DEFAULT NULL,
   `result` tinytext,
-  `comment` text,
-  PRIMARY KEY (`id`)
+  `comment` text
 ) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -285,11 +283,11 @@ CREATE TABLE `warden_data_result` (
 
 LOCK TABLES `warden_data_result` WRITE;
 /*!40000 ALTER TABLE `warden_data_result` DISABLE KEYS */;
-INSERT INTO `warden_data_result` (`id`, `check`, `data`, `str`, `address`, `length`, `result`, `comment`) VALUES
-(1000,243,'','',4840352,2,'558B','lua protection'),
-(1001,243,'','',8979979,5,'E04D62503F','Hyper speed'),
-(1002,243,'','',9208923,5,'C0854A3340','gravity'),
-(1003,243,'','',8100062,2,'7541','air jump');
+INSERT INTO `warden_data_result` (`check`, `data`, `str`, `address`, `length`, `result`, `comment`) VALUES
+(243,'','',4840352,2,'558B','lua protection'),
+(243,'','',8979979,5,'E04D62503F','Hyper speed'),
+(243,'','',9208923,5,'C0854A3340','gravity'),
+(243,'','',8100062,2,'7541','air jump');
 /*!40000 ALTER TABLE `warden_data_result` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

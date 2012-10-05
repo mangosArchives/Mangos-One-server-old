@@ -695,6 +695,9 @@ void WorldSession::SaveTutorialsData()
 
 void WorldSession::InitWarden(BigNumber *K, std::string os)
 {
+    if (!sWorld.getConfig(CONFIG_BOOL_WARDEN_ENABLED))
+        return;
+
     if (os == "Win")                                        // Windows
         m_Warden = (WardenBase*)new WardenWin();
     else                                                    // MacOS

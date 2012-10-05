@@ -406,21 +406,21 @@ void WardenWin::HandleData(ByteBuffer &buff)
 
                 if (Mem_Result != 0)
                 {
-                    sLog.outWarden("RESULT MEM_CHECK not 0x00, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outWarden("RESULT MEM_CHECK not 0x00, CheckId %u account Id %u", *itr, Client->GetAccountId());
                     found = true;
                     continue;
                 }
 
                 if (memcmp(buff.contents() + buff.rpos(), rs->res.AsByteArray(0, false), rd->Length) != 0)
                 {
-                    sLog.outWarden("RESULT MEM_CHECK fail CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outWarden("RESULT MEM_CHECK fail CheckId %u account Id %u", *itr, Client->GetAccountId());
                     found = true;
                     buff.rpos(buff.rpos() + rd->Length);
                     continue;
                 }
 
                 buff.rpos(buff.rpos() + rd->Length);
-                sLog.outDebug("RESULT MEM_CHECK passed CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                sLog.outDebug("RESULT MEM_CHECK passed CheckId %u account Id %u", *itr, Client->GetAccountId());
                 break;
             }
             case PAGE_CHECK_A:
@@ -432,11 +432,11 @@ void WardenWin::HandleData(ByteBuffer &buff)
                 if (memcmp(buff.contents() + buff.rpos(), &byte, sizeof(uint8)) != 0)
                 {
                     if (type == PAGE_CHECK_A || type == PAGE_CHECK_B)
-                        sLog.outWarden("RESULT PAGE_CHECK fail, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                        sLog.outWarden("RESULT PAGE_CHECK fail, CheckId %u account Id %u", *itr, Client->GetAccountId());
                     if (type == MODULE_CHECK)
-                        sLog.outWarden("RESULT MODULE_CHECK fail, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                        sLog.outWarden("RESULT MODULE_CHECK fail, CheckId %u account Id %u", *itr, Client->GetAccountId());
                     if (type == DRIVER_CHECK)
-                        sLog.outWarden("RESULT DRIVER_CHECK fail, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                        sLog.outWarden("RESULT DRIVER_CHECK fail, CheckId %u account Id %u", *itr, Client->GetAccountId());
                     found = true;
                     buff.rpos(buff.rpos() + 1);
                     continue;
@@ -444,11 +444,11 @@ void WardenWin::HandleData(ByteBuffer &buff)
 
                 buff.rpos(buff.rpos() + 1);
                 if (type == PAGE_CHECK_A || type == PAGE_CHECK_B)
-                    sLog.outDebug("RESULT PAGE_CHECK passed CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outDebug("RESULT PAGE_CHECK passed CheckId %u account Id %u", *itr, Client->GetAccountId());
                 else if (type == MODULE_CHECK)
-                    sLog.outDebug("RESULT MODULE_CHECK passed CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outDebug("RESULT MODULE_CHECK passed CheckId %u account Id %u", *itr, Client->GetAccountId());
                 else if (type == DRIVER_CHECK)
-                    sLog.outDebug("RESULT DRIVER_CHECK passed CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outDebug("RESULT DRIVER_CHECK passed CheckId %u account Id %u", *itr, Client->GetAccountId());
                 break;
             }
             case LUA_STR_CHECK:
@@ -458,7 +458,7 @@ void WardenWin::HandleData(ByteBuffer &buff)
 
                 if (Lua_Result != 0)
                 {
-                    sLog.outWarden("RESULT LUA_STR_CHECK fail, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outWarden("RESULT LUA_STR_CHECK fail, CheckId %u account Id %u", *itr, Client->GetAccountId());
                     found = true;
                     continue;
                 }
@@ -475,7 +475,7 @@ void WardenWin::HandleData(ByteBuffer &buff)
                     delete[] str;
                 }
                 buff.rpos(buff.rpos() + luaStrLen);         // skip string
-                sLog.outDebug("RESULT LUA_STR_CHECK passed, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                sLog.outDebug("RESULT LUA_STR_CHECK passed, CheckId %u account Id %u", *itr, Client->GetAccountId());
                 break;
             }
             case MPQ_CHECK:
@@ -492,14 +492,14 @@ void WardenWin::HandleData(ByteBuffer &buff)
 
                 if (memcmp(buff.contents() + buff.rpos(), rs->res.AsByteArray(0), 20) != 0) // SHA1
                 {
-                    sLog.outWarden("RESULT MPQ_CHECK fail, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                    sLog.outWarden("RESULT MPQ_CHECK fail, CheckId %u account Id %u", *itr, Client->GetAccountId());
                     found = true;
                     buff.rpos(buff.rpos() + 20);            // 20 bytes SHA1
                     continue;
                 }
 
                 buff.rpos(buff.rpos() + 20);                // 20 bytes SHA1
-                sLog.outDebug("RESULT MPQ_CHECK passed, CheckId %u account Id %u", rd->id, Client->GetAccountId());
+                sLog.outDebug("RESULT MPQ_CHECK passed, CheckId %u account Id %u", *itr, Client->GetAccountId());
                 break;
             }
             default:                                        // should never happens
