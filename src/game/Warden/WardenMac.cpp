@@ -160,7 +160,7 @@ void WardenMac::HandleHashResult(ByteBuffer &buff)
 
         if (sWorld.getConfig(CONFIG_FLOAT_WARDEN_KICK_BAN) == 2)
         {
-           sWorld.BanAccount(BAN_CHARACTER, Client->GetPlayerName(), sWorld.getConfig(CONFIG_UINT32_WARDEN_BAN_TIME) * 900000 * IN_MILLISECONDS, "Cheating software usage", "Warden System");
+            sWorld.BanAccount(BAN_CHARACTER, Client->GetPlayerName(), sWorld.getConfig(CONFIG_UINT32_WARDEN_BAN_TIME) * 900000 * IN_MILLISECONDS, "Cheating software usage", "Warden System");
         }
         return;
     }

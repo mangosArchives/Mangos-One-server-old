@@ -194,7 +194,7 @@ CREATE TABLE `realmd_db_version` (
 
 LOCK TABLES `realmd_db_version` WRITE;
 /*!40000 ALTER TABLE `realmd_db_version` DISABLE KEYS */;
-INSERT INTO `realmd_db_version` (`required_s1699_xxxxx_01_realmd_account_friends`) VALUES
+INSERT INTO `realmd_db_version` (`required_s1706_xxxxx_01_realmd_warden_data_result`) VALUES
 (NULL);
 /*!40000 ALTER TABLE `realmd_db_version` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -274,7 +274,7 @@ CREATE TABLE `warden_data_result` (
   `length` int(2) DEFAULT NULL,
   `result` tinytext,
   `comment` text
-) ENGINE=InnoDB AUTO_INCREMENT=1004 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
