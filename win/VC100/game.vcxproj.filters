@@ -532,6 +532,9 @@
     <ClCompile Include="..\..\src\game\Warden\WardenWin.cpp">
       <Filter>Warden</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\game\MapUpdater.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game\AccountMgr.h">
@@ -1011,6 +1014,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\game\Warden\WardenWin.h">
       <Filter>Warden</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\game\MapUpdater.h">
+      <Filter>World/Handlers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

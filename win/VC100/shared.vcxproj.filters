@@ -87,6 +87,7 @@
     <ClCompile Include="..\..\src\shared\Auth\Hmac.cpp">
       <Filter>Auth</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shared\DelayExecutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\shared\Database\Database.h">
@@ -188,6 +189,7 @@
     <ClInclude Include="..\..\src\shared\Auth\Hmac.h">
       <Filter>Auth</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\shared\DelayExecutor.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\src\shared\revision.h" />

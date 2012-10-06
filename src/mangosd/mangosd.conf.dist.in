@@ -197,6 +197,10 @@ BindIP = "0.0.0.0"
 #        Default: 1 (Enable)
 #                 0 (Disabled)
 #
+#    MapUpdate.Threads
+#        Number of threads to run if the binary was compiled with mtmaps support.
+#        Default: 2
+#
 ###################################################################################################################
 
 UseProcessors = 0
@@ -224,6 +228,7 @@ UpdateUptimeInterval = 10
 MaxCoreStuckTime = 0
 AddonChannel = 1
 CleanCharacterDB = 1
+MapUpdate.Threads = 2
 
 ###################################################################################################################
 # SERVER LOGGING
