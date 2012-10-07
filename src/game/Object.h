@@ -347,8 +347,6 @@ public:
 
     uint16 GetValuesCount() const { return m_valuesCount; }
 
-    void InitValues() { _InitValues(); }
-
     virtual bool HasQuest(uint32 /* quest_id */) const { return false; }
     virtual bool HasInvolvedQuest(uint32 /* quest_id */) const { return false; }
 
