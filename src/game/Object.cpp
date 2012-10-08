@@ -48,7 +48,7 @@ Object::Object()
     m_objectType        = TYPEMASK_OBJECT;
 
     m_uint32Values      = 0;
-    m_uint32Values_mirror = 0;
+    m_changedFields      = false;
     m_valuesCount       = 0;
 
     m_inWorld           = false;
@@ -71,7 +71,7 @@ Object::~Object()
     }
 
     delete[] m_uint32Values;
-    delete[] m_uint32Values_mirror;
+    delete[] m_changedFields;
 }
 
 void Object::_InitValues()
@@ -79,8 +79,8 @@ void Object::_InitValues()
     m_uint32Values = new uint32[ m_valuesCount ];
     memset(m_uint32Values, 0, m_valuesCount * sizeof(uint32));
 
-    m_uint32Values_mirror = new uint32[ m_valuesCount ];
-    memset(m_uint32Values_mirror, 0, m_valuesCount * sizeof(uint32));
+    m_changedFields = new bool[ m_valuesCount ];
+    memset(m_changedFields, 0, m_valuesCount * sizeof(bool));
 
     m_objectUpdated = false;
 }
@@ -553,8 +553,8 @@ void Object::ClearUpdateMask(bool remove)
     {
         for (uint16 index = 0; index < m_valuesCount; ++index)
         {
-            if (m_uint32Values_mirror[index] != m_uint32Values[index])
-                m_uint32Values_mirror[index] = m_uint32Values[index];
+            if (m_changedFields[index])
+                m_changedFields[index] = false;
         }
     }
 
@@ -589,7 +589,7 @@ void Object::_SetUpdateBits(UpdateMask* updateMask, Player* /*target*/) const
 {
     for (uint16 index = 0; index < m_valuesCount; ++index)
     {
-        if (m_uint32Values_mirror[index] != m_uint32Values[index])
+        if (m_changedFields[index])
             updateMask->SetBit(index);
     }
 }
@@ -610,6 +610,7 @@ void Object::SetInt32Value(uint16 index, int32 value)
     if (m_int32Values[ index ] != value)
     {
         m_int32Values[ index ] = value;
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -621,6 +622,7 @@ void Object::SetUInt32Value(uint16 index, uint32 value)
     if (m_uint32Values[ index ] != value)
     {
         m_uint32Values[ index ] = value;
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -632,6 +634,7 @@ void Object::SetUInt64Value(uint16 index, const uint64& value)
     {
         m_uint32Values[ index ] = *((uint32*)&value);
         m_uint32Values[ index + 1 ] = *(((uint32*)&value) + 1);
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -643,6 +646,7 @@ void Object::SetFloatValue(uint16 index, float value)
     if (m_floatValues[ index ] != value)
     {
         m_floatValues[ index ] = value;
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -661,6 +665,7 @@ void Object::SetByteValue(uint16 index, uint8 offset, uint8 value)
     {
         m_uint32Values[ index ] &= ~uint32(uint32(0xFF) << (offset * 8));
         m_uint32Values[ index ] |= uint32(uint32(value) << (offset * 8));
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -679,6 +684,7 @@ void Object::SetUInt16Value(uint16 index, uint8 offset, uint16 value)
     {
         m_uint32Values[ index ] &= ~uint32(uint32(0xFFFF) << (offset * 16));
         m_uint32Values[ index ] |= uint32(uint32(value) << (offset * 16));
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -740,6 +746,7 @@ void Object::SetFlag(uint16 index, uint32 newFlag)
     if (oldval != newval)
     {
         m_uint32Values[ index ] = newval;
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -753,6 +760,7 @@ void Object::RemoveFlag(uint16 index, uint32 oldFlag)
     if (oldval != newval)
     {
         m_uint32Values[ index ] = newval;
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -770,6 +778,7 @@ void Object::SetByteFlag(uint16 index, uint8 offset, uint8 newFlag)
     if (!(uint8(m_uint32Values[ index ] >> (offset * 8)) & newFlag))
     {
         m_uint32Values[ index ] |= uint32(uint32(newFlag) << (offset * 8));
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
@@ -787,6 +796,7 @@ void Object::RemoveByteFlag(uint16 index, uint8 offset, uint8 oldFlag)
     if (uint8(m_uint32Values[ index ] >> (offset * 8)) & oldFlag)
     {
         m_uint32Values[ index ] &= ~uint32(uint32(oldFlag) << (offset * 8));
+        m_changedFields[ index ] = true;
         MarkForClientUpdate();
     }
 }
