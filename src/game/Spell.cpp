@@ -298,7 +298,7 @@ Spell::Spell(Unit* caster, SpellEntry const* info, bool triggered, ObjectGuid or
     m_castPositionX = m_castPositionY = m_castPositionZ = 0;
     m_TriggerSpells.clear();
     m_preCastSpells.clear();
-    m_IsTriggeredSpell = triggered;
+    m_IsTriggeredSpell = bool(triggered || info->HasAttribute(SPELL_ATTR_EX4_TRIGGERED));
     // m_AreaAura = false;
     m_CastItem = NULL;
 
@@ -2733,7 +2733,7 @@ void Spell::prepare(SpellCastTargets const* targets, Aura* triggeredByAura)
     m_caster->m_Events.AddEvent(Event, m_caster->m_Events.CalculateTime(1));
 
     // Prevent casting at cast another spell (ServerSide check)
-    if (m_caster->IsNonMeleeSpellCasted(false, true, true) && m_cast_count)
+    if (!m_IsTriggeredSpell && m_caster->IsNonMeleeSpellCasted(false, true, true) && m_cast_count)
     {
         SendCastResult(SPELL_FAILED_SPELL_IN_PROGRESS);
         finish(false);
@@ -4414,13 +4414,21 @@ SpellCastResult Spell::CheckCast(bool strict)
             return SPELL_FAILED_NOT_MOUNTED;
     }
 
+    SpellCastResult castResult = SPELL_CAST_OK;
+
     // always (except passive spells) check items (focus object can be required for any type casts)
     if (!IsPassiveSpell(m_spellInfo))
     {
-        SpellCastResult castResult = CheckItems();
+        castResult = CheckItems();
         if (castResult != SPELL_CAST_OK)
             return castResult;
     }
+
+    // Triggered spells also have range check
+    // TODO: determine if there is some flag to enable/disable the check
+    castResult = CheckRange(strict);
+    if (castResult != SPELL_CAST_OK)
+        return castResult;
 
     // Database based targets from spell_target_script
     if (m_UniqueTargetInfo.empty())                         // skip second CheckCast apply (for delayed spells for example)
@@ -5206,7 +5214,7 @@ SpellCastResult Spell::CheckPetCast(Unit* target)
     if (!m_caster->isAlive())
         return SPELL_FAILED_CASTER_DEAD;
 
-    if (m_caster->IsNonMeleeSpellCasted(false))             // prevent spellcast interruption by another spellcast
+    if (!m_spellInfo->HasAttribute(SPELL_ATTR_EX4_TRIGGERED) && m_caster->IsNonMeleeSpellCasted(false)) // prevent spellcast interruption by another spellcast if not force triggered
         return SPELL_FAILED_SPELL_IN_PROGRESS;
     if (m_caster->isInCombat() && IsNonCombatSpell(m_spellInfo))
         return SPELL_FAILED_AFFECTING_COMBAT;
