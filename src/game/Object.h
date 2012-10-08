@@ -378,7 +378,7 @@ protected:
         float*  m_floatValues;
     };
 
-    uint32* m_uint32Values_mirror;
+    bool* m_changedFields;
 
     uint16 m_valuesCount;
 

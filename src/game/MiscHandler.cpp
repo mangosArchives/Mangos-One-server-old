@@ -846,7 +846,7 @@ void WorldSession::HandleAreaTriggerOpcode(WorldPacket& recv_data)
         }
 
         uint32 instanceStatus = 0;
-        if (at->status, 1)
+        if (at->status)
             instanceStatus = at->status;
 
         if (missingLevel || missingItem || missingKey || missingQuest || instanceStatus)
