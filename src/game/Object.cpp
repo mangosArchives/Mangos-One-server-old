@@ -635,6 +635,7 @@ void Object::SetUInt64Value(uint16 index, const uint64& value)
         m_uint32Values[ index ] = *((uint32*)&value);
         m_uint32Values[ index + 1 ] = *(((uint32*)&value) + 1);
         m_changedFields[ index ] = true;
+        m_changedFields[ index + 1 ] = true;
         MarkForClientUpdate();
     }
 }
