@@ -48,7 +48,7 @@ Object::Object()
     m_objectType        = TYPEMASK_OBJECT;
 
     m_uint32Values      = 0;
-    m_changedFields     = false;
+    m_changedFields     = 0;
     m_valuesCount       = 0;
 
     m_inWorld           = false;
