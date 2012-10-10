@@ -36,9 +36,9 @@ const char WorldTemplatesrcfmt[] = "is";
 const char WorldTemplatedstfmt[] = "ii";
 const char ConditionsSrcFmt[] = "iiii";
 const char ConditionsDstFmt[] = "iiii";
-const char SpellTemplatesrcfmt[] = "iiiiiiiiiix";
+const char SpellTemplatesrcfmt[] = "iiiiiiiiiiix";
 //                                0         10        20        30        40        50        60        70        80        90        100       110       120       130       140       150       160     170       180  185
-const char SpellTemplatedstfmt[] = "ixxxxxxxxxxxxxxxxxxxxxxxxxxiixxxxixxxxxxFxxxxxxxxxxxxxxxxxxxxxxixxxxxxxxFFFFFFxxxxxxixxxxxixxixxxxxFFFxxxxxxixxxxxixxFFFxxxppppppppppppppppppppppppppppppppxxxxxFFxxxFFFxxxx";
+const char SpellTemplatedstfmt[] = "ixxxxxxxxxxxxxxxxxxxxxxxxxxiixxxxixxxxxxFxxxxxxxxxxxxxxxxxxxxxxixxxxxxxxFFFFFFxxxxxxixxxxxixxixxxxxFFFxxxxxxixxixxixxFFFxxxppppppppppppppppppppppppppppppppxxxxxFFxxxFFFxxxx";
 //                                Id                         proc  DurationIndex                 Effect0              tarA0    effectAura0          triggerSpell0      SpellName[16]   Rank[16]
 SQLStorage sCreatureStorage(CreatureInfosrcfmt, CreatureInfodstfmt, "entry", "creature_template");
 SQLStorage sCreatureDataAddonStorage(CreatureDataAddonInfofmt, "guid", "creature_addon");

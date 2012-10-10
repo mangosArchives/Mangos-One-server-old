@@ -1525,7 +1525,7 @@ DROP TABLE IF EXISTS `db_version`;
 CREATE TABLE `db_version` (
   `version` varchar(120) DEFAULT NULL,
   `creature_ai_version` varchar(120) DEFAULT NULL,
-  `required_s1700_xxxxx_01_mangos_areatrigger_teleport` bit(1) DEFAULT NULL
+  `required_s1717_12112_01_mangos_spell_template` bit(1) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='Used DB version notes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1535,7 +1535,7 @@ CREATE TABLE `db_version` (
 
 LOCK TABLES `db_version` WRITE;
 /*!40000 ALTER TABLE `db_version` DISABLE KEYS */;
-INSERT INTO `db_version` (`version`, `creature_ai_version`, `required_s1700_xxxxx_01_mangos_areatrigger_teleport`) VALUES
+INSERT INTO `db_version` (`version`, `creature_ai_version`, `required_s1717_12112_01_mangos_spell_template`) VALUES
 ('Mangos default database.','Creature EventAI not provided.',NULL);
 /*!40000 ALTER TABLE `db_version` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -15847,6 +15847,7 @@ CREATE TABLE `spell_template` (
   `effect0_radius_idx` int(11) unsigned NOT NULL DEFAULT '0',
   `effect0_apply_aura_name` int(11) unsigned NOT NULL DEFAULT '0',
   `effect0_misc_value` int(11) unsigned NOT NULL DEFAULT '0',
+  `effect0_misc_value_b` int(11) unsigned NOT NULL DEFAULT '0',
   `effect0_trigger_spell` int(11) unsigned NOT NULL DEFAULT '0',
   `comments` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -15859,20 +15860,19 @@ CREATE TABLE `spell_template` (
 
 LOCK TABLES `spell_template` WRITE;
 /*!40000 ALTER TABLE `spell_template` DISABLE KEYS */;
-INSERT INTO `spell_template` (`id`, `proc_flags`, `proc_chance`, `duration_index`, `effect0`, `effect0_implicit_target_a`, `effect0_radius_idx`, `effect0_apply_aura_name`, `effect0_misc_value`, `effect0_trigger_spell`, `comments`) VALUES
-(21387,40,15,21,6,1,0,42,0,21388,'Melt-Weapon trigger aura related used by Ragnaros'),
-(23363,0,101,21,76,18,0,0,179804,0,'Summon Drakonid Corpse Trigger'),
-(25192,0,101,21,76,18,0,0,180619,0,'Summon Ossirian Crystal'),
-(26133,0,101,21,76,18,0,0,180795,0,'Summon Sandworm Base'),
-(44920,0,101,21,6,1,0,56,24941,0,'Model - Shattered Sun Marksman - BE Male Tier 4'),
-(44924,0,101,21,6,1,0,56,24945,0,'Model - Shattered Sun Marksman - BE Female Tier 4'),
-(44928,0,101,21,6,1,0,56,24949,0,'Model - Shattered Sun Marksman - Draenei Male Tier 4'),
-(44932,0,101,21,6,1,0,56,24953,0,'Model - Shattered Sun Marksman - Draenei Female Tier 4'),
-(45158,0,101,21,6,1,0,56,25119,0,'Model - Shattered Sun Warrior - BE Female Tier 4'),
-(45162,0,101,21,6,1,0,56,25123,0,'Model - Shattered Sun Warrior - BE Male Tier 4'),
-(45166,0,101,21,6,1,0,56,25127,0,'Model - Shattered Sun Warrior - Draenei Female Tier 4'),
-(45170,0,101,21,6,1,0,56,25131,0,'Model - Shattered Sun Warrior - Draenei Male Tier 4'),
-(62388,0,101,21,6,1,0,4,0,0,'Aura required for Demonic Circle 48020');
+INSERT INTO `spell_template` (`id`, `proc_flags`, `proc_chance`, `duration_index`, `effect0`, `effect0_implicit_target_a`, `effect0_radius_idx`, `effect0_apply_aura_name`, `effect0_misc_value`, `effect0_misc_value_b`, `effect0_trigger_spell`, `comments`) VALUES
+(21387,40,15,21,6,1,0,42,0,0,21388,'Melt-Weapon trigger aura related used by Ragnaros'),
+(23363,0,101,21,76,18,0,0,179804,0,0,'Summon Drakonid Corpse Trigger'),
+(25192,0,101,21,76,18,0,0,180619,0,0,'Summon Ossirian Crystal'),
+(26133,0,101,21,76,18,0,0,180795,0,0,'Summon Sandworm Base'),
+(44920,0,101,21,6,1,0,56,24941,0,0,'Model - Shattered Sun Marksman - BE Male Tier 4'),
+(44924,0,101,21,6,1,0,56,24945,0,0,'Model - Shattered Sun Marksman - BE Female Tier 4'),
+(44928,0,101,21,6,1,0,56,24949,0,0,'Model - Shattered Sun Marksman - Draenei Male Tier 4'),
+(44932,0,101,21,6,1,0,56,24953,0,0,'Model - Shattered Sun Marksman - Draenei Female Tier 4'),
+(45158,0,101,21,6,1,0,56,25119,0,0,'Model - Shattered Sun Warrior - BE Female Tier 4'),
+(45162,0,101,21,6,1,0,56,25123,0,0,'Model - Shattered Sun Warrior - BE Male Tier 4'),
+(45166,0,101,21,6,1,0,56,25127,0,0,'Model - Shattered Sun Warrior - Draenei Female Tier 4'),
+(45170,0,101,21,6,1,0,56,25131,0,0,'Model - Shattered Sun Warrior - Draenei Male Tier 4');
 /*!40000 ALTER TABLE `spell_template` ENABLE KEYS */;
 UNLOCK TABLES;
 
