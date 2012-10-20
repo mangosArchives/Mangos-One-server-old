@@ -4195,6 +4195,10 @@ SpellCastResult Spell::CheckCast(bool strict)
             return m_caster->getClass() == CLASS_WARRIOR ? SPELL_FAILED_CASTER_AURASTATE : SPELL_FAILED_NO_COMBO_POINTS;
     }
 
+    // Spells like Disengage are allowed only in combat
+    if (!m_caster->isInCombat() && m_spellInfo->HasAttribute(SPELL_ATTR_STOP_ATTACK_TARGET) && m_spellInfo->HasAttribute(SPELL_ATTR_EX2_UNK26))
+        return SPELL_FAILED_CASTER_AURASTATE;
+
     if (Unit* target = m_targets.getUnitTarget())
     {
         // target state requirements (not allowed state), apply to self also
