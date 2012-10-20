@@ -5719,7 +5719,7 @@ bool Spell::DoSummonPossessed(SpellEffectIndex eff_idx, uint32 forceFaction)
 
     spawnCreature->SetLevel(m_caster->getLevel());
 
-    spawnCreature->SetWalk(m_caster->IsWalking());
+    spawnCreature->SetWalk(m_caster->IsWalking(), true);
     // TODO: Set Fly
 
     // Internal changes

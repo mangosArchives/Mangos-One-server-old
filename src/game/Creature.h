@@ -530,7 +530,7 @@ public:
 
     CreatureAI* AI() { return i_AI; }
 
-    void SetWalk(bool enable);
+    void SetWalk(bool enable, bool asDefault = true);
     void SetLevitate(bool enable);
 
     uint32 GetShieldBlockValue() const override         // dunno mob block value
